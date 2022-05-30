@@ -1,0 +1,78 @@
+﻿@using AceSmokeShop.ViewModel
+@model CheckoutViewModel
+
+
+@{
+    ViewData["Title"] = "Add Address";
+    Layout = null;
+}
+
+<div class="modal" tabindex="-1" role="dialog" id="addAddress">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAddresslbl">Add Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border:none; outline:none">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddAddress" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="Address.newAddress.AddressLineA"></label>
+                                <input asp-for="Address.newAddress.AddressLineA" id="addressA" class="form-control" />
+                                <span asp-validation-for="Address.newAddress.AddressLineA" id="errAddressA" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="Address.newAddress.AddressLineB"></label>
+                                <input asp-for="Address.newAddress.AddressLineB" id="addreddB" class="form-control" />
+                                <span asp-validation-for="Address.newAddress.AddressLineB" id="errbarcode" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="Address.newAddress.City"></label>
+                                <input asp-for="Address.newAddress.City" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Address.newAddress.StateID"></label>
+                                <select asp-for="Address.newAddress.StateID" id="state" onchange="GetState()" class="form-control"
+                                        asp-items="@(new SelectList(@Model.Address.StateList, "StateID", "StateName"))">
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label asp-for="Address.newAddress.Zipcode"></label>
+                                @if(Model.Address.newAddress.Zipcode == 0){
+                                    <input asp-for="Address.newAddress.Zipcode" class="form-control" value="" />
+                                }
+                                else
+                                {
+                                <input asp-for="Address.newAddress.Zipcode" class="form-control" />
+                                } 
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-block" data-save="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}

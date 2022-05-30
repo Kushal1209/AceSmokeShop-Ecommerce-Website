@@ -1,0 +1,146 @@
+﻿@using AceSmokeShop.ViewModel
+@model AdminProductViewModel
+
+@{
+    ViewData["Title"] = "Product";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="placeholder"></div>
+<div class="container">
+    <form asp-action="Product" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-3">
+                    <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-control"
+                            asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
+                    </select>
+                    <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#addcategory"
+                        data-url="@Url.Action("CreateCategory")" style="border:none; outline:none; background:none;">
+                        <i class="bi bi-plus-circle"></i>
+                    </button>
+                </div>
+                <div class="col-3">
+                    <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-control"
+                            asp-items="@(new SelectList(@Model.SubCategoryList, "SubCategoryID", "SubCategoryName"))">
+                    </select>
+                    <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#addsubcategory"
+                        data-url="@Url.Action("CreateSubCategory")" style="border:none; outline:none; background:none;">
+                        <i class="bi bi-plus-circle"></i>
+                    </button>
+                </div>
+                <div class="col-6">
+                    <div class="price-input">
+                        <div class="field">
+                            <input type="number" class="input-min" id="min" value="@Model.MinPrice">
+                        </div>
+                        <div class="separator">-</div>
+                        <div class="field">
+                            <input type="number" class="input-max" id="max" value="@Model.MaxPrice">
+                        </div>
+                    </div>
+                    <div class="slider">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="range-input">
+                        <input type="range" class="range-min" min="0" max="100000" id="min" value="@Model.MinPrice" step="1">
+                        <input type="range" class="range-max" min="0" max="100000" id="max" value="@Model.MaxPrice" step="1">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3 align-self-center">
+                    <i class="fas fa-search"></i><input type="text" value=@Model.Search asp-for=@Model.Search id="search" class="form-control form-input SearchIcon" placeholder="Search" />
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-block" id="fliterbtnsearch">Search</button>
+                    
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-cherry">
+                <div class="card-statistic-3 p-2">
+                    <div class="mb-3">
+                        <h6 class="card-title mb-0">Total Products</h6>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h5 class="d-flex align-items-center mb-0">
+                                @Model.TotalProducts
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-blue-dark">
+                <div class="card-statistic-3 p-2">
+                    <div class="mb-3">
+                        <h6 class="card-title mb-0">Out of Stock</h6>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h5 class="d-flex align-items-center mb-0">
+                                @Model.OutOfStock
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-green-dark">
+                <div class="card-statistic-3 p-2">
+                    <div class="mb-2">
+                        <h6 class="card-title mb-0">Running Out of Stock</h6>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h5 class="d-flex align-items-center mb-0">
+                                @Model.RunningOutOfStock
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-orange-dark">
+                <div class="card-statistic-3 p-2">
+                    <div class="mb-3">
+                        <h6 class="card-title mb-0">Total Unit</h6>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h5 class="d-flex align-items-center mb-0">
+                                @Model.TotalUnits
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-2">
+            <button type="button" class="btn btn-block" data-toggle="ajax-modal" data-target="#addProduct"
+            data-url="@Url.Action("CreateProduct")">Create Product</button>
+        </div>
+    </div>
+</div>
+<div id="createproduct">
+    @await Html.PartialAsync("_CreateProdPartialView", Model)
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}

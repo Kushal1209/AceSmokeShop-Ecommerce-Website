@@ -1,0 +1,179 @@
+﻿@using AceSmokeShop.ViewModel
+@model AddressViewModel
+
+@{
+    ViewData["Title"] = "Select Address";
+}
+
+<div id="placeholder"></div>
+<div class="container mt-4" style="margin-bottom: 6rem;">
+    <div>
+        <h2 style="font-weight: 700; font-family: emoji; letter-spacing: -2px;">Delivery Address</h2>
+        <hr/>
+    </div>
+    <div class="mt-4">
+        <input type="checkbox" />
+        <label>Billing and Shipping address are the same</label>
+    </div>
+    <div class="row mt-2">
+        <div class="col-4">
+            <div class="product-card" style="width: 330px">
+		        <div class="product-details"  style="padding: 1rem 2rem;">
+                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;height: 45px;">
+                        <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                            <button class="btn" type="button" style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Shipping Address</button>
+                        </div>
+			        </div>
+                    <h7>
+                        <a style="font-size: 0.9rem;font-weight: 500;letter-spacing: -0.5px;"><b></b></a>
+                    </h7><br/>
+			        <h7>
+                        <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;"></a>
+                    </h7><br/>
+                    <h7>
+                        <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;"></a>
+                    </h7><br/>
+                    <h7>
+                        <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;"></a>
+                    </h7><br/>
+                    <h7>
+                        <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;"></a>
+                    </h7><br/>
+		        </div>
+	        </div>
+        </div>
+        <div class="col-4">
+            <div class="product-card" style="width: 330px">
+		        <div class="product-details"  style="padding: 1rem 2rem;">
+                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;height: 45px;">
+                        <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                            <button class="btn" type="button" style="border-radius: 0px; height:-webkit-fill-available; width:-webkit-fill-available; font-weight:600;">Billing Address</button>
+                        </div>
+			        </div>
+                    <h7>
+                        <a style="font-size: 0.9rem;font-weight: 500;letter-spacing: -0.5px;"><b></b></a>
+                    </h7><br/>
+			        <h7>
+                        <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;"></a>
+                    </h7><br/>
+                    <h7>
+                        <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;"></a>
+                    </h7><br/>
+                    <h7>
+                        <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;"></a>
+                    </h7><br/>
+                    <h7>
+                        <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;"></a>
+                    </h7><br/>
+		        </div>
+	        </div>
+        </div>
+        <div class="col-4">
+            @*<div class="row">
+                <div class="col-2"></div>
+                <div class="col-4">
+                    <div class="row">
+                        <div>
+                            <a>Subtotal</a>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div>
+                            <a>Shipping</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-4">
+                    <div class="row">
+                        <div>
+                            <a id="Subtotal">$@Model.SubTotal</a>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div>
+                            <a>$20</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-4">
+                    <div class="row">
+                        <div>
+                            <a><b>Grand Total</b></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-4">
+                    <div class="row">
+                        <div>
+                            <a id="Subtotal"><b>$@Model.GrandTotal</b></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>*@
+        </div>
+    </div>
+    <div class="mt-5">
+         <div>
+            <h4 style="font-weight: 600; font-family: inherit; letter-spacing: -1px;">Other Addresses</h4>
+        </div>
+        <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4">
+            @foreach(var item in Model.AddressList)
+            {
+            <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
+                <div class="product-card" style="width: 245px">
+		            <div class="product-details"  style="padding: 1rem 2rem;">
+                        <h7>
+                            <a style="font-size: 0.9rem;font-weight: 500;letter-spacing: -0.5px;"><b>@item.User.Fullname</b></a>
+                        </h7><br/>
+			            <h7>
+                            <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;">@item.AddressLineA,</a>
+                        </h7><br/>
+                        <h7>
+                            <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;">@item.AddressLineB,</a>
+                        </h7><br/>
+                        <h7>
+                            <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;">@item.City,</a>
+                        </h7><br/>
+                        <h7>
+                            <a style="font-size: 0.8rem;font-weight: 400;letter-spacing: -0.5px;">@Model.StateList[item.StateID - 1].StateName @item.Zipcode</a>
+                        </h7><br/>
+		            </div>
+                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;height: 45px;">
+                        <div class="col" style="height:-webkit-fill-available;">
+                            <button class="btn" type="button" style="border-radius: 0px;width: -webkit-fill-available; height:-webkit-fill-available;">Shipping</button>
+                        </div>
+                        <div class="col" style="height:-webkit-fill-available;">
+                            <button class="btn" type="button" style="border-radius: 0px; height:-webkit-fill-available; width:-webkit-fill-available;">Billing</button>
+                        </div>
+			        </div>
+	            </div>
+            </div>
+            }
+            <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
+                <div class="product-card" style="width:245px; border:dashed; border-color: yellow; height:100%;">
+                    <button class="btn" type="button" style="border-radius: 0px;width: -webkit-fill-available; height:-webkit-fill-available;" data-toggle="ajax-modal" data-target="#addAddress"
+                    data-url="@Url.Action("AddAddressGet")" >Add New Address</button>
+	            </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-9"></div>
+        <div class="col-3">
+            <a type="button" class="btn btn-block" href="@Url.Action("SelectPayment", "Home")">Proceed To Payment</a>
+        </div>
+    </div>
+    
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}

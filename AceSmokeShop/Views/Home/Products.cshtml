@@ -1,0 +1,145 @@
+﻿@using AceSmokeShop.ViewModel
+@model UProductViewModel
+
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="max-width: 2200px; margin-bottom: 6rem;">
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/Images/HomeImg2.png" class="d-block w-100" alt="Img">
+            </div>
+        </div>
+    </div>
+    <div style="padding: 1rem 8rem;">
+        <span>Showing <b>@Model.CurrentPage</b> of @Model.TotalPages Pages</span>
+    </div>
+    <hr style=" margin-top: 0rem; margin-bottom: 0rem;">
+
+    <div class="mt-4" style="padding:0rem 8rem;">
+        <div class="row">
+            <div class="col-3" style="margin-right:45px;">
+                <div>
+                    <a class="font-weight-bolder"><h3 style="font-size: 2.1rem; font-weight: 700; font-family: emoji; letter-spacing: -2px;">Filters</h3></a>
+                    <div class="mt-0" style="border-bottom: 2px solid #96672d; width: 19rem;"></div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div >
+                    <input type="hidden" id="cuttentpageid" value="@Model.CurrentPage">
+                    <input type="hidden" id="totalpageid" value="@Model.TotalPages">
+                    <div >
+                        <button type="button" id="prebtnClick" class="btn" hidden=@(Model.CurrentPage == 1? true : false) style="height: 30px;padding: 0rem 0.7rem;border: 1px solid black;background: lightgrey;border-radius: 15px;width: 90px;">Previous</button>
+                        <button type="button" id="nextbtnClick" class="btn" hidden=@(Model.CurrentPage == Model.TotalPages? true : false) style="height: 30px;padding: 0rem 0.7rem;border: 1px solid black;background: lightgrey;border-radius: 15px;width: 90px;">Next</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2" style="margin-left: 30px;">
+                <div style="justify-content:end">
+                    <label>Items Per Page</label>
+                    <select asp-for=@Model.ItemsPerPage id="rowselectId" class="RowSelect"
+                            asp-items="@(new SelectList(@Model.ProductsPerPages))">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-3">
+                <div class="row">
+                    <div class="col">
+                        <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-control"
+                                asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-control"
+                                asp-items="@(new SelectList(@Model.SubCategoryList, "SubCategoryID", "SubCategoryName"))">
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <i class="fas fa-search"></i><input type="text" value=@Model.Search asp-for=@Model.Search id="search" class="form-control form-input SearchIcon" placeholder="Search" />
+                    </div>
+                    <div class="col-4 mt-3">
+                        <button type="button" class="btn btn-block" id="fliterProductsSearch">Search</button>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <label style="font-size: 1.2rem; font-weight: 700; font-family: emoji; letter-spacing: 0px;">Tags</label>
+                    </div>
+                     <div class="col mt-3">
+                       <div class="row">
+                            <div class="col-6" style="padding: 0px 5px;">
+                                 <input type="hidden" id="type" value="@Model.Type" />
+                                @if(Model.IsFeatured){
+                                    <button type="button" id="featurebtn" value=@Model.IsFeatured class="btn btn-block">Featured</button>
+                                }
+                                else
+                                {
+                                    <button type="button" id="featurebtn" value=@Model.IsFeatured  class="btn btn-block" style="background-image: none;background-color: white;border: 1px solid black;">Featured</button>
+                                }
+                                
+                            </div>
+                            <div class="col-6" style="padding: 0px 5px;">
+                                @if(Model.IsPromoted){
+                                    <button type="button" id="popularbtn" value=@Model.IsPromoted  class="btn btn-block">Popular</button>
+                                }
+                                else
+                                {
+                                    <button type="button" id="popularbtn" value=@Model.IsPromoted  class="btn btn-block" style="background-image: none;background-color: white;border: 1px solid black;">Popular</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 3rem;">
+                    @foreach(var item in Model.ProdctList)
+                    {
+                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
+                        <div class="product-card" style="width: 245px">
+		                    <div class="product-tumb" style="height: 260px;">
+                                <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                    <img  src="~/Images/cigarette-box.png" alt="">
+                                </a>
+			                    
+		                    </div>
+		                    <div class="product-details" style="padding:0px;">
+                                <div style="padding: 5px;">
+                                    <div class="product-price">$@item.SalePrice</div>
+			                        <h7>
+                                        <a style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px;">@item.Category.CategoryName - @item.ProductName</a>
+                                    </h7>
+                                </div>
+			                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                    <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                        <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
+                                        onclick="AddtoCart(@item.Barcode, 1, 'Home/Products')">Add to Cart</button>
+                                    </div>
+                                    @*<div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                        <a class="btn" type="button" href="@Url.Action("Checkout", "Home", new{ProductId})" style="background-color: black; border-radius: 0px;color: #dfcece;height: -webkit-fill-available;width: -webkit-fill-available;">Buy Now</a>
+                                    </div>*@
+			                    </div>
+		                    </div>
+	                    </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}

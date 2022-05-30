@@ -1,0 +1,202 @@
+﻿@using AceSmokeShop.ViewModel
+@model OrderViewModel
+
+
+@{
+    ViewData["Title"] = "My Orders";
+    List<string> months = new List<string>{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" };
+}
+
+<div id="placeholder"></div>
+<div class="container" style="padding-bottom:6rem;">
+    <div class="mt-4">
+        <h5 style="font-weight: 700; font-family: emoji; letter-spacing: -2px;">Past Orders</h5>
+    </div>
+
+    <div class="mt-3">
+        <div class="row mt-3 row-cols-3 row-cols-lg-3 gy-5 g-lg-4">
+            <div class="accordion">
+                @foreach (var item in Model.userOrdersList)
+                {
+                    <div class="accordion-item">
+                        <div class="accordion-item-header">
+                            <div class="row" style="padding:1rem 1rem; width: 100%;">
+                                <div class="col-2">
+                                    <Label style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></Label>
+                                </div>
+                                <div class="col-2">
+                                    <Label style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></Label>
+                                </div>
+                                <div class="col-2">
+                                    <Label style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></Label>
+                                </div>
+                                <div class="col-2">
+                                    <a style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>Repeat Order</b></a>
+                                </div>
+                                <div class="col-2">
+                                    @if(item.OrderStatus.Equals("Order Placed")){
+                                        <button type="button" class="btn"  data-toggle="ajax-modal" data-target="#cancelorder"
+                                        data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" style="color:#cdb36c;font-size: 13px;font-weight: 500;"><b>Cancel Order</b></button>
+                                    }
+                                </div> 
+                                @if(item.DeliveryDate.Year <= 2000)
+                                {
+                                    <div class="col-1">
+                                        <label style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>Track</b></label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="accordion-item-body">
+                            <div class="accordion-item-body-content">
+                                <div class="container" style="margin:1rem">
+                                    @* Insert Img here *@
+                                    <div class="row" style="width:100%;">
+                                        <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
+                                    </div>
+                                    @* Insert Shipping Address here *@
+                                    <div class="row mt-3"  style="width:90%; margin:0;">
+                                        <div class="col-4" style="padding:0px;">
+                                            <div class="product-card" style="width: 330px">
+		                                        <div class="product-details"  style="padding: 1rem 2rem;">
+                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
+			                                        </div>
+                                                    <h7>
+                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineA</a>
+                                                    </h7>
+                                                    <br/>
+                                                    @if (item.ShippingAddress.AddressLineB.Length > 0)
+                                                    {
+                                                        <h7>
+                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineB</a>
+                                                        </h7>
+                                                        <br/>
+                                                    }
+                                                    <h7>
+                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.City</a>
+                                                    </h7>
+                                                    <br/>
+                                                    <h7>
+                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.ShippingAddress.StateID - 1].StateName @item.ShippingAddress.Zipcode</a>
+                                                    </h7>
+                                                    <br/>
+                                                    @if(item.ShippingAddress.AddressLineB.Length <= 0)
+                                                    {
+                                                        <br/>
+                                                    }
+                                                </div>
+	                                        </div>
+                                        </div>
+                                        <div class="col-4" style="padding:0px;">
+                                            <div class="product-card" style="width: 330px">
+		                                        <div class="product-details"  style="padding: 1rem 2rem;">
+                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Billing Address</a>
+			                                        </div>
+                                                    <h7>
+                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.BillingAddress.AddressLineA</a>
+                                                    </h7>
+                                                    <br/>
+                                                    @if (item.BillingAddress.AddressLineB.Length > 0)
+                                                    {
+                                                        <h7>
+                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.BillingAddress.AddressLineB</a>
+                                                        </h7>
+                                                        <br/>
+                                                    }
+                                                    <h7>
+                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.BillingAddress.City</a>
+                                                    </h7>
+                                                    <br/>
+                                                    <h7>
+                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.BillingAddress.StateID - 1].StateName @item.BillingAddress.Zipcode</a>
+                                                    </h7>
+                                                    <br/>
+                                                     @if(item.BillingAddress.AddressLineB.Length <= 0)
+                                                    {
+                                                        <br/>
+                                                    }
+		                                        </div>
+	                                        </div>
+                                        </div>
+                                        @*Insert Calc Section here*@
+                                        <div class="col-4" style="padding:0px;">
+                                            <hr/>
+                                            <div class="row" style="margin:0;">
+                                                <div class="col-6">
+                                                    <div class="row" style="margin:0;">
+                                                        <a>Subtotal</a>
+                                                    </div>
+                                                    <div class="row" style="margin:0;">
+                                                         <a>Tax</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="row" style="margin:0;">
+                                                        <a id="Subtotal">$@item.SubTotal</a>
+                                                    </div>
+                                                    <div class="row" style="margin:0;">
+                                                        <a>@item.Tax%</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr/>
+                                            <div class="row" style="margin:0;">
+                                                <div class="col-6">
+                                                    <div class="row" style="margin:0;">
+                                                        <a><b>Grand Total</b></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="row" style="margin:0;">
+                                                        <a><b>$@item.TotalAmount</b></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr/>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    @* Insert Billing Address here *@
+                                    <table class="table" style="width:85%;">
+                                        <tbody>
+                                            @foreach (var i in item.OrderItems)
+                                            {
+                                                <tr>
+                                                    <td class="col-2">
+                                                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
+                                                    </td>
+                                                    <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
+                                                        <div class="row d-flex justify-content-center">
+                                                            <div class="col-md-12">
+                                                                <div class="row p-2">
+                                                                    <div class="col mt-1">
+                                                                        <h6>@i.Product.ProductName</h6>
+                                                                        <div class="mt-1 mb-1 spec-1">
+                                                                            <span>@i.Product.Category.CategoryName</span> - <span>@i.Product.SubCategory.SubCategoryName</span><br/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                                        <label>@i.Quantity</label>
+                                                    </td>
+                                                    <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                                        <label>$@i.Product.SalePrice</label>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                }
+            </div>
+        </div>
+    </div>
+</div>

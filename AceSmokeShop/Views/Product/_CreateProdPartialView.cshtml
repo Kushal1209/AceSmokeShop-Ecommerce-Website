@@ -1,0 +1,211 @@
+﻿@using AceSmokeShop.ViewModel
+@model AdminProductViewModel
+
+<div id="productpage" class="container mt-3">
+    <div class="Paginationblock">
+        <div class="row">
+            <div class="col-md-4" style="padding: 5px 25px;">
+                <div class="form-group">
+                    <label style="color: #000;">Rows</label>
+                   <select asp-for=@Model.ItemsPerPage id="rowselectId" class="RowSelect"
+                        asp-items="@(new SelectList(@Model.RowPerPage))">
+                   </select>
+               </div>
+            </div>
+            <div class="col-md-4" style="padding: 7px 15px;">
+                <div style="text-align: center;">
+                    <label style="color: #000;">Showing @Model.CurrentPage / @Model.TotalPages</label>
+                </div>
+            </div>
+            <div class="col-md-4" style="justify-content:end; padding: 5px 25px;">
+                <input type="hidden" id="cuttentpageid" value="@Model.CurrentPage" />
+                <input type="hidden" id="totalpageid" value="@Model.TotalPages" />
+                <div style="text-align: end;">
+                    <button type="button" id="prebtnClick" hidden=@(Model.CurrentPage == 1? true : false) class="Paginationbtn">Previous</button>
+                    <button type="button" id="nextbtnClick" hidden=@(Model.CurrentPage == Model.TotalPages? true : false) class="Paginationbtn">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-5">
+                        <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
+                            Products
+                        </a>
+                    </th>
+                    <th class="col-1">
+                        @if(Model.SortByID == 1)
+                        {
+                            <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
+                            <a class="h6 text-uppercase font-weight-bold" id="QtyPriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
+                                Quantity 
+                            </a>
+                            if (@Model.SortByOrder == 1)
+                            {
+                                <i class="bi bi-arrow-up" style="color: #145DA0;  cursor: pointer;"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-arrow-down" style="color: #145DA0;  cursor: pointer;"></i>
+                            }
+                        }
+                        else
+                        {
+                            <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
+                            <a id="QtyPriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
+                                Quantity <b><i class="bi bi-arrow-down-up"></i></b>
+                            </a>
+                        }
+
+                    </th>
+                    <th class="col-1">
+                    @if(Model.SortByID == 2)
+                        {
+                            <input type="hidden" id="sortbyBaseOrder" value="@Model.SortByOrder" />
+                            <a class="h6 text-uppercase font-weight-bold" id="BasePriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
+                                Base Price
+                            </a>
+                            if (@Model.SortByOrder == 1)
+                            {
+                                <i class="bi bi-arrow-up" style="color: #145DA0;  cursor: pointer;"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-arrow-down" style="color: #145DA0;  cursor: pointer;"></i>
+                            }
+                        }
+                        else
+                        {
+                            <input type="hidden" id="sortbyBaseOrder" value="@Model.SortByOrder" />
+                            <a id="BasePriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
+                                Base Price <b><i class="bi bi-arrow-down-up"></i></b>
+                            </a>
+                        }
+                    </th>
+                    <th  class="col-1">
+                   
+                        @if(Model.SortByID == 3)
+                        {
+                            <input type="hidden" id="sortbySaleOrder" value="@Model.SortByOrder" />
+                            <a class="h6 text-uppercase font-weight-bold" id="salePriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
+                                Sale Price
+                            </a>
+                            if (@Model.SortByOrder == 1)
+                            {
+                                <i class="bi bi-arrow-up" style="color: #145DA0;  cursor: pointer;"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-arrow-down" style="color: #145DA0;  cursor: pointer;"></i>
+                            }
+                        }
+                        else
+                        {
+                            <input type="hidden" id="sortbySaleOrder" value="@Model.SortByOrder" />
+                            <a id="salePriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
+                                Sale Price <b><i class="bi bi-arrow-down-up"></i></b>
+                            </a>
+                        }
+                    </th>
+                    <th class="col-2">
+                        <a  class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px;
+">
+                            Tag
+                        </a>
+                    </th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ProductList)
+               {
+                   <tr>
+                       <td class="col-5">
+                           <div class="row d-flex justify-content-center">
+                               <div class="col-md-12">
+                                   <div class="row p-2 bg-white">
+                                       <div class="col-md-3 mt-1">
+                                           <img class="img-fluid img-responsive rounded product-image d-block w-100" src="@item.PrimaryImage"/>
+                                       </div>
+                                       <div class="col mt-1">
+                                           <h6>@item.ProductName - @item.Barcode</h6>
+                                           <div class="mt-1 mb-1 spec-1">
+                                               <span>@item.Category.CategoryName</span> - <span>@item.SubCategory.SubCategoryName</span><br/>
+                                               <span>Unit: @item.UnitOfMeasure</span><br/>
+                                               <span>@item.Description</span>
+                                           </div>
+                                           <div class="mt-1 mb-1">
+                                               <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#editProduct"
+                                                    data-url="@Url.Action("EditProductGet","Product", @item)" style="border:none; outline:none; background:none;">
+                                                    <i class="bi bi-pencil"></i>
+                                               </button>
+                                               <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#deleteProduct"
+                                                    data-url="@Url.Action("DeleteProductGet", "Product", @item)" style="border:none; outline:none; background:none;">
+                                                    <i class="bi bi-trash3"></i>
+                                               </button>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </td>
+                       <td class="col-1">
+                           <div class="row p-2 d-flex justify-content-center">
+                               <div class="h6 text-uppercase font-weight-light">
+                                   @item.Stock
+                               </div>
+                           </div>
+                       </td>
+                       <td class="col-1">
+                           <div class="row p-2 d-flex justify-content-center">
+                               <div class="h6 text-uppercase font-weight-light">
+                                   @item.BasePrice
+                               </div>
+                           </div>
+                       </td>
+                       <td class="col-1">
+                           <div class="row p-2 d-flex justify-content-center">
+                               <div class="h6 text-uppercase font-weight-light">
+                                   @item.SalePrice
+                               </div>
+                           </div>
+                       </td>
+                       <td class="col-2">
+                           <div class="h6">
+                               <div class="row">
+                                   <div class="col">
+                                       <input type="hidden" id="barcode" value=@item.Barcode />
+                                        <i onclick="ChangeClick('ChangeFeature', @item.Barcode)" hidden=@item.IsFeatured class="bi bi-plus-circle"></i>
+                                        <label hidden=@item.IsFeatured style="font-family: inherit;font-size: 14px;font-weight: 300;font-style: italic;">Feature now</label>
+                                
+                                        <i onclick="ChangeClick('ChangeFeature', @item.Barcode)" hidden=@(item.IsFeatured? false : true) class="bi bi-dash-circle"></i>
+                                        <label hidden=@(item.IsFeatured? false : true) style="color: green">Featured</label>
+                                        <i hidden=@(item.IsFeatured? false : true) style="color: green" class="bi bi-check-circle-fill"></i>
+                                   </div>
+                               </div>
+                               <div class="row">
+                                   <div class="col">
+                                       <input type="hidden" id="barcode" value=@item.Barcode />
+                                        <i onclick="ChangeClick('ChangePromotion', @item.Barcode)" hidden=@item.IsPromoted class="bi bi-plus-circle"></i>
+                                        <label hidden=@item.IsPromoted style="font-family: inherit;font-size: 14px;font-weight: 300;font-style: italic;">Promote now</label>
+                                
+                                        <i onclick="ChangeClick('ChangePromotion', @item.Barcode)" hidden=@(item.IsPromoted? false : true) class="bi bi-dash-circle"></i>
+                                        <label hidden=@(item.IsPromoted? false : true) style="color: green">Promoted</label>
+                                        <i hidden=@(item.IsPromoted? false : true) style="color: green" class="bi bi-check-circle-fill"></i>
+                                   </div>
+                               </div>
+                           </div>
+                       </td>
+                   </tr>
+               }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

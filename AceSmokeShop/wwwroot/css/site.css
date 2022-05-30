@@ -1,0 +1,595 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+
+nav, footer{
+    background-color: #000;
+}
+
+.navbar > .container{
+    display: contents;
+}
+
+.navbar-nav {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 50px;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.navbar-brand {
+    display: inline-block;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 8rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+}
+
+@media (min-width: 576px){
+    .navbar-expand-sm .navbar-nav .nav-link {
+        padding-right: 2rem;
+        padding-left: 1rem;
+    }
+}
+
+@media (min-width: 1200px){
+    .container {
+        max-width: 1200px;
+        padding: 0px;
+    }
+}
+
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+.logo-img{
+    width: 250px;
+    height: 60px;
+}
+
+/******** Product Page Details CSS *******/
+.card-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+img {
+    width: 100%;
+    display: block;
+}
+
+.img-display {
+    overflow: hidden;
+    border: 1px solid darkgrey;
+}
+
+.img-showcase {
+    display: flex;
+    width: 100%;
+    transition: all 0.5s ease;
+}
+
+.img-showcase img {
+    min-width: 100%;
+}
+
+.img-select {
+    display: flex;
+}
+
+.img-item {
+    margin: 0.3rem;
+}
+
+.img-item:nth-child(1),
+.img-item:nth-child(2),
+.img-item:nth-child(3) {
+    margin: 5px;
+    border: 1px solid darkgrey;
+}
+
+.img-item:hover {
+    opacity: 0.8;
+}
+
+span {
+    cursor: pointer;
+}
+
+.minus, .plus {
+    width: 25px;
+    background: #f2f2f2;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    height: 34px;
+}
+
+.inputquantity {
+    height: 34px;
+    width: 55px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+    /* Featured Product Items Card Carousel Slide */
+    .box{
+    width: 350px;
+    height: 450px;
+    background-color: #000;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    margin: 20px 10px;
+
+}
+
+
+.product-card {
+    display: flex !important;
+    flex-direction: column;
+    width: 240px;
+    position: relative;
+    box-shadow: 0 20px 20px #dfdfdf;
+    background: #fafafa;
+    transition: all .1s linear;
+
+    @media screen and (max-width: 600px) {
+        height: auto;
+    }
+}
+
+.product-tumb {
+    display: flex;
+    height: 200px;
+    padding: 0px 0px;
+    background: #f0f0f0;
+}
+
+.product-tumb img {
+    max-width: 100%;
+    max-height: 100%;
+    width: fit-content;
+}
+
+.product-details {
+    padding: 5px;
+}
+
+.product-catagory {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 0px;
+}
+
+.product-details h4 a {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    color: #363636;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.product-details h4 a:hover {
+    color: #fbb72c;
+}
+
+product-details p {
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 10px;
+    color: #999;
+}
+
+.product-bottom-details {
+    overflow: hidden;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.product-bottom-details div {
+    float: left;
+    width: 50%;
+}
+
+.product-price {
+    font-size: 20px;
+    color: #96672d;
+    font-weight: 600;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #000000;
+    background-color: #96672d;
+    background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+    height: 45px;
+    border-radius: 8px;
+}
+
+.Paginationbtn {
+    color: #FFF;
+    background-color: #2b2424;
+    border-radius: 5px;
+}
+
+.RowSelect {
+    outline: 1px solid #f7ef9d;
+    border-radius: 5px;
+    height: 30px;
+}
+
+.form-control {
+    outline: 2px solid #f7ef9d;
+    height: 38px;
+    border-radius: 8px;
+}
+
+.row .fa-search {
+    position: absolute;
+    top: 12px;
+    left: 25px;
+    color: rgb(50, 49, 50);
+}
+
+.SearchIcon {
+    color: rgb(50, 49, 50);
+    text-indent: 20px;
+    border-radius: 8px;
+}
+
+.btn-block {
+    color: #000000;
+    background-color: #96672d;
+    background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+    height: 40px;
+    border-radius: 8px;
+}
+
+.Paginationblock {
+    color: #000000;
+    background-color: #96672d;
+    background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+    height: 40px;
+    border-radius: 8px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Toggle btn styles
+-------------------------------------------------- */
+.switch {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 96px;
+    height: 36px;
+    padding: 1px;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.switch-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+.switch-label {
+    position: relative;
+    display: block;
+    height: inherit;
+    font-size: 12px;
+    text-transform: uppercase;
+    background: red;
+    border-radius: inherit;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+    -webkit-transition: 0.15s ease-out;
+    -moz-transition: 0.15s ease-out;
+    -o-transition: 0.15s ease-out;
+    transition: 0.15s ease-out;
+    -webkit-transition-property: opacity background;
+    -moz-transition-property: opacity background;
+    -o-transition-property: opacity background;
+    transition-property: opacity background;
+}
+
+.switch-label:before, .switch-label:after {
+    position: absolute;
+    top: 50%;
+    margin-top: -.5em;
+    line-height: 1;
+    -webkit-transition: inherit;
+    -moz-transition: inherit;
+    -o-transition: inherit;
+    transition: inherit;
+}
+
+.switch-label:before {
+    content: attr(data-off);
+    right: 9px;
+    color: #aaa;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.switch-label:after {
+    content: attr(data-on);
+    left: 11px;
+    color: white;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+}
+
+.switch-input:checked ~ .switch-label {
+    background: #4fb845;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.switch-input:checked ~ .switch-label:before {
+    opacity: 0;
+}
+
+.switch-input:checked ~ .switch-label:after {
+    opacity: 1;
+}
+
+.switch-handle {
+    position: absolute;
+    top: 1px;
+    left: -5px;
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    background-image: -webkit-linear-gradient(top, white 40%, #f0f0f0);
+    background-image: -moz-linear-gradient(top, white 40%, #f0f0f0);
+    background-image: -o-linear-gradient(top, white 40%, #f0f0f0);
+    background-image: linear-gradient(to bottom, white 40%, #f0f0f0);
+    -webkit-transition: left 0.15s ease-out;
+    -moz-transition: left 0.15s ease-out;
+    -o-transition: left 0.15s ease-out;
+    transition: left 0.15s ease-out;
+}
+
+.switch-handle:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -6px 0 0 -6px;
+    width: 12px;
+    height: 12px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+    background-image: -webkit-linear-gradient(top, #eeeeee, white);
+    background-image: -moz-linear-gradient(top, #eeeeee, white);
+    background-image: -o-linear-gradient(top, #eeeeee, white);
+    background-image: linear-gradient(to bottom, #eeeeee, white);
+}
+
+.switch-input:checked ~ .switch-handle {
+    left: 70px;
+    box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.switch-green > .switch-input:checked ~ .switch-label {
+    background: #4fb845;
+}
+
+
+    /* Slider styles
+-------------------------------------------------- */
+.price-input {
+    width: 100%;
+    display: flex;
+    margin: 0px 0 5px;
+}
+
+.price-input .field {
+    display: flex;
+    width: 100%;
+    height: 35px;
+    align-items: center;
+}
+
+.field input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 19px;
+    margin-left: 0px;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #999;
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.price-input .separator {
+    width: 70px;
+    display: flex;
+    font-size: 19px;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider {
+    height: 5px;
+    top: 8px;
+    position: relative;
+    background: #ddd;
+    border-radius: 5px;
+}
+
+.slider .progress {
+    height: 100%;
+    left: 0%;
+    right: 0%;
+    position: absolute;
+    border-radius: 5px;
+    background-color: #96672d;
+    background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+}
+
+.range-input {
+    position: relative;
+}
+
+.range-input input {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    top: 3px;
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #96672d;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    box-shadow: 0 0 6px rgba(0,0,0,0.05);
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 17px;
+    width: 17px;
+    border: none;
+    border-radius: 50%;
+    background: #f7ef9d;
+    pointer-events: auto;
+    -moz-appearance: none;
+    box-shadow: 0 0 6px rgba(0,0,0,0.05);
+}
+
+.bg{
+    display: block;
+    width: 500px;
+    height: 500px;
+}
+
+/* Card styles
+-------------------------------------------------- */
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+    height: 85px;
+    width: 170px;
+    position: relative;
+    margin-bottom: 0px;
+    box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,0.1), 0 0.9375rem 1.40625rem rgba(90,97,105,0.1), 0 0.25rem 0.53125rem rgba(90,97,105,0.12), 0 0.125rem 0.1875rem rgba(90,97,105,0.1);
+}
+
+.l-bg-cherry {
+    background: linear-gradient(to right, #493240, #f09) !important;
+    color: #fff;
+}
+
+.l-bg-blue-dark {
+    background: linear-gradient(to right, #373b44, #4286f4) !important;
+    color: #fff;
+}
+
+.l-bg-green-dark {
+    background: linear-gradient(to right, #0a504a, #38ef7d) !important;
+    color: #fff;
+}
+
+.l-bg-orange-dark {
+    background: linear-gradient(to right, #a86008, #ffba56) !important;
+    color: #fff;
+}
+
+
+.l-bg-cyan {
+    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+    color: #fff;
+}
+
+.l-bg-green {
+    background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
+    color: #fff;
+}
+
+.l-bg-orange {
+    background: linear-gradient(to right, #f9900e, #ffba56) !important;
+    color: #fff;
+}
+
+.l-bg-cyan {
+    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+    color: #fff;
+}
+
+/* Product List styles
+-------------------------------------------------- */
+
+/*.product-image {
+    width: 100%
+}
+*/
+.spec-1 {
+    color: #938787;
+    font-size: 13px
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 0px;
+}
+
+.footer {
+    width: 100%;
+    line-height: 60px;
+    position: absolute;
+    bottom: 0;
+}

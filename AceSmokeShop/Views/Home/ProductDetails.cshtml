@@ -1,0 +1,160 @@
+﻿@using AceSmokeShop.ViewModel
+@model ProductDescriptionViewModel
+
+@{
+    ViewData["Title"] = "Product Description";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4"  style="margin-bottom: 6rem;">
+
+    <div class="row">
+        <!-- card left -->
+        <div class="product-imgs" style="width:15rem;">
+            <div class="img-display" style="border: 1px solid darkgrey;">
+                <div class="img-showcase">
+                    <img src="@Model.product.PrimaryImage" alt="shoe image">
+                    <img src="@Model.product.SecondaryImage1" alt="shoe image">
+                    <img src="@Model.product.SecondaryImage2" alt="shoe image">
+                </div>
+            </div>
+            <div class="img-select">
+                <div class="img-item" style="margin:5px;border: 1px solid darkgrey;">
+                    <a href="#" data-id="1">
+                        <img src="@Model.product.PrimaryImage" alt="shoe image">
+                    </a>
+                </div>
+                <div class="img-item" style="margin:5px;border: 1px solid darkgrey;">
+                    <a href="#" data-id="2">
+                        <img src="@Model.product.SecondaryImage1" alt="shoe image">
+                    </a>
+                </div>
+                <div class="img-item" style="margin:5px;border: 1px solid darkgrey;">
+                    <a href="#" data-id="3">
+                        <img src="@Model.product.SecondaryImage2" alt="shoe image">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- card right -->
+        <div class="product-content" style="padding: 0rem 3rem; max-width: 500px;">
+            <h2 class="product-title" style="font-family: emoji;font-size: 2rem;font-weight: 700;">@Model.product.ProductName</h2>
+            <a class = "product-link" style="font-weight: 400;">@Model.product.Category.CategoryName</a>
+      
+            <div class="product-price">
+                <p class="new-price" style="font-weight: 700;font-size: 1.5rem;"><span>$@Model.product.SalePrice</span></p>
+            </div>
+
+            <div class="product-quantity">
+                <div>
+                    <label>Qty. </label>
+	                <span class="minus"><a style="vertical-align:middle;">-</a></span>
+	                <input class="inputquantity" id="ProductQty" type="text" asp-for="@Model.Qty"/>
+	                <span class="plus"><a style="vertical-align:middle;">+</a></span>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <button class="btn" type="button" onclick="AddtoCart(@Model.product.Barcode, $('#ProductQty').val(), 'Home/ProductDetails?Productid=' + @Model.product.Barcode )" style="background-color: gray;border-radius: 0px;width:inherit;max-width:150px;min-width:100px;margin-right:10px;">Add to Cart</button>
+                <button type="button" class="btn" onclick="BuyNow(@Model.product.Barcode, $('#ProductQty').val())" style="background-color: black; border-radius: 0px;color: #dfcece;width: inherit;max-width:150px;min-width:100px">Buy Now</button>
+            </div>
+
+        </div>
+    </div>
+
+    <hr/>
+    <div>
+        <div>
+            <h3>Product Description</h3>
+        </div>
+        <div>
+            <p>
+                @Model.product.Description
+            </p>
+        </div>
+    </div>
+    <hr/>
+    @if(Model.RecomendedProductList.Count() > 0)
+    {
+    <div>
+        <div>
+            <h3>Related Products</h3>
+        </div>
+        <div class="mt-3">
+            <div class="card-columns">
+
+                @foreach( var item in Model.RecomendedProductList){
+                    <div class="product-card" style="width: 245px">
+		                <div class="product-tumb" style="height: 260px;">
+                            <a>
+                                <img  src="@item.PrimaryImage" alt="">
+                            </a>
+			                    
+		                </div>
+		                <div class="product-details" style="padding:0px;">
+                            <div style="padding: 5px;">
+                                <div class="product-price">$@item.SalePrice</div>
+			                    <h7>
+                                    <a style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px;">@item.Category.CategoryName - @item.ProductName</a>
+                                </h7>
+                            </div>
+			                <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                    <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;">Add to Cart</button>
+                                </div>
+                                @*<div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                    <button class="btn" type="button" style="background-color: black; border-radius: 0px;color: #dfcece;height: -webkit-fill-available;width: -webkit-fill-available;">Buy Now</button>
+                                </div>*@
+			                </div>
+		                </div>
+	                </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+        const imgs = document.querySelectorAll('.img-select a');
+            const imgBtns = [...imgs];
+            let imgId = 1;
+
+            imgBtns.forEach((imgItem) => {
+                imgItem.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    imgId = imgItem.dataset.id;
+                    slideImage();
+                });
+            });
+
+            function slideImage(){
+                const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
+
+                document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
+            }
+
+            window.addEventListener('resize', slideImage);
+
+
+            $(document).ready(function() {
+			    $('.minus').click(function () {
+				    var $input = $(this).parent().find('input');
+				    var count = parseInt($input.val()) - 1;
+				    count = count < 1 ? 1 : count;
+				    $input.val(count);
+				    $input.change();
+				    return false;
+			    });
+			    $('.plus').click(function () {
+				    var $input = $(this).parent().find('input');
+				    $input.val(parseInt($input.val()) + 1);
+				    $input.change();
+				    return false;
+			    });
+		    });
+
+    </script>
+}

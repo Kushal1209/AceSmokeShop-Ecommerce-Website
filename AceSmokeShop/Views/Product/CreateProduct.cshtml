@@ -1,0 +1,91 @@
+﻿@using AceSmokeShop.ViewModel
+@model AdminProductViewModel
+
+@{
+    ViewData["Title"] = "Create Product";
+    Layout = null;
+}
+
+<div class="modal" tabindex="-1" role="dialog" id="addProduct">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductlbl">Add Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border:none; outline:none">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateProduct" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="newProduct.Barcode"></label>
+                                <input asp-for="newProduct.Barcode" id="barcode" class="form-control" />
+                                <span asp-validation-for="newProduct.Barcode" id="errbarcode" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="newProduct.ProductName"></label>
+                                <input asp-for="newProduct.ProductName" id="productname" class="form-control" />
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="newProduct.CategoryID"></label>
+                                <select asp-for="newProduct.CategoryID" id="acategory" onchange="GetSubCat()" class="form-control"
+                                        asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="newProduct.SubCategoryID"></label>
+                                <select asp-for="newProduct.SubCategoryID" id="asubcategory" class="form-control"
+                                        asp-items="@(new SelectList(string.Empty, "SubCategoryID", "SubCategoryName"))">
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="newProduct.Stock"></label>
+                                <input asp-for="newProduct.Stock" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="newProduct.UnitOfMeasure"></label>
+                                <input asp-for="newProduct.UnitOfMeasure" class="form-control" />
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="newProduct.BasePrice"></label>
+                                <input asp-for="newProduct.BasePrice" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="newProduct.SalePrice"></label>
+                                <input asp-for="newProduct.SalePrice" class="form-control" />
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="newProduct.Description"></label>
+                                <input asp-for="newProduct.Description" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-block" data-save="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}
