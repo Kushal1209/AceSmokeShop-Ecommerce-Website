@@ -332,6 +332,10 @@ function CancelOrder(orderId) {
     });
 }
 
+function OpenUploadPage() {
+    window.location = "/Product/UploadDataGet";
+}
+
 
 $(function () {
     var placeholderElement = $('#placeholder');
@@ -424,13 +428,13 @@ $(function () {
 
     $("#nextbtnClick").click(function (event) {
         var url = window.location.href;
-        var currentpage = $("#cuttentpageid").val();
-        var totalpage = $("#totalpageid").val();
+        var currentpage = parseInt($("#cuttentpageid").val());
+        var totalpage = parseInt($("#totalpageid").val());
 
         if (currentpage < totalpage) {
             currentpage++;
-
-            window.location.href = CreateURL(url, { "pagefrom": currentpage });
+            url = CreateURL(url, { "pagefrom": currentpage });
+            window.location.href = url;
         }
     });
 

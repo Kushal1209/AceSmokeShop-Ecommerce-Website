@@ -29,10 +29,10 @@ namespace AceSmokeShop.ViewModel
             RunningOutOfStock = 0;
             TotalUnits = 0;
 
-            RowPerPage = new List<int> { 2, 5, 10, 20, 50, 100 };
+            RowPerPage = new List<int> { 10, 20, 50, 100 };
             CurrentPage = 1;
             TotalPages = 0;
-            ItemsPerPage = 2;
+            ItemsPerPage = 10;
             
             newProduct = new Product();
             editproduct = new Product();

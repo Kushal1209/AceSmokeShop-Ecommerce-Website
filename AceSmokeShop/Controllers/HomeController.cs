@@ -87,6 +87,10 @@ namespace AceSmokeShop.Controllers
             if(user != null)
             {
                 var model = _webServices.GetMyCart(user);
+                foreach (var item in model)
+                {
+                    item.Product.BasePrice = 0;
+                }
                 return View("MyCart", model);
             }
             else
@@ -96,7 +100,7 @@ namespace AceSmokeShop.Controllers
                 return View("Index", _uHomeViewModel);
             }
         }
-
+        
         public async Task<IActionResult> EditCartQuantity(int CartId, int Quantity)
         {
             var user = await _userManager.GetUserAsync(User);

@@ -126,21 +126,9 @@ span {
     display: inline-block;
     vertical-align: middle;
 }
-    /* Featured Product Items Card Carousel Slide */
-    .box{
-    width: 350px;
-    height: 450px;
-    background-color: #000;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    margin: 20px 10px;
-
-}
 
 
+/* Featured Product Items Card Carousel Slide */
 .product-card {
     display: flex !important;
     flex-direction: column;
@@ -505,8 +493,7 @@ input[type="range"]::-moz-range-thumb {
 
 .bg{
     display: block;
-    width: 500px;
-    height: 500px;
+    width: 450px;
 }
 
 /* Card styles

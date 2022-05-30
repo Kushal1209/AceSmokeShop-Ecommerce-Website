@@ -2,10 +2,13 @@
 using AceSmokeShop.Core.Repositories;
 using AceSmokeShop.Models;
 using AceSmokeShop.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -107,6 +110,144 @@ namespace AceSmokeShop.Services
             
         }
 
+        public async Task<List<Product>> UploadProductSheetAsync(IFormFile file)
+        {
+            var newlist = new List<Product>();
+            var oldList = new List<Product>();
+            var CategoryList = _categoryRepository._dbSet.ToList();
+            var SubCategoryList = _subcategoryRepository._dbSet.ToList();
+            List<string> barcodeList = _productRepository._dbSet.Select(x => x.Barcode).ToList();
+            List<int> ProdId = _productRepository._dbSet.Select(x => x.ProductID).ToList();
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    var rowcount = worksheet.Dimension.Rows;
+                    for (int row = 2; row <= rowcount; row++)
+                    {
+                        var newProduct = new Product();
+                        try
+                        {
+                            var barcode = worksheet.Cells[row, 1].Value.ToString().Trim();
+                            if(barcode == null || barcode.Length <= 3)
+                            {
+                                continue;
+                            }
+                            newProduct.Barcode = barcode;
+
+                            if (barcodeList.Where(x => x.Equals(barcode)).Any())
+                            {
+                                var index = barcodeList.IndexOf(barcode);
+                                newProduct.ProductID = ProdId[index];
+                            }
+
+                            if(newProduct.ProductID == 0)
+                            {
+                                var productName = worksheet.Cells[row, 2].Value.ToString().Trim();
+                                if (productName == null || productName.Length <= 3)
+                                {
+                                    continue;
+                                }
+                                newProduct.ProductName = productName;
+                                var category = worksheet.Cells[row, 3].Value.ToString().Trim();
+                                if (category == null || category.Length <= 2)
+                                {
+                                    continue;
+                                }
+                                var cat = CategoryList.Where(x => x.CategoryName.ToLower().Equals(category.ToLower())).FirstOrDefault();
+                                if (cat == null)
+                                {
+                                    var newCat = new Category();
+                                    newCat.CategoryName = category;
+                                    _categoryRepository._dbSet.Add(newCat);
+                                    _categoryRepository._context.SaveChanges();
+                                    cat = _categoryRepository._dbSet.Where(x => x.CategoryName.Equals(newCat.CategoryName)).FirstOrDefault();
+                                    CategoryList.Add(cat);
+                                    newProduct.CategoryID = cat.CategoryID;
+                                }
+                                else
+                                {
+                                    newProduct.CategoryID = cat.CategoryID;
+                                }
+                                var subcategory = worksheet.Cells[row, 4].Value.ToString().Trim();
+                                if (subcategory == null || subcategory.Length <= 2)
+                                {
+                                    continue;
+                                }
+                                var subcat = SubCategoryList.Where(x => x.SubCategoryName.ToLower().Equals(subcategory.ToLower())).FirstOrDefault();
+                                if (subcat == null)
+                                {
+                                    var newSubCat = new SubCategory();
+                                    newSubCat.SubCategoryName = subcategory;
+                                    newSubCat.CategoryID = cat.CategoryID;
+                                    _subcategoryRepository._dbSet.Add(newSubCat);
+                                    _subcategoryRepository._context.SaveChanges();
+                                    subcat = _subcategoryRepository._dbSet.Where(x => x.SubCategoryName.Equals(subcategory)).FirstOrDefault();
+                                    SubCategoryList.Add(subcat);
+                                    newProduct.SubCategoryID = subcat.SubCategoryID;
+                                }
+                                else
+                                {
+                                    newProduct.SubCategoryID = subcat.SubCategoryID;
+                                }
+                            }
+                           
+                            var stock = worksheet.Cells[row, 6].Value.ToString().Trim();
+                            if(stock == null || stock.Length < 1 || stock.Contains('-') || stock.Contains(".")){
+                                continue;
+                            }
+                            else
+                            {
+                                newProduct.Stock = int.Parse(stock);
+                            }
+                            var baseprice = worksheet.Cells[row, 8].Value.ToString().Trim();
+                            if(baseprice == null || baseprice.Length < 1)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                newProduct.BasePrice = double.Parse(baseprice);
+                            }
+                            var saleprice = worksheet.Cells[row, 9].Value.ToString().Trim();
+                            if (saleprice == null || saleprice.Length < 1)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                newProduct.SalePrice = double.Parse(saleprice);
+                            }
+                            var desc = worksheet.Cells[row, 10].Value.ToString().Trim();
+                            newProduct.Description = desc;
+                            newProduct.IsFeatured = false;
+                            newProduct.IsPromoted = false;
+                            newProduct.IsRemoved = false;
+                            if(newProduct.ProductID != 0)
+                            {
+                                oldList.Add(newProduct);
+                            }
+                            else
+                            {
+                                newlist.Add(newProduct);
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            var m = ex.ToString();
+                        }
+
+                    }
+                    _productRepository._dbSet.AddRange(newlist);
+                    _productRepository._dbSet.UpdateRange(oldList);
+                    _productRepository._context.SaveChanges();
+                }
+            }
+            return newlist;
+        }
+
         public async Task<string> ChangeProductPromotion(AppUser user, string barcode)
         {
             if (user.UserRole != "ADMIN" || user.LockoutEnabled)
@@ -186,7 +327,6 @@ namespace AceSmokeShop.Services
             }
             else
             {
-                UserCount = _userManager.Users.Count();
                 if(search == null || search.Length < 1)
                 {
                     search = "";
@@ -198,12 +338,13 @@ namespace AceSmokeShop.Services
                 if (stateID > 0)
                 {
                     userlist = _userManager.Users.Where(x => x.StateID == stateID && x.UserRole.Contains(UserRole) && (x.Fullname.Contains(search) || x.Email.Contains(search))).Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
-
+                    UserCount = _userManager.Users.Where(x => x.StateID == stateID && x.UserRole.Contains(UserRole) && (x.Fullname.Contains(search) || x.Email.Contains(search))).Count();
                 }
                 else
                 {
                     userlist = _userManager.Users.Where(x => x.UserRole.Contains(UserRole) && (x.Fullname.Contains(search) || x.Email.Contains(search)))
                         .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+                    UserCount = _userManager.Users.Where(x => x.UserRole.Contains(UserRole) && (x.Fullname.Contains(search) || x.Email.Contains(search))).Count();
 
                 }
                

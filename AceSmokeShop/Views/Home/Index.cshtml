@@ -17,7 +17,7 @@
 
     <div class="mt-4" style="padding: 2rem 8rem;">
         <div class="row">
-            <div class="col-2">
+            <div class="col-3">
                 <div>
                     <div>
                         <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Featured Items</h1></a>
@@ -27,76 +27,45 @@
                         <a class="font-weight-normal">Shop from out most premium <br/> brands and products.</a>
                     </div>
                     <div class="mt-2 mb-0">
-                        <a asp-controller="Home" asp-action="Products" class="font-weight-bold" style="color:#96672d;"><b>See All Featured Items</b></a>
+                        <a href="@Url.Action("Products", "Home", new{type = "featured"})" class="font-weight-bold" style="color:#96672d;"><b>See All Featured Items</b></a>
                     </div>
                 </div>
             </div>
-            <div class="container col-10" style="display:flex; justify-content: center; align-items:center;">
-
-				<div class="box"></div>
-
-              @*  <div class="card-columns" style="padding: 0rem 7rem;">
-
-                    <div class="product-card">
-		                <div class="product-tumb">
-			                <img src="~/Images/cigarette-box.png" alt="">
-		                </div>
-		                <div class="product-details">
-                            <span class="product-catagory">Generel Merchandise - Grinders</span>
-			                <h5><a>Backwood</a></h5>
-			                <h6><a>Grinders Grinders Grinders</a></h6>
-			                <div class="product-bottom-details">
-				                <div class="product-price">$23</div>
-				                <div class="product-links">
-					                <button class="btn btn-primary">Add to Cart</button>
-				                </div>
-			                </div>
-		                </div>
-	                </div>
-
-                    <div class="product-card">
-		                <div class="product-tumb">
-			                <img src="~/Images/cigarette-box.png" alt="">
-		                </div>
-		                <div class="product-details">
-                            <span class="product-catagory">Generel Merchandise - Grinders</span>
-			                <h5><a>Backwood</a></h5>
-			                <h6><a>Grinders Grinders Grinders</a></h6>
-			                <div class="product-bottom-details">
-				                <div class="product-price">$23</div>
-				                <div class="product-links">
-					                <button class="btn btn-primary">Add to Cart</button>
-				                </div>
-			                </div>
-		                </div>
-	                </div>
-
-					<div class="product-card">
-		                <div class="product-tumb">
-			                <img src="~/Images/cigarette-box.png" alt="">
-		                </div>
-		                <div class="product-details">
-                            <span class="product-catagory">Generel Merchandise - Grinders</span>
-			                <h5><a>Backwood</a></h5>
-			                <h6><a>Grinders Grinders Grinders</a></h6>
-			                <div class="product-bottom-details">
-				                <div class="product-price">$23</div>
-				                <div class="product-links">
-					                <button class="btn btn-primary">Add to Cart</button>
-				                </div>
-			                </div>
-		                </div>
-	                </div>
-
-                    
-                </div>*@
+            <div class="col-9">
+                <div class="row row-cols-4 row-cols-lg-4 g-5 g-lg-4">
+                    @foreach(var item in Model.FeaturedList)
+                    {
+                        <div class="product-card" style="width: 245px; margin: 0rem 1.5rem;">
+		                    <div class="product-tumb" style="height: 260px;">
+                                <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                    <img  src="@item.PrimaryImage" alt="">
+                                </a>
+			                    
+		                    </div>
+		                    <div class="product-details" style="padding:0px;">
+                                <div style="padding: 5px; min-height: 87px;">
+                                    <div class="product-price">$@item.SalePrice</div>
+			                        <h7>
+                                        <a style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px;">@item.Category.CategoryName - @item.ProductName</a>
+                                    </h7>
+                                </div>
+			                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                    <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                        <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
+                                        onclick="AddtoCart(@item.Barcode, 1, 'Home/Products')">Add to Cart</button>
+                                    </div>
+			                    </div>
+		                    </div>
+	                    </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
 
     <div class="mt-1" style="padding: 2rem 8rem; background-color: #D3D3D3">
         <div class="row">
-            <div class="col-2">
+            <div class="col-3">
                 <div>
                     <div>
                         <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Popular Products</h1></a>
@@ -106,64 +75,37 @@
                         <a class="font-weight-normal">See from our collections of the most purchasedproducts.</a>
                     </div>
                     <div class="mt-2 mb-0">
-                        <a class="font-weight-bold" style="color:#96672d;"><b>See All Products</b></a>
+                        <a href="@Url.Action("Products", "Home", new{type = "popular"})" class="font-weight-bold" style="color:#96672d;"><b>See All Popular Products</b></a>
                     </div>
                 </div>
             </div>
-            <div class="container col-10">
-                <div class="card-columns"  style="padding: 0rem 7rem;">
-
-                    <div class="product-card">
-		                <div class="product-tumb">
-			                <img src="~/Images/cigarette-box.png" alt="">
-		                </div>
-		                <div class="product-details">
-                            <span class="product-catagory">Generel Merchandise - Grinders</span>
-			                <h5><a>Backwood</a></h5>
-			                <h6><a>Grinders Grinders Grinders</a></h6>
-			                <div class="product-bottom-details">
-				                <div class="product-price">$23</div>
-				                <div class="product-links">
-					                <button class="btn btn-primary">Add to Cart</button>
-				                </div>
-			                </div>
-		                </div>
-	                </div>
-
-                    <div class="product-card">
-		                <div class="product-tumb">
-			                <img src="~/Images/cigarette-box.png" alt="">
-		                </div>
-		                <div class="product-details">
-                            <span class="product-catagory">Generel Merchandise - Grinders</span>
-			                <h5><a>Backwood</a></h5>
-			                <h6><a>Grinders Grinders Grinders</a></h6>
-			                <div class="product-bottom-details">
-				                <div class="product-price">$23</div>
-				                <div class="product-links">
-					                <button class="btn btn-primary">Add to Cart</button>
-				                </div>
-			                </div>
-		                </div>
-	                </div>
-
-					<div class="product-card">
-		                <div class="product-tumb">
-			                <img src="~/Images/cigarette-box.png" alt="">
-		                </div>
-		                <div class="product-details">
-                            <span class="product-catagory">Generel Merchandise - Grinders</span>
-			                <h5><a>Backwood</a></h5>
-			                <h6><a>Grinders Grinders Grinders</a></h6>
-			                <div class="product-bottom-details">
-				                <div class="product-price">$23</div>
-				                <div class="product-links">
-					                <button class="btn btn-primary">Add to Cart</button>
-				                </div>
-			                </div>
-		                </div>
-	                </div>
-
+            <div class="col-9">
+                <div class="row row-cols-4 row-cols-lg-4 g-5 g-lg-4">
+                    @foreach(var item in Model.PromotedList)
+                    {
+                        <div class="product-card" style="width: 245px; margin: 0rem 1.5rem;">
+		                    <div class="product-tumb" style="height: 260px;">
+                                <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                    <img  src="@item.PrimaryImage" alt="">
+                                </a>
+			                    
+		                    </div>
+		                    <div class="product-details" style="padding:0px;">
+                                <div style="padding: 5px; min-height: 87px;">
+                                    <div class="product-price">$@item.SalePrice</div>
+			                        <h7>
+                                        <a style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px;">@item.Category.CategoryName - @item.ProductName</a>
+                                    </h7>
+                                </div>
+			                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                    <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                        <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
+                                        onclick="AddtoCart(@item.Barcode, 1, 'Home/Products')">Add to Cart</button>
+                                    </div>
+			                    </div>
+		                    </div>
+	                    </div>
+                    }
                 </div>
             </div>
         </div>
@@ -171,7 +113,7 @@
 
 	<div class="mt-1" style="padding: 2rem 8rem;">
         <div class="row">
-            <div class="col-2">
+            <div class="col-3">
                 <div>
                     <div>
                         <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Top Categories</h1></a>
@@ -185,76 +127,20 @@
                     </div>
                 </div>
             </div>
-            <div class="container col-10">
-				<div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 7rem;">
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-						<div class="product-card">
-							<div class="product-tumb">
-								<img src="https://m.media-amazon.com/images/I/8164GiCsZWL._SL1500_.jpg" alt="">
-							</div>
-							<div class="product-details">
-								<h7><a>@Model.CategoryList[0].CategoryName</a></h7>
-								@*<h7><a>@Model.CategoryList[0].Desc</a></h7>*@
-							</div>
-						</div>
-					</div>
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-						<div class="product-card">
-							<div class="product-tumb">
-								<img src="https://cdn.shopify.com/s/files/1/1131/0048/products/green_roads_cbd_oil.jpg?v=1531874380" alt="">
-							</div>
-							<div class="product-details">
-								<h7><a>@Model.CategoryList[1].CategoryName</a></h7>
-								@*<h7><a>@Model.CategoryList[1].Desc</a></h7>*@
-							</div>
-						</div>
-					</div>
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-						<div class="product-card">
-							<div class="product-tumb">
-								<img src="https://media.istockphoto.com/photos/electronic-cigarette-on-a-background-of-vape-shop-picture-id1151612673?k=20&m=1151612673&s=612x612&w=0&h=OB_TqYT-YjkA1SsuDGAmjxLaWqDXxEbOpN7AnwNMF7E=" alt="">
-							</div>
-							<div class="product-details">
-								<h7><a>@Model.CategoryList[2].CategoryName</a></h7>
-								@*<h7><a>@Model.CategoryList[2].Desc</a></h7>*@
-							</div>
-						</div>
-					</div>
-                </div>
-				<div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 7rem;">
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-						<div class="product-card">
-							<div class="product-tumb">
-								<img src="https://media.istockphoto.com/photos/mitragynina-speciosa-or-kratom-leaves-with-powder-product-in-white-picture-id928450752?k=20&m=928450752&s=612x612&w=0&h=C8qK6Wu-d4YTU_P7Ip85GGmEWHdN1Eecz2ns-27BPLo=" alt="">
-							</div>
-							<div class="product-details">
-								<h7><a>@Model.CategoryList[3].CategoryName</a></h7>
-								@*<h7><a>@Model.CategoryList[3].Desc</a></h7>*@
-							</div>
-						</div>
-					</div>
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-						<div class="product-card">
-							<div class="product-tumb">
-								<img src="https://image.shutterstock.com/image-photo/san-francisco-usa-july-04-260nw-1495375946.jpg" alt="">
-							</div>
-							<div class="product-details">
-								<h7><a>@Model.CategoryList[4].CategoryName</a></h7>
-								@*<h7><a>@Model.CategoryList[4].Desc</a></h7>*@
-							</div>
-						</div>
-					</div>
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-						<div class="product-card">
-							<div class="product-tumb">
-								<img src="https://assets.juul.com/ctf/images/tc11z0kp0vll/5fe5Trl8kZzVLfgqrDJWkp/89c451ba145c92794121163574e39d13/1_1-PDP_Header-AMER_VT_4Pods-Desktop_2x.jpg" alt="">
-							</div>
-							<div class="product-details">
-								<h7><a>@Model.CategoryList[5].CategoryName</a></h7>
-								@*<h7><a>@Model.CategoryList[5].Desc</a></h7>*@
-							</div>
-						</div>
-					</div>
+            <div class="col-9">
+				<div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 1rem;">
+                    @for(var i = 0; i<6; i++){
+					    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
+					        <div class="product-card">
+						        <div class="product-tumb">
+							        <img src="@Model.CategoryList[i].Image" alt="">
+						        </div>
+						        <div class="product-details">
+							        <h7><a>@Model.CategoryList[i].CategoryName</a></h7>
+						        </div>
+					        </div>
+				        </div>
+				    }
                 </div>
             </div>
         </div>

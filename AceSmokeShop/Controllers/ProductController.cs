@@ -12,6 +12,9 @@ using AceSmokeShop.ViewModel;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AceSmokeShop.Services;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using OfficeOpenXml;
 
 namespace AceSmokeShop.Controllers
 {
@@ -37,7 +40,7 @@ namespace AceSmokeShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Product(int CategoryId = 0, int SubCategoryId = 0, int Min = 0,
                                                  int Max = 100000, string search = "", int sortBy = 0,
-                                                 int sortByOrder = 0, int pageFrom = 1, int pageTotal = 2)
+                                                 int sortByOrder = 0, int pageFrom = 1, int pageTotal = 10)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -86,6 +89,26 @@ namespace AceSmokeShop.Controllers
             else
             {
                 return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public IActionResult UploadDataGet()
+        {
+            return View("UploadData");
+        }
+
+        public async Task<IActionResult> UploadData(IFormFile file)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var list = new List<Product>();
+            if (user == null || user.UserRole != "ADMIN")
+            {
+                return View("UploadData"); ;
+            }
+            else
+            {
+                list = await _adminServices.UploadProductSheetAsync(file);
+                return View("UploadData");
             }
         }
 

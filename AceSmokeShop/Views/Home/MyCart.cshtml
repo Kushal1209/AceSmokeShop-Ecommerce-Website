@@ -5,6 +5,24 @@
     ViewData["Title"] = "My Cart";
 }
 
+@if (Model.Count() == 0)
+{
+    <div class="container mt-4" style="margin-bottom: 6rem;">
+        <div style="font-size: 13rem; text-align: center;">
+            <i class="fa-solid fa-cart-plus"></i>
+        </div>
+        <div>
+            <h2 style="font-size: 1.5rem;font-weight: 500; font-family: inherit; letter-spacing: -2px; text-align: center;">
+                Your Cart is Empty.
+                <br/>
+                Please Add Items <a href="@Url.Action("Index", "Home")" style="color: #96672d;">here</a>
+            </h2>
+        </div>
+    </div>
+}
+else
+{ 
+
 <div class="container mt-4" style="margin-bottom: 6rem;">
     <div>
         <h2 style="font-weight: 700; font-family: emoji; letter-spacing: -2px;">My Cart</h2>
@@ -103,7 +121,7 @@
         </div>
     </div>
 </div>
-
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

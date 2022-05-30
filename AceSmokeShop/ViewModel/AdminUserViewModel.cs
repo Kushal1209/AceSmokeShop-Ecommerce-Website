@@ -22,7 +22,7 @@ namespace AceSmokeShop.ViewModel
             ActiveUsers = 0;
             BlockedUsers = 0;
 
-            RowPerPage = new List<int> { 1, 2, 5, 10, 20, 50, 100 };
+            RowPerPage = new List<int> { 5, 10, 20, 50, 100 };
 
             UserRole = "Select-Role";
             UserRoleList = new List<string> { "Select-Role", "USER", "VENDOR", "ADMIN"};
@@ -33,7 +33,7 @@ namespace AceSmokeShop.ViewModel
 
             CurrentPage = 1;
             TotalPages = 0;
-            ItemsPerPage = 2;
+            ItemsPerPage = 5;
 
 
         }

@@ -1,7 +1,7 @@
 ﻿@using AceSmokeShop.ViewModel
 @model AdminProductViewModel
 
-<div id="productpage" class="container mt-3">
+<div id="productpage" class="mt-3">
     <div class="Paginationblock">
         <div class="row">
             <div class="col-md-4" style="padding: 5px 25px;">
@@ -178,10 +178,10 @@
                                <div class="row">
                                    <div class="col">
                                        <input type="hidden" id="barcode" value=@item.Barcode />
-                                        <i onclick="ChangeClick('ChangeFeature', @item.Barcode)" hidden=@item.IsFeatured class="bi bi-plus-circle"></i>
+                                        <i onclick="ChangeClick('ChangeFeature', '@item.Barcode')" hidden=@item.IsFeatured class="bi bi-plus-circle"></i>
                                         <label hidden=@item.IsFeatured style="font-family: inherit;font-size: 14px;font-weight: 300;font-style: italic;">Feature now</label>
                                 
-                                        <i onclick="ChangeClick('ChangeFeature', @item.Barcode)" hidden=@(item.IsFeatured? false : true) class="bi bi-dash-circle"></i>
+                                        <i onclick="ChangeClick('ChangeFeature', '@item.Barcode')" hidden=@(item.IsFeatured? false : true) class="bi bi-dash-circle"></i>
                                         <label hidden=@(item.IsFeatured? false : true) style="color: green">Featured</label>
                                         <i hidden=@(item.IsFeatured? false : true) style="color: green" class="bi bi-check-circle-fill"></i>
                                    </div>
@@ -189,10 +189,10 @@
                                <div class="row">
                                    <div class="col">
                                        <input type="hidden" id="barcode" value=@item.Barcode />
-                                        <i onclick="ChangeClick('ChangePromotion', @item.Barcode)" hidden=@item.IsPromoted class="bi bi-plus-circle"></i>
+                                        <i onclick="ChangeClick('ChangePromotion', '@item.Barcode')" hidden=@item.IsPromoted class="bi bi-plus-circle"></i>
                                         <label hidden=@item.IsPromoted style="font-family: inherit;font-size: 14px;font-weight: 300;font-style: italic;">Promote now</label>
                                 
-                                        <i onclick="ChangeClick('ChangePromotion', @item.Barcode)" hidden=@(item.IsPromoted? false : true) class="bi bi-dash-circle"></i>
+                                        <i onclick="ChangeClick('ChangePromotion', '@item.Barcode')" hidden=@(item.IsPromoted? false : true) class="bi bi-dash-circle"></i>
                                         <label hidden=@(item.IsPromoted? false : true) style="color: green">Promoted</label>
                                         <i hidden=@(item.IsPromoted? false : true) style="color: green" class="bi bi-check-circle-fill"></i>
                                    </div>

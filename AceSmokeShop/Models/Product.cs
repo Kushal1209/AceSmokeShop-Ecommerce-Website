@@ -36,7 +36,6 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "int")]
         public int Stock { get; set; }
 
-        [Required]
         [Display(Name = "Unit of Measure")]
         [Column(TypeName = "nvarchar(256)")]
         public string UnitOfMeasure { get; set; }

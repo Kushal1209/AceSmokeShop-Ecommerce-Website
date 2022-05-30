@@ -72,8 +72,8 @@ namespace AceSmokeShop.Services
         {
             var model = new UHomeViewModel();
 
-            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured).Include(x => x.Category).Include(x => x.SubCategory).Take(6).ToList();
-            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted).Include(x => x.Category).Include(x => x.SubCategory).Take(6).ToList();
+            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
+            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
             model.CategoryList = _categoryRepository._dbSet.ToList();
             foreach(var item in model.FeaturedList)
             {
@@ -382,7 +382,7 @@ namespace AceSmokeShop.Services
         {
             var model = new OrderViewModel();
 
-            model.userOrdersList = _userOrdersRepository._dbSet.Where(x => x.UserId == user.Id).ToList();
+            model.userOrdersList = _userOrdersRepository._dbSet.Where(x => x.UserId == user.Id).OrderByDescending(x => x.Id).ToList();
             model.States = _stateRepository._dbSet.ToList();
             var addresses = _addressRepository._dbSet.Where(x => x.UserId == user.Id).ToList();
 
@@ -417,6 +417,10 @@ namespace AceSmokeShop.Services
             else
             {
                 var cartItems = GetMyCart(user);
+                foreach(var item in cartItems)
+                {
+                    item.Product.BasePrice = 0;
+                }
                 model.Subtotal = cartItems.Select(x => x.Quantity * x.Product.SalePrice).Sum();
                 model.CartList = cartItems;
             }
@@ -575,7 +579,7 @@ namespace AceSmokeShop.Services
 
         public string EditCartQty(AppUser user, int cartId, int quantity)
         {
-            var cartitem = _cartRepository._dbSet.Where(x => x.Id == cartId).FirstOrDefault();
+            var cartitem = _cartRepository._dbSet.Where(x => x.Id == cartId).Include(x => x.Product).FirstOrDefault();
             if(cartitem == null)
             {
                 return "Fail: Please add Product";
@@ -587,6 +591,14 @@ namespace AceSmokeShop.Services
             if (cartitem.IsRemoved)
             {
                 cartitem.IsRemoved = false;
+            }
+            if(quantity <= 0)
+            {
+                return "Invalid Quantity";
+            }
+            if(quantity > cartitem.Product.Stock)
+            {
+                return "Only " + cartitem.Product.Stock + " left in stock.";
             }
             cartitem.Quantity = quantity;
             try
@@ -606,10 +618,6 @@ namespace AceSmokeShop.Services
         public List<Cart> GetMyCart(AppUser user)
         {
             var cartItems = _cartRepository._dbSet.Include(x => x.Product).Where(x => x.IsRemoved == false && x.UserId == user.Id && x.Product.IsRemoved == false).ToList();
-            foreach(var item in cartItems)
-            {
-                item.Product.BasePrice = 0;
-            }
             return cartItems;
         }
 

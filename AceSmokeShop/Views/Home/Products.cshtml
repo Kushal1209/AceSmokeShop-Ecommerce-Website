@@ -108,12 +108,12 @@
                         <div class="product-card" style="width: 245px">
 		                    <div class="product-tumb" style="height: 260px;">
                                 <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
-                                    <img  src="~/Images/cigarette-box.png" alt="">
+                                    <img  src="@item.PrimaryImage" alt="">
                                 </a>
 			                    
 		                    </div>
 		                    <div class="product-details" style="padding:0px;">
-                                <div style="padding: 5px;">
+                                <div style="padding: 5px; min-height: 87px;">
                                     <div class="product-price">$@item.SalePrice</div>
 			                        <h7>
                                         <a style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px;">@item.Category.CategoryName - @item.ProductName</a>
@@ -124,9 +124,6 @@
                                         <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
                                         onclick="AddtoCart(@item.Barcode, 1, 'Home/Products')">Add to Cart</button>
                                     </div>
-                                    @*<div class="col" style="padding: 0px;height: -webkit-fill-available;">
-                                        <a class="btn" type="button" href="@Url.Action("Checkout", "Home", new{ProductId})" style="background-color: black; border-radius: 0px;color: #dfcece;height: -webkit-fill-available;width: -webkit-fill-available;">Buy Now</a>
-                                    </div>*@
 			                    </div>
 		                    </div>
 	                    </div>

@@ -7,7 +7,7 @@
 }
 
 <div id="placeholder"></div>
-<div class="container">
+<div class="container" style="padding-bottom: 6rem;">
     <form asp-action="Product" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -126,19 +126,25 @@
             </div>
         </div>
     </div>
-</div>
-<div class="container mt-3">
-    <div class="row">
-        <div class="col-2">
-            <button type="button" class="btn btn-block" data-toggle="ajax-modal" data-target="#addProduct"
-            data-url="@Url.Action("CreateProduct")">Create Product</button>
+
+
+    <div class="mt-3">
+        <div class="row">
+            <div class="col-2">
+                <button type="button" class="btn btn-block" data-toggle="ajax-modal" data-target="#addProduct"
+                data-url="@Url.Action("CreateProduct")">Create Product</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-block" onclick=OpenUploadPage()>Bulk Add</button>
+            </div>
         </div>
     </div>
-</div>
-<div id="createproduct">
-    @await Html.PartialAsync("_CreateProdPartialView", Model)
-</div>
 
+
+    <div id="createproduct">
+        @await Html.PartialAsync("_CreateProdPartialView", Model)
+    </div>
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">

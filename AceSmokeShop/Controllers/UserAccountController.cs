@@ -35,7 +35,7 @@ namespace AceSmokeShop.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserAccount(int StateID = 0, string search = "", string UserRole = "", int pageFrom = 1, int pageTotal = 1)
+        public async Task<IActionResult> UserAccount(int StateID = 0, string search = "", string UserRole = "", int pageFrom = 1, int pageTotal = 5)
         {
             var user = await _userManager.GetUserAsync(User);
 
