@@ -12,7 +12,9 @@ accordionItemHeaders.forEach(accordionItemHeader => {
 
         // Uncomment in case you only want to allow for the display of only one collapsed item at a time!
 
-         const currentlyActiveAccordionItemHeader = document.querySelector(".accordion-item-header.active");
+        const currentlyActiveAccordionItemHeader = document.querySelector(".accordion-item-header.active");
+
+        //If Different Accordian Item
          if(currentlyActiveAccordionItemHeader && currentlyActiveAccordionItemHeader!==accordionItemHeader) {
            currentlyActiveAccordionItemHeader.classList.toggle("active");
            currentlyActiveAccordionItemHeader.nextElementSibling.style.maxHeight = 0;
@@ -21,7 +23,17 @@ accordionItemHeaders.forEach(accordionItemHeader => {
         accordionItemHeader.classList.toggle("active");
         const accordionItemBody = accordionItemHeader.nextElementSibling;
         if (accordionItemHeader.classList.contains("active")) {
-            accordionItemBody.style.maxHeight = accordionItemBody.scrollHeight + "px";
+            if (accordionItemHeader.id != undefined && accordionItemHeader.id.length > 2) {
+                var url = "/Admin/OrderDetails?order=" + accordionItemHeader.id;
+                $.get(url).done(function (data) {
+                    var uID = 'userorders-' + accordionItemHeader.id;
+                    document.getElementById(uID).innerHTML = data;
+                    accordionItemBody.style.maxHeight = accordionItemBody.scrollHeight + "px";
+                });
+            }
+            else {
+                accordionItemBody.style.maxHeight = accordionItemBody.scrollHeight + "px";
+            }
         }
         else {
             accordionItemBody.style.maxHeight = 0;

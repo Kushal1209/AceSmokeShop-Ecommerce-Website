@@ -19,6 +19,7 @@ namespace AceSmokeShop.Controllers
         private readonly DBContext _context;
         private readonly ILogger<UserAccountController> _logger;
         public AdminUserViewModel _adminUserViewModel;
+        public PaymentServices _paymentServices;
         private readonly AdminServices _adminServices;
 
         public UserAccountController(ILogger<UserAccountController> logger,
@@ -29,9 +30,13 @@ namespace AceSmokeShop.Controllers
             _userManager = userManager;
             _context = context;
             _adminUserViewModel = new AdminUserViewModel();
+            _paymentServices = new PaymentServices(new ProductRepository(context, logger),
+                new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger));
             _adminServices = new AdminServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
-                new StateRepository(context, logger), userManager);
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,
+                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger));
         }
 
         [HttpGet]

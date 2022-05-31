@@ -21,12 +21,19 @@ namespace AceSmokeShop.Services
         private readonly CategoryRepository _categoryRepository;
         private readonly SubCategoryRepository _subcategoryRepository;
         private readonly StateRepository _stateRepository;
+        private readonly CartRepository _cartRepository;
+        private readonly AddressRepository _addressRepository;
+        private readonly UserOrdersRepository _userOrdersRepository;
+        private readonly OrderItemRepository _orderItemRepository;
+        private PaymentServices _paymentServices;
         private int ProductCount = 0;
         private int UserCount = 0;
+        private int UserOrderCount = 0;
 
-        public AdminServices(ProductRepository productRepository, 
+        public AdminServices(ProductRepository productRepository,
             CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
-            StateRepository stateRepository, UserManager<AppUser> userManager)
+            StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, AddressRepository addressRepository,
+            PaymentServices paymentServices, UserOrdersRepository userOrdersRepository, OrderItemRepository orderItemRepository)
         {
             //_userManager = userManager;
             _productRepository = productRepository;
@@ -34,6 +41,11 @@ namespace AceSmokeShop.Services
             _subcategoryRepository = subcategoryRepository;
             _stateRepository = stateRepository;
             _userManager = userManager;
+            _cartRepository = cartRepository;
+            _addressRepository = addressRepository;
+            _paymentServices = paymentServices;
+            _userOrdersRepository = userOrdersRepository;
+            _orderItemRepository = orderItemRepository;
         }
 
         public async Task<AdminProductViewModel> GetAdminProductViewModelAsync(AppUser user, int CategoryId = 0, int SubCategoryId = 0, int Min = 0,
@@ -62,6 +74,62 @@ namespace AceSmokeShop.Services
             }
 
             throw new NotImplementedException();
+        }
+
+        public AdminOrderDetailsViewModel GetOrderDetails(string order)
+        {
+            if(order == null || order.Length < 3)
+            {
+                return new AdminOrderDetailsViewModel();
+            }
+
+            var model = new AdminOrderDetailsViewModel();
+            var userOrder = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == order).FirstOrDefault();
+            if(userOrder == null)
+            {
+                return model;
+            }
+            model.ShippingAddress = _addressRepository._dbSet.Where(x => x.Id == userOrder.ShippingAddressId).FirstOrDefault();
+            model.BillingAddress = _addressRepository._dbSet.Where(x => x.Id == userOrder.BillingAddressId).FirstOrDefault();
+            model.ListOfOrderItem = _orderItemRepository._dbSet.Where(x => x.CustOrderId == order).Include(x => x.Product).Include(x => x.Product.Category).Include(x => x.Product.SubCategory).ToList();
+            model.userOrder = userOrder;
+            model.States = _stateRepository._dbSet.ToList();
+            return model;
+        }
+
+        public AdminUserOrderViewModel GetAdminUserOrderViewModel(AppUser user, string orderstatus, int sortbyorder, 
+                        int sortbyid, string search, int currentpage, int totalpages, int itemsperpage)
+        {
+            var model = new AdminUserOrderViewModel();
+            if (user.UserRole != "ADMIN" || user.LockoutEnabled)
+            {
+                return model;
+            }
+            else
+            {
+                model.userOrdersList = GetFilteredUserOrderList(user, orderstatus, sortbyorder, sortbyid, search, currentpage, totalpages, itemsperpage);
+                model.TotalOrders = UserOrderCount;
+                model.CurrentPage = currentpage;
+                model.ItemsPerPage = totalpages;
+                model.TotalPages = (int)Math.Ceiling((double)((double)model.TotalOrders / (double)totalpages));
+
+                return model;
+            }
+        }
+
+        public List<UserOrders> GetFilteredUserOrderList(AppUser user, string orderstatus, int sortbyorder, int sortbyid, string search, int currentpage, int totalpages, int itemsperpage)
+        {
+            var orderlist = new List<UserOrders>();
+            if (user.UserRole != "ADMIN" || user.LockoutEnabled)
+            {
+                return orderlist;
+            }
+            else
+            {
+                orderlist = _userOrdersRepository._dbSet.ToList();
+
+                return orderlist;
+            }
         }
 
         public async Task<AdminUserViewModel> GetAdminUserAccountAsync(AppUser user, int stateID = 0, string search = "", string UserRole = "", int pageFrom = 1, int pageTotal = 20)
