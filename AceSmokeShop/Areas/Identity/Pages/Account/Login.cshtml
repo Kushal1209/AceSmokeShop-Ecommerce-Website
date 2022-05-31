@@ -4,33 +4,39 @@
 @{
     ViewData["Title"] = "Log in";
 }
-<div class="container" style="margin: 0.5rem 20rem;">
-    <div class="d-lg-flex half">
-        <div class="bg order-2 order-md-1">
-            <div>
-                <img src="~/Images/loginimg.png" />
-            </div>
-        </div>
-        <div class="contents order-1 order-md-2" style="margin-top: 4rem;">
-            <div class="row align-items-center justify-content-center">
-                <div class="col-5">
-                    <form id="account" method="post">
-                        <div>
-                            <img class="justify-content-center" src="~/Images/logo.png" style="max-width:90%!important;" />
+
+<div class="container mt-1" style="padding-bottom: 6rem;">
+    <div class="row" style="margin:0rem; justify-content:end;">
+        <div class="col-5" style="padding: 80px;border: 2px solid;margin-left: 0px;background-color: #efefef;">
+            <div class="form-group">
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div style="width:300px;">
+                                <img src="~/Images/logo.png" />
+                            </div>
                         </div>
-                        <br/>
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
                             <label asp-for="Input.Email"></label>
                             <input asp-for="Input.Email" class="form-control" />
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
                             <label asp-for="Input.Password"></label>
                             <input asp-for="Input.Password" class="form-control" />
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
                             <div class="checkbox">
                                 <label asp-for="Input.RememberMe">
                                     <input asp-for="Input.RememberMe" />
@@ -38,17 +44,26 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
                             <button type="submit" class="btn btn-block">Log in</button>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
                             <p>
                                 <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                             </p>
                         </div>
-                    </form>
-                </div>
-                <div class="col-3"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-6" style="padding:0rem;">
+            <div style="width:430px;">
+                <img src="~/Images/loginimg.png" />
             </div>
         </div>
     </div>
