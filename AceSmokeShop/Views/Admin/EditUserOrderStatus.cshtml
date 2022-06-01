@@ -1,0 +1,59 @@
+﻿@model string
+@{
+    ViewData["Title"] = "Change User Order Status";
+    Layout = null;
+    List<string> Statuses = new List<string> { "Select Status", "Order Placed", "Order Packaging", "Order Dispatched", "Delivered", "Cancelled", "Return Requested", "Return Approved", "Return Shipped", "Return Delivered" };
+    List<string> Statuses2 = new List<string>();
+    var orderid = @Model.Split(':')[1];
+    var orderstatus = @Model.Split(':')[0];
+    var flag = false;
+    foreach(var item in Statuses)
+    {
+        if(item.ToLower().Equals(orderstatus.ToLower()))
+        {
+            flag = true;
+            continue;
+        }
+        if (flag) Statuses2.Add(item);
+    }
+    Statuses2.Insert(0, "Select Status");
+}
+
+    <div class="modal" tabindex="-1" role="dialog" id="edituserorder">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edituserorderlbl">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border:none; outline:none">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="EditUserOrderStatus" method="post" data="@Model" autocomplete="off">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-8">
+                                    <label>Change Status</label>
+                                    <input type="hidden" asp-for="@orderid"/>
+                                    <select asp-for=@orderstatus id="orderstatus" onchange="OrderStatusAlert()" class="form-control"
+                                        asp-items="@(new SelectList(@Statuses2))">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <label class="alert-danger" hidden id="cancelRefundAlert">Cancelling this order will automatically initiate a full refund.</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-block" data-save="modal">Change</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

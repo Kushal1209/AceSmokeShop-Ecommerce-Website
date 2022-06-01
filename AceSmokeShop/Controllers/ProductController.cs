@@ -5,7 +5,6 @@ using AceSmokeShop.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using AceSmokeShop.Core.IConfiguration;
 using AceSmokeShop.Core.Repositories;
 using System.Linq;
 using AceSmokeShop.ViewModel;
@@ -13,8 +12,6 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AceSmokeShop.Services;
 using Microsoft.AspNetCore.Http;
-using System.IO;
-using OfficeOpenXml;
 
 namespace AceSmokeShop.Controllers
 {
@@ -23,18 +20,22 @@ namespace AceSmokeShop.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly DBContext _context;
         private AdminProductViewModel _productViewModel;
+        public PaymentServices _paymentServices;
         private readonly AdminServices _adminServices;
 
-        public ProductController(ILogger<ProductController> logger,
-            IUnitOfWork unitOfWork, UserManager<AppUser> userManager,
+        public ProductController(ILogger<ProductController> logger, UserManager<AppUser> userManager,
             DBContext context)
         {
             _userManager = userManager;
             _context = context;
-            _productViewModel = new AdminProductViewModel(); 
+            _productViewModel = new AdminProductViewModel();
+            _paymentServices = new PaymentServices(new ProductRepository(context, logger),
+                new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger));
             _adminServices = new AdminServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
-                new StateRepository(context, logger), userManager);
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,
+                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger));
         }
 
         [HttpGet]
@@ -53,6 +54,7 @@ namespace AceSmokeShop.Controllers
                 _productViewModel.SortByID = sortBy;
                 _productViewModel.SortByOrder = sortByOrder;
                 _productViewModel.SubCategoryList = new List<SubCategory>();
+
                 if (CategoryId > 0)
                 {
                     _productViewModel.SubCategoryList.AddRange(await _adminServices.GetSubCategoryListAsync(CategoryId));

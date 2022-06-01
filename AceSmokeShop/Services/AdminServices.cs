@@ -21,12 +21,19 @@ namespace AceSmokeShop.Services
         private readonly CategoryRepository _categoryRepository;
         private readonly SubCategoryRepository _subcategoryRepository;
         private readonly StateRepository _stateRepository;
+        private readonly CartRepository _cartRepository;
+        private readonly AddressRepository _addressRepository;
+        private readonly UserOrdersRepository _userOrdersRepository;
+        private readonly OrderItemRepository _orderItemRepository;
+        private PaymentServices _paymentServices;
         private int ProductCount = 0;
         private int UserCount = 0;
+        private int UserOrderCount = 0;
 
-        public AdminServices(ProductRepository productRepository, 
+        public AdminServices(ProductRepository productRepository,
             CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
-            StateRepository stateRepository, UserManager<AppUser> userManager)
+            StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, AddressRepository addressRepository,
+            PaymentServices paymentServices, UserOrdersRepository userOrdersRepository, OrderItemRepository orderItemRepository)
         {
             //_userManager = userManager;
             _productRepository = productRepository;
@@ -34,6 +41,11 @@ namespace AceSmokeShop.Services
             _subcategoryRepository = subcategoryRepository;
             _stateRepository = stateRepository;
             _userManager = userManager;
+            _cartRepository = cartRepository;
+            _addressRepository = addressRepository;
+            _paymentServices = paymentServices;
+            _userOrdersRepository = userOrdersRepository;
+            _orderItemRepository = orderItemRepository;
         }
 
         public async Task<AdminProductViewModel> GetAdminProductViewModelAsync(AppUser user, int CategoryId = 0, int SubCategoryId = 0, int Min = 0,
@@ -62,6 +74,121 @@ namespace AceSmokeShop.Services
             }
 
             throw new NotImplementedException();
+        }
+
+        public AdminOrderDetailsViewModel GetOrderDetails(string order)
+        {
+            if(order == null || order.Length < 3)
+            {
+                return new AdminOrderDetailsViewModel();
+            }
+
+            var model = new AdminOrderDetailsViewModel();
+            var userOrder = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == order).FirstOrDefault();
+            if(userOrder == null)
+            {
+                return model;
+            }
+            model.ShippingAddress = _addressRepository._dbSet.Where(x => x.Id == userOrder.ShippingAddressId).FirstOrDefault();
+            model.BillingAddress = _addressRepository._dbSet.Where(x => x.Id == userOrder.BillingAddressId).FirstOrDefault();
+            model.ListOfOrderItem = _orderItemRepository._dbSet.Where(x => x.CustOrderId == order).Include(x => x.Product).Include(x => x.Product.Category).Include(x => x.Product.SubCategory).ToList();
+            model.userOrder = userOrder;
+            model.States = _stateRepository._dbSet.ToList();
+            return model;
+        }
+
+        public string GetOrderStatus(AppUser user, string orderid)
+        {
+            if (user.UserRole != null && user.UserRole == "ADMIN")
+            {
+                return _userOrdersRepository._dbSet.Where(x => x.CustOrderId.ToLower().Equals(orderid.ToLower())).FirstOrDefault().OrderStatus;
+            }
+            return "";
+        }
+
+        public async Task<string> EditUserOrderStatus(AppUser user, string orderid, string orderstatus)
+        {
+            if (user.UserRole != "ADMIN" || user.LockoutEnabled)
+            {
+                return "UnAuthorized";
+            }
+            else
+            {
+                try
+                {
+                    var editstatus = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == orderid).FirstOrDefault();
+                    editstatus.OrderStatus = orderstatus;
+                    _userOrdersRepository._dbSet.Update(editstatus);
+                    var result = await _userOrdersRepository._context.SaveChangesAsync();
+
+                    return "Success";
+                }
+                catch (Exception ex)
+                {
+
+                    return ex.Message;
+                }
+            }
+        }
+
+        public AdminUserOrderViewModel GetAdminUserOrderViewModel(AppUser user, string orderstatus, int sortbyorder, 
+                        int sortbyid, string search, int pageFrom, int pageTotal, DateTime datefrom, DateTime dateto)
+        {
+            var model = new AdminUserOrderViewModel();
+            if (user.UserRole != "ADMIN" || user.LockoutEnabled)
+            {
+                return model;
+            }
+            else
+            {
+                model.userOrdersList = GetFilteredUserOrderList(user, orderstatus, sortbyorder, sortbyid, search, pageFrom, pageTotal, datefrom, dateto);
+                model.TotalOrders = UserOrderCount;
+                model.CurrentPage = pageFrom;
+                model.ItemsPerPage = pageTotal;
+                model.TotalPages = (int)Math.Ceiling((double)((double)model.TotalOrders / (double)pageTotal));
+                model.search = search;
+                model.DateFrom = datefrom;
+                model.DateTo = dateto;
+                model.OrderStatus = orderstatus;
+                model.SortByID = 0;
+                model.SortByOrder = sortbyorder;
+
+                return model;
+            }
+        }
+
+        public List<UserOrders> GetFilteredUserOrderList(AppUser user, string orderstatus, int sortbyorder, int sortbyid, string search, int pageFrom, int pageTotal, DateTime datefrom, DateTime dateto)
+        {
+            var orderlist = new List<UserOrders>();
+            pageFrom--;
+            if (user.UserRole != "ADMIN" || user.LockoutEnabled)
+            {
+                return orderlist;
+            }
+            else
+            {
+               if(sortbyorder == 1)
+                {
+                    orderlist = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
+                       x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
+                       && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).OrderByDescending(x => x.CreateDate)
+                           .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+                }
+                else
+                {
+                    orderlist = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
+                       x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
+                       && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto)
+                        .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+                }
+               
+
+                UserOrderCount = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) || x.User.Fullname.Contains(search) || (x.User.Email.Contains(search)))  ).Count();
+                
+                return orderlist;
+            }
         }
 
         public async Task<AdminUserViewModel> GetAdminUserAccountAsync(AppUser user, int stateID = 0, string search = "", string UserRole = "", int pageFrom = 1, int pageTotal = 20)
@@ -378,7 +505,7 @@ namespace AceSmokeShop.Services
                 if (search != null && search != "" && search.Length >= 3)
                 {
                     productlist = await _productRepository._dbSet.Where(x => (x.ProductName.Contains(search) || x.Description.Contains(search) || x.Barcode.Contains(search)) && x.IsRemoved == false).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
-                    ProductCount = _productRepository._dbSet.Where(x => (x.ProductName.Contains(search) || x.Description.Contains(search) || x.Barcode.Contains(search)) && x.IsRemoved == false).Skip(pageTotal * pageFrom).Count();
+                    ProductCount = _productRepository._dbSet.Where(x => (x.ProductName.Contains(search) || x.Description.Contains(search) || x.Barcode.Contains(search)) && x.IsRemoved == false).Count();
                 }
                 else
                 {
