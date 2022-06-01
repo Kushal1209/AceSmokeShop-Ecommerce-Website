@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AceSmokeShop.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220512112430_DateTime")]
-    partial class DateTime
+    [Migration("20220531065920_new")]
+    partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,9 @@ namespace AceSmokeShop.Migrations
 
                     b.Property<string>("CreateDate")
                         .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Dob")
@@ -106,6 +109,52 @@ namespace AceSmokeShop.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("AceSmokeShop.Models.Addresses", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AddressLineA")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(256)");
+
+                    b.Property<string>("AddressLineB")
+                        .HasColumnType("NVARCHAR(256)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(256)");
+
+                    b.Property<bool>("IsBilling")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsShipping")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("StateID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Zipcode")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("tbl_addresses");
+                });
+
             modelBuilder.Entity("AceSmokeShop.Models.Brand", b =>
                 {
                     b.Property<int>("BrandID")
@@ -121,6 +170,34 @@ namespace AceSmokeShop.Migrations
                     b.ToTable("tbl_brand");
                 });
 
+            modelBuilder.Entity("AceSmokeShop.Models.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("tbl_cart");
+                });
+
             modelBuilder.Entity("AceSmokeShop.Models.Category", b =>
                 {
                     b.Property<int>("CategoryID")
@@ -131,9 +208,82 @@ namespace AceSmokeShop.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("Desc")
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(256)");
+
                     b.HasKey("CategoryID");
 
                     b.ToTable("tbl_category");
+                });
+
+            modelBuilder.Entity("AceSmokeShop.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CustOrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(35,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserOrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserOrderId");
+
+                    b.ToTable("tbl_orderitem");
+                });
+
+            modelBuilder.Entity("AceSmokeShop.Models.OrderShipStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreateDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("CustOrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int?>("UserOrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserOrdersId");
+
+                    b.ToTable("tbl_ordershipstatus");
                 });
 
             modelBuilder.Entity("AceSmokeShop.Models.Product", b =>
@@ -157,6 +307,15 @@ namespace AceSmokeShop.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPromoted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PrimaryImage")
                         .HasColumnType("nvarchar(max)");
@@ -182,7 +341,6 @@ namespace AceSmokeShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UnitOfMeasure")
-                        .IsRequired()
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("ProductID");
@@ -216,7 +374,7 @@ namespace AceSmokeShop.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryID")
+                    b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
                     b.Property<string>("SubCategoryName")
@@ -227,6 +385,69 @@ namespace AceSmokeShop.Migrations
                     b.HasIndex("CategoryID");
 
                     b.ToTable("tbl_subcategory");
+                });
+
+            modelBuilder.Entity("AceSmokeShop.Models.UserOrders", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BillingAddressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreateDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("CustOrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("DeliveryDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PaymentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("ShippingAddressId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ShippingCharge")
+                        .HasColumnType("decimal(35,2)");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(35,2)");
+
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("decimal(35,2)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(35,2)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillingAddressId");
+
+                    b.HasIndex("ShippingAddressId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("tbl_userorders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -364,6 +585,66 @@ namespace AceSmokeShop.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("AceSmokeShop.Models.Addresses", b =>
+                {
+                    b.HasOne("AceSmokeShop.Models.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AceSmokeShop.Areas.Identity.Data.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("State");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AceSmokeShop.Models.Cart", b =>
+                {
+                    b.HasOne("AceSmokeShop.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AceSmokeShop.Areas.Identity.Data.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AceSmokeShop.Models.OrderItem", b =>
+                {
+                    b.HasOne("AceSmokeShop.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AceSmokeShop.Models.UserOrders", "UserOrder")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("UserOrderId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("UserOrder");
+                });
+
+            modelBuilder.Entity("AceSmokeShop.Models.OrderShipStatus", b =>
+                {
+                    b.HasOne("AceSmokeShop.Models.UserOrders", null)
+                        .WithMany("OrderShipStatus")
+                        .HasForeignKey("UserOrdersId");
+                });
+
             modelBuilder.Entity("AceSmokeShop.Models.Product", b =>
                 {
                     b.HasOne("AceSmokeShop.Models.Category", "Category")
@@ -387,9 +668,36 @@ namespace AceSmokeShop.Migrations
                 {
                     b.HasOne("AceSmokeShop.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryID");
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("AceSmokeShop.Models.UserOrders", b =>
+                {
+                    b.HasOne("AceSmokeShop.Models.Addresses", "BillingAddress")
+                        .WithMany()
+                        .HasForeignKey("BillingAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AceSmokeShop.Models.Addresses", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AceSmokeShop.Areas.Identity.Data.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("BillingAddress");
+
+                    b.Navigation("ShippingAddress");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -441,6 +749,13 @@ namespace AceSmokeShop.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AceSmokeShop.Models.UserOrders", b =>
+                {
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("OrderShipStatus");
                 });
 #pragma warning restore 612, 618
         }

@@ -728,9 +728,19 @@ namespace AceSmokeShop.Services
 
                         //thisuser.LockoutEnabled = editUser.IsActive;
                         //TODO: Toggle isActive Set in user like above.
-                        //TODO: Update UserRole change to stripe customer data.
+
+                        var metaData = new Dictionary<string, string>();
+                        metaData.Add("UserRole", editUser.UserRole);
+
+                        var options = new Stripe.CustomerUpdateOptions
+                        {
+                            Metadata = metaData
+                        };
+                        var service = new Stripe.CustomerService();
+                        service.Update(thisuser.CustomerId, options);
+
+
                         await _userManager.UpdateAsync(thisuser);
-                       // await _userManager.
 
                         return "Success";
                     }

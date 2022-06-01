@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AceSmokeShop.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,8 +29,10 @@ namespace AceSmokeShop.Migrations
                     Fullname = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     Contact = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     Dob = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    CustomerId = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     UserRole = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     StateID = table.Column<int>(type: "int", nullable: false),
+                    CreateDate = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -70,7 +72,9 @@ namespace AceSmokeShop.Migrations
                 {
                     CategoryID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(256)", nullable: true)
+                    CategoryName = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    Desc = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(256)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -202,8 +206,8 @@ namespace AceSmokeShop.Migrations
                 {
                     SubCategoryID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SubCategoryName = table.Column<string>(type: "nvarchar(256)", nullable: true),
-                    CategoryID = table.Column<int>(type: "int", nullable: true)
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    SubCategoryName = table.Column<string>(type: "nvarchar(256)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -213,44 +217,43 @@ namespace AceSmokeShop.Migrations
                         column: x => x.CategoryID,
                         principalTable: "tbl_category",
                         principalColumn: "CategoryID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "tbl_product",
+                name: "tbl_addresses",
                 columns: table => new
                 {
-                    ProductID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Barcode = table.Column<string>(type: "nvarchar(256)", nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(256)", nullable: false),
-                    CategoryID = table.Column<int>(type: "int", nullable: false),
-                    SubCategoryID = table.Column<int>(type: "int", nullable: false),
-                    Stock = table.Column<int>(type: "int", nullable: false),
-                    UnitOfMeasure = table.Column<string>(type: "nvarchar(256)", nullable: false),
-                    BasePrice = table.Column<decimal>(type: "decimal(35,2)", nullable: false),
-                    SalePrice = table.Column<decimal>(type: "decimal(35,2)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(256)", nullable: false),
-                    PrimaryImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecondaryImage1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecondaryImage2 = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AddressLineA = table.Column<string>(type: "NVARCHAR(256)", nullable: false),
+                    AddressLineB = table.Column<string>(type: "NVARCHAR(256)", nullable: true),
+                    City = table.Column<string>(type: "NVARCHAR(256)", nullable: false),
+                    StateID = table.Column<int>(type: "int", nullable: false),
+                    Zipcode = table.Column<int>(type: "int", nullable: false),
+                    IsRemoved = table.Column<bool>(type: "bit", nullable: false),
+                    IsShipping = table.Column<bool>(type: "bit", nullable: false),
+                    IsBilling = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tbl_product", x => x.ProductID);
+                    table.PrimaryKey("PK_tbl_addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_tbl_product_tbl_category_CategoryID",
-                        column: x => x.CategoryID,
-                        principalTable: "tbl_category",
-                        principalColumn: "CategoryID",
+                        name: "FK_tbl_addresses_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tbl_product_tbl_subcategory_SubCategoryID",
-                        column: x => x.SubCategoryID,
-                        principalTable: "tbl_subcategory",
-                        principalColumn: "SubCategoryID",
+                        name: "FK_tbl_addresses_tbl_state_StateID",
+                        column: x => x.StateID,
+                        principalTable: "tbl_state",
+                        principalColumn: "StateID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+           
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -292,19 +295,21 @@ namespace AceSmokeShop.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tbl_product_CategoryID",
-                table: "tbl_product",
-                column: "CategoryID");
+                name: "IX_tbl_addresses_StateID",
+                table: "tbl_addresses",
+                column: "StateID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tbl_product_SubCategoryID",
-                table: "tbl_product",
-                column: "SubCategoryID");
+                name: "IX_tbl_addresses_UserId",
+                table: "tbl_addresses",
+                column: "UserId");
+
 
             migrationBuilder.CreateIndex(
                 name: "IX_tbl_subcategory_CategoryID",
                 table: "tbl_subcategory",
                 column: "CategoryID");
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -327,23 +332,25 @@ namespace AceSmokeShop.Migrations
             migrationBuilder.DropTable(
                 name: "tbl_brand");
 
-            migrationBuilder.DropTable(
-                name: "tbl_product");
-
-            migrationBuilder.DropTable(
-                name: "tbl_state");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "tbl_subcategory");
 
             migrationBuilder.DropTable(
+                name: "tbl_addresses");
+
+            migrationBuilder.DropTable(
                 name: "tbl_category");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "tbl_state");
         }
     }
 }

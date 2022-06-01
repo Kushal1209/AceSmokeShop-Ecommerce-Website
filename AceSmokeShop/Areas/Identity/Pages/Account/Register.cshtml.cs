@@ -141,6 +141,7 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
 
                         var thisUser = await _userManager.FindByIdAsync(user.Id);
                         thisUser.CustomerId = stripecustomer.Id;
+                        thisUser.LockoutEnabled = false;
                         await _userManager.UpdateAsync(thisUser);
 
                     }
