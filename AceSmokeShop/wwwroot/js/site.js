@@ -294,6 +294,18 @@ function AddtoCart(prodId, qty, page) {
     });
 }
 
+function OrderStatusAlert() {
+    var status = $('#orderstatus').val();
+    if (status == 'Cancelled') {
+        document.getElementById('cancelRefundAlert').hidden = false;
+       
+    }
+    else {
+        document.getElementById('cancelRefundAlert').hidden = true;
+        document.getElementById('orderStatusNId').value = document.getElementById('orderId').text + ":" + status;
+        
+    }
+}
 
 function CreateURL(url, list) {
     var subString = "";
@@ -365,9 +377,23 @@ $(function () {
         window.location.href = CreateURL(url, {
             "CategoryID": $('#category').val(),
             "SubCategoryId": $('#subcategory').val(),
-            "Search": $('#search').val(),
+            "Search": $('#search').text(),
             "Min": $('#min').val(),
             "Max": $('#max').val(),
+            "pagefrom": 1,
+            "pagetotal": $('#rowselectId').val()
+
+        });
+    });
+
+    $("#fliterUserOrderbtnsearch").click(function (event) {
+        var url = window.location.href;
+
+        window.location.href = CreateURL(url, {
+            "OrderStatus": $('#orderstatus').val(),
+            "Search": $('#search').val(),
+            "DateFrom": $('#datefrom').val(),
+            "DateTo": $('#dateto').val(),
             "pagefrom": 1,
             "pagetotal": $('#rowselectId').val()
 

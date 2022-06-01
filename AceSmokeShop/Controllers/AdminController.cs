@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace AceSmokeShop.Controllers
@@ -55,14 +56,20 @@ namespace AceSmokeShop.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Orders(string orderstatus = "", int sortbyorder = 1, int sortbyid = 0, 
-                        string search = "", int currentpage = 1, int totalpages = 0, int itemsperpage = 10)
+                        string search = "", int pageFrom = 1, int pageTotal = 10, 
+                        string datefrom = "", string dateto = "")
         {
             var user = await _userManager.GetUserAsync(User);
 
             if (user.UserRole != null && user.UserRole == "ADMIN")
             {
+                DateTime DateFrom = datefrom == null || datefrom == "" ? DateTime.MinValue : DateTime.Parse(datefrom); 
+                DateTime DateTo = dateto == null || dateto == "" ? DateTime.MaxValue : DateTime.Parse(dateto);
+                orderstatus = orderstatus.ToLower() == ("Select Status").ToLower() ? "" : orderstatus;
+                search = search == null ? "" : search;
+
                 _adminUserOrderViewModel = _adminServices.GetAdminUserOrderViewModel(user, orderstatus, sortbyorder,
-                    sortbyid, search, currentpage, totalpages, itemsperpage);
+                    sortbyid, search, pageFrom, pageTotal, DateFrom, DateTo);
 
                 return View("Orders", _adminUserOrderViewModel);
             }
@@ -89,5 +96,40 @@ namespace AceSmokeShop.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditUserOrderStatusGet(string orderid)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user.UserRole != null && user.UserRole == "ADMIN")
+            {
+
+                var orderstatus = _adminServices.GetOrderStatus(user, orderid);
+                if (orderstatus == "") return StatusCode(500, "Something Went Wrong");
+
+                return View("EditUserOrderStatus", orderstatus + ":" + orderid);
+            }
+            else
+            {
+                return StatusCode(401, "UnAuthorized");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUserOrderStatus(string orderid = "", string orderstatus = "")
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _adminServices.EditUserOrderStatus(user, orderid, orderstatus);
+
+            if (result.ToLower().Equals("success"))
+            {
+                return StatusCode(200);
+            }
+            else
+            {
+                return StatusCode(500, result);
+            }
+        }
     }
 }

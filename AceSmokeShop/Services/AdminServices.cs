@@ -97,8 +97,42 @@ namespace AceSmokeShop.Services
             return model;
         }
 
+        public string GetOrderStatus(AppUser user, string orderid)
+        {
+            if (user.UserRole != null && user.UserRole == "ADMIN")
+            {
+                return _userOrdersRepository._dbSet.Where(x => x.CustOrderId.ToLower().Equals(orderid.ToLower())).FirstOrDefault().OrderStatus;
+            }
+            return "";
+        }
+
+        public async Task<string> EditUserOrderStatus(AppUser user, string orderid, string orderstatus)
+        {
+            if (user.UserRole != "ADMIN" || user.LockoutEnabled)
+            {
+                return "UnAuthorized";
+            }
+            else
+            {
+                try
+                {
+                    var editstatus = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == orderid).FirstOrDefault();
+                    editstatus.OrderStatus = orderstatus;
+                    _userOrdersRepository._dbSet.Update(editstatus);
+                    var result = await _userOrdersRepository._context.SaveChangesAsync();
+
+                    return "Success";
+                }
+                catch (Exception ex)
+                {
+
+                    return ex.Message;
+                }
+            }
+        }
+
         public AdminUserOrderViewModel GetAdminUserOrderViewModel(AppUser user, string orderstatus, int sortbyorder, 
-                        int sortbyid, string search, int currentpage, int totalpages, int itemsperpage)
+                        int sortbyid, string search, int pageFrom, int pageTotal, DateTime datefrom, DateTime dateto)
         {
             var model = new AdminUserOrderViewModel();
             if (user.UserRole != "ADMIN" || user.LockoutEnabled)
@@ -107,27 +141,52 @@ namespace AceSmokeShop.Services
             }
             else
             {
-                model.userOrdersList = GetFilteredUserOrderList(user, orderstatus, sortbyorder, sortbyid, search, currentpage, totalpages, itemsperpage);
+                model.userOrdersList = GetFilteredUserOrderList(user, orderstatus, sortbyorder, sortbyid, search, pageFrom, pageTotal, datefrom, dateto);
                 model.TotalOrders = UserOrderCount;
-                model.CurrentPage = currentpage;
-                model.ItemsPerPage = totalpages;
-                model.TotalPages = (int)Math.Ceiling((double)((double)model.TotalOrders / (double)totalpages));
+                model.CurrentPage = pageFrom;
+                model.ItemsPerPage = pageTotal;
+                model.TotalPages = (int)Math.Ceiling((double)((double)model.TotalOrders / (double)pageTotal));
+                model.search = search;
+                model.DateFrom = datefrom;
+                model.DateTo = dateto;
+                model.OrderStatus = orderstatus;
+                model.SortByID = 0;
+                model.SortByOrder = sortbyorder;
 
                 return model;
             }
         }
 
-        public List<UserOrders> GetFilteredUserOrderList(AppUser user, string orderstatus, int sortbyorder, int sortbyid, string search, int currentpage, int totalpages, int itemsperpage)
+        public List<UserOrders> GetFilteredUserOrderList(AppUser user, string orderstatus, int sortbyorder, int sortbyid, string search, int pageFrom, int pageTotal, DateTime datefrom, DateTime dateto)
         {
             var orderlist = new List<UserOrders>();
+            pageFrom--;
             if (user.UserRole != "ADMIN" || user.LockoutEnabled)
             {
                 return orderlist;
             }
             else
             {
-                orderlist = _userOrdersRepository._dbSet.ToList();
+               if(sortbyorder == 1)
+                {
+                    orderlist = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
+                       x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
+                       && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).OrderByDescending(x => x.CreateDate)
+                           .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+                }
+                else
+                {
+                    orderlist = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
+                       x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
+                       && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto)
+                        .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+                }
+               
 
+                UserOrderCount = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) || x.User.Fullname.Contains(search) || (x.User.Email.Contains(search)))  ).Count();
+                
                 return orderlist;
             }
         }
@@ -446,7 +505,7 @@ namespace AceSmokeShop.Services
                 if (search != null && search != "" && search.Length >= 3)
                 {
                     productlist = await _productRepository._dbSet.Where(x => (x.ProductName.Contains(search) || x.Description.Contains(search) || x.Barcode.Contains(search)) && x.IsRemoved == false).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
-                    ProductCount = _productRepository._dbSet.Where(x => (x.ProductName.Contains(search) || x.Description.Contains(search) || x.Barcode.Contains(search)) && x.IsRemoved == false).Skip(pageTotal * pageFrom).Count();
+                    ProductCount = _productRepository._dbSet.Where(x => (x.ProductName.Contains(search) || x.Description.Contains(search) || x.Barcode.Contains(search)) && x.IsRemoved == false).Count();
                 }
                 else
                 {

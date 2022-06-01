@@ -1,5 +1,7 @@
 ﻿using AceSmokeShop.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AceSmokeShop.ViewModel
 {
@@ -10,7 +12,7 @@ namespace AceSmokeShop.ViewModel
             userOrdersList = new List<UserOrders>();
             States = new List<State>();
             CancelOrderReason = new List<string> { "Select Status", "Order Delayed", "Accidental Order", "Other" };
-            OrderStatusList = new List<string> { "Select Status", "Order Placed", "Order Packaging", "Order Dispatched", "Delivered" };
+            OrderStatusList = new List<string> { "Select Status", "Order Placed", "Order Packaging", "Order Dispatched", "Delivered", "Cancelled", "Return Requested", "Return Approved", "Return Shipped", "Return Delivered" };
             OrderStatus = "Select Status";
 
             adminOrderDetailsViewModel = new AdminOrderDetailsViewModel();
@@ -20,6 +22,8 @@ namespace AceSmokeShop.ViewModel
             search = "";
 
             TotalOrders = 0;
+            TotalUsers = 0;
+            TotalVendors = 0;
             RowPerPage = new List<int> { 10, 20, 50, 100 };
             CurrentPage = 1;
             TotalPages = 0;
@@ -37,9 +41,19 @@ namespace AceSmokeShop.ViewModel
         public int SortByID { get; set; }
         public List<int> RowPerPage { get; set; }
         public int TotalOrders { get; set; }
+        public int TotalUsers { get; set; }
+        public int TotalVendors { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
         public int ItemsPerPage { get; set; }
         public string OrderSelectId { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DateFrom { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DateTo { get; set; }
     }
 }
