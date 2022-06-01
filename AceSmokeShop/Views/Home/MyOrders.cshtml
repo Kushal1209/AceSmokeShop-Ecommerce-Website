@@ -84,7 +84,7 @@
                                                         <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineA</a>
                                                     </h7>
                                                     <br/>
-                                                    @if (item.ShippingAddress.AddressLineB.Length > 0)
+                                                    @if (item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length > 0)
                                                     {
                                                         <h7>
                                                             <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineB</a>
@@ -99,7 +99,7 @@
                                                         <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.ShippingAddress.StateID - 1].StateName @item.ShippingAddress.Zipcode</a>
                                                     </h7>
                                                     <br/>
-                                                    @if(item.ShippingAddress.AddressLineB.Length <= 0)
+                                                    @if(item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length <= 0)
                                                     {
                                                         <br/>
                                                     }
@@ -117,7 +117,7 @@
                                                         <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.BillingAddress.AddressLineA</a>
                                                     </h7>
                                                     <br/>
-                                                    @if (item.BillingAddress.AddressLineB.Length > 0)
+                                                    @if (item.BillingAddress.AddressLineB != null && item.BillingAddress.AddressLineB.Length > 0)
                                                     {
                                                         <h7>
                                                             <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.BillingAddress.AddressLineB</a>
@@ -132,7 +132,7 @@
                                                         <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.BillingAddress.StateID - 1].StateName @item.BillingAddress.Zipcode</a>
                                                     </h7>
                                                     <br/>
-                                                     @if(item.BillingAddress.AddressLineB.Length <= 0)
+                                                     @if(item.BillingAddress.AddressLineB != null && item.BillingAddress.AddressLineB.Length <= 0)
                                                     {
                                                         <br/>
                                                     }

@@ -14,7 +14,7 @@
                             <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.AddressLineA  </a>
                         </h7>
                         <br/>
-                        @if (@Model.ShippingAddress.AddressLineB.Length > 0)
+                        @if (Model.ShippingAddress.AddressLineB != null && @Model.ShippingAddress.AddressLineB.Length > 0)
                         {
                             <h7>
                                 <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.AddressLineB</a>
@@ -29,7 +29,7 @@
                             <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@Model.ShippingAddress.StateID - 1].StateName @Model.ShippingAddress.Zipcode</a>
                         </h7>
                         <br/>
-                        @if(Model.ShippingAddress.AddressLineB.Length <= 0)
+                        @if(Model.ShippingAddress.AddressLineB != null && Model.ShippingAddress.AddressLineB.Length <= 0)
                         {
                             <br/>
                         }
@@ -49,7 +49,7 @@
                             <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.BillingAddress.AddressLineA</a>
                         </h7>
                         <br/>
-                        @if (Model.BillingAddress.AddressLineB.Length > 0)
+                        @if (Model.BillingAddress.AddressLineB != null && Model.BillingAddress.AddressLineB.Length > 0)
                         {
                             <h7>
                                 <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.BillingAddress.AddressLineB</a>
@@ -64,7 +64,7 @@
                             <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@Model.BillingAddress.StateID - 1].StateName @Model.BillingAddress.Zipcode</a>
                         </h7>
                         <br/>
-                            @if(Model.BillingAddress.AddressLineB.Length <= 0)
+                            @if(Model.BillingAddress.AddressLineB != null && Model.BillingAddress.AddressLineB.Length <= 0)
                         {
                             <br/>
                         }
