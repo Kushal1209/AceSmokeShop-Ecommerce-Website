@@ -116,16 +116,36 @@ namespace AceSmokeShop.Services
             {
                 try
                 {
-                    var editstatus = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == orderid).FirstOrDefault();
-                    editstatus.OrderStatus = orderstatus;
-                    _userOrdersRepository._dbSet.Update(editstatus);
+                    var userorder = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == orderid).FirstOrDefault();
+                    
+                    //if cancelled, create refund
+                    if (userorder.OrderStatus.ToLower().Contains("delivered"))
+                    {
+                        return "Fail: Cannot change status of a Delivered Item";
+                    }
+                    userorder.OrderStatus = orderstatus;
+                    if (userorder.OrderStatus.ToLower().Contains("cancelled"))
+                    {
+                        var refund = _paymentServices.CreateRefund(userorder.PaymentId, "duplicate");
+                        userorder.OrderItems = _orderItemRepository._dbSet.Where(x => x.CustOrderId == orderid).Include(x => x.Product).ToList();
+                        var productlist = new List<Product>();
+                        foreach(var item in userorder.OrderItems)
+                        {
+                            item.Product.Stock += item.Quantity;
+                            productlist.Add(item.Product);
+                        }
+
+                        _productRepository._dbSet.UpdateRange(productlist);
+                        _productRepository._context.SaveChanges();
+                    }
+
+                    _userOrdersRepository._dbSet.Update(userorder);
                     var result = await _userOrdersRepository._context.SaveChangesAsync();
 
                     return "Success";
                 }
                 catch (Exception ex)
                 {
-
                     return ex.Message;
                 }
             }
@@ -172,7 +192,7 @@ namespace AceSmokeShop.Services
                     orderlist = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
                        x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
                        && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
-                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).OrderByDescending(x => x.CreateDate)
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).Include(x => x.User).OrderByDescending(x => x.CreateDate)
                            .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
                 }
                 else
@@ -180,7 +200,7 @@ namespace AceSmokeShop.Services
                     orderlist = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
                        x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
                        && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
-                       && x.CreateDate >= datefrom && x.CreateDate <= dateto)
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).Include(x => x.User)
                         .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
                 }
                
@@ -679,7 +699,8 @@ namespace AceSmokeShop.Services
             {
                 try
                 {
-                    if(_productRepository._dbSet.Where(x => x.ProductID == newProduct.ProductID || x.Barcode == newProduct.Barcode || x.ProductName == newProduct.ProductName).Any()){
+                    var prod = _productRepository._dbSet.Where(x => x.ProductID == newProduct.ProductID || x.Barcode == newProduct.Barcode || x.ProductName == newProduct.ProductName).FirstOrDefault();
+                    if (_productRepository._dbSet.Where(x => x.ProductID == newProduct.ProductID || x.Barcode == newProduct.Barcode || x.ProductName == newProduct.ProductName).Any()){
                         return "This Product Already Exists: ProductID: " + newProduct.ProductID + ", BarCode: " + newProduct.Barcode + ", ProductName: " + newProduct.ProductName;
                     }
                     else
@@ -691,6 +712,12 @@ namespace AceSmokeShop.Services
                             error = true;
                             err.Replace("Unknown", " ");
                             err += " Invalid Barcode";
+                        }
+                        if(newProduct.VendorPrice <= 0 || (newProduct.VendorPrice < newProduct.BasePrice || newProduct.VendorPrice > newProduct.SalePrice) )
+                        {
+                            error = true;
+                            err.Replace("Unknown", "");
+                            err += " Invalid Vendor Price";
                         }
                         if (newProduct.ProductName == null || newProduct.ProductName.Length <= 1)
                         {
@@ -720,13 +747,11 @@ namespace AceSmokeShop.Services
 
                         return "Something went wrong!";
                     }
-                   
                 }
                 catch(Exception ex)
                 {
                     return ex.ToString();
                 }
-               
             }
         }
 

@@ -115,10 +115,17 @@
                                 </div>
                                 <div class="col-2">
                                     @*<a  style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>*@
-                                    <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituserorderstatus"
-                                        data-url="@Url.Action("EditUserOrderStatusGet", "Admin", new{orderid = @item.CustOrderId})" style="font-size: 13px; font-weight: 500; border:none; outline:none; background:none;">
-                                        <b>@item.OrderStatus.ToUpper()</b>
-                                    </button>
+                                    @if (item.OrderStatus.ToLower().Contains("cancelled") || item.OrderStatus.ToLower().Contains("delivered"))
+                                    {
+                                        <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituserorderstatus"
+                                            data-url="@Url.Action("EditUserOrderStatusGet", "Admin", new{orderid = @item.CustOrderId})" style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
+                                            <b>@item.OrderStatus.ToUpper()</b>
+                                        </button>
+                                    }
                                 </div>
                                 <div class="col-4">
                                     <a href="~/UserAccount/UserAccount?search=@item.User.Fullname" target="_blank" style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>@item.User.Fullname</b></a>

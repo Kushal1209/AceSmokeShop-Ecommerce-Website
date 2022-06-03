@@ -41,6 +41,11 @@ namespace AceSmokeShop.Models
         public string UnitOfMeasure { get; set; }
 
         [Required]
+        [Display(Name = "Vendor Price")]
+        [Column(TypeName = "decimal(35,2)")]
+        public double VendorPrice { get; set; }
+
+        [Required]
         [Display(Name = "Base Price")]
         [Column(TypeName = "decimal(35,2)")]
         public double BasePrice { get; set; }

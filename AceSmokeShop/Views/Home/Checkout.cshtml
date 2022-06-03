@@ -29,11 +29,11 @@
     </div>
     <div class="row mt-4">
         <div class="col-4">
-            <div class="product-card" style="width: 330px">
+            <div class="product-card" style="width: 330px;border: 2px solid #96672d;height: 100%;box-shadow: -10px 10px 20px #96672d;border-radius: 25px;">
 		        <div class="product-details"  style="padding: 1rem 2rem;">
                     <div class="row" style="padding:0px; margin: 0px;height: 45px;">
                         <div class="col" style="padding: 0px;height: -webkit-fill-available;">
-                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Shipping Address</a>
+                            <a style="color:#cdb36c;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Shipping Address</a>
                         </div>
 			        </div>
                     @if(Model.Address.AddressList.Count() == 0)
@@ -78,11 +78,11 @@
 	        </div>
         </div>
         <div class="col-4">
-            <div class="product-card" style="width: 330px">
+            <div class="product-card" style="width: 330px;border: 2px solid #96672d;height: 100%;box-shadow: -10px 10px 20px #96672d;border-radius: 25px;">
 		        <div class="product-details"  style="padding: 1rem 2rem;">
                     <div class="row" style="padding:0px; margin: 0px;height: 45px;">
                         <div class="col" style="padding: 0px;height: -webkit-fill-available;">
-                            <a style="border-radius: 0px; height:-webkit-fill-available; width:-webkit-fill-available; font-weight:600;">Billing Address</a>
+                            <a style="color:#cdb36c; border-radius: 0px; height:-webkit-fill-available; width:-webkit-fill-available; font-weight:600;">Billing Address</a>
                         </div>
 			        </div>
 			        @if(Model.Address.AddressList.Count() == 0)
@@ -139,7 +139,7 @@
             <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
                 <div class="product-card" style="width: 245px">
                     <div style="padding: 5px; text-align:-webkit-right;">
-                        <a onclick="RemoveAddress(@item.Id)" style="cursor:pointer;"><i class="bi bi-x-lg"></i></a>
+                        <a onclick="RemoveAddress(@item.Id)" style="cursor:pointer;"><i class="bi bi-x-circle-fill" style="font-size: 20px;color: #96672d;"></i></a>
                     </div>
 		            <div class="product-details"  style="padding: 1rem 2rem;">
 			            <h7>
@@ -189,8 +189,8 @@
             </div>
             }
             <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-                <div class="product-card" style="width:245px; border:dashed; border-color:#96672d; height:100%;">
-                    <button class="btn" type="button" style="border-radius: 0px;width: -webkit-fill-available; height:-webkit-fill-available;" data-toggle="ajax-modal" data-target="#addAddress"
+                <div class="product-card" style="width: 250px;border: 2px solid #96672d;height: 100%;box-shadow: -10px 10px 20px #96672d;border-radius: 25px;">
+                    <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#cdb36c;  width: -webkit-fill-available; height:-webkit-fill-available;" data-toggle="ajax-modal" data-target="#addAddress"
                     data-url="@Url.Action("AddAddressGet")" >Add New Address</button>
 	            </div>
             </div>
@@ -210,35 +210,51 @@
                     data-url="@Url.Action("AddCardGet")" >+</button>
         </div>
         <div class="row mt-3 row-cols-3 row-cols-lg-3 gy-5 g-lg-4">
-            <div class="col">
-                <input type="hidden" asp-for=@SelectedCard value=@SelectedCard id="inputSelectCardNum"/>
-                @foreach(var item in Model.PaymentMethods)
+            <input type="hidden" asp-for=@SelectedCard value=@SelectedCard id="inputSelectCardNum"/>
+            @foreach(var item in Model.PaymentMethods)
+            {
                 {
-                    {
-                        cardNumber = cardNumber + 1;
-                    }
-                    <div class="col" style="padding-bottom: 1rem;">
-                        <div class="product-card" onclick="SelectCard(@cardNumber, @Model.PaymentMethods.Count())" id="@("cardSelect" + cardNumber)" style="width: 380px;">
-                            <div class="product-details" style="padding:1rem 2rem;">
-                                <div style="text-align:-webkit-right;">
-                                    <button type="button" onclick="RemoveCard(@cardNumber)" style="cursor:pointer;"><i class="bi bi-x-lg"></i></button>
-                                </div>
-                                <div class="d-inline">
-                                    <h6>
-                                        @item.Card.Last4
-                                    </h6>
-                                    <h6>
-                                        @item.Card.Brand
-                                    </h6>
-                                    <h6>
-                                        @item.Card.ExpMonth/@item.Card.ExpYear
-                                    </h6>
-                                </div>
+                    cardNumber = cardNumber + 1;
+                }
+                <div class="col" style="padding-bottom: 1rem; max-width: 410px;">
+                    <div class="product-card" onclick="SelectCard(@cardNumber, @Model.PaymentMethods.Count())" id="@("cardSelect" + cardNumber)" style="width: 360px; height: 210px; color: #000000; background-color: #96672d; background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%); border-radius: 20px;">
+                        <div class="product-details" style="padding:1rem 2rem; height:100%;">
+                            <div style="text-align:-webkit-right;">
+                                <button type="button" onclick="RemoveCard(@cardNumber)" style="cursor:pointer; border:none; background: none;"><i class="bi bi-x-circle-fill" style="font-size: 20px; color:#96672d;" ></i></button>
+                            </div>
+                            <div style="height:80px; margin-top: 20px;">
+                                <h6 style="letter-spacing: 5px;">
+                                    ****-****-****-@item.Card.Last4
+                                </h6>
+                                <h6>
+                                    @item.Card.Brand
+                                </h6>
+                                <h6>
+                                    @item.Card.ExpMonth/@item.Card.ExpYear
+                                </h6>
+                            </div>
+                            <div style="text-align:-webkit-right;">
+                                @if(item.Card.Brand.ToLower().Contains("visa")){
+                                    <img style="width:70px;" src="~/Images/VisaLogo.png" />
+                                }
+                                else if(item.Card.Brand.ToLower().Contains("master")){
+                                    <img style="width:70px;" src="~/Images/MasterCardLogo.png" />
+                                }
+                                else if(item.Card.Brand.ToLower().Contains("discover")){
+                                    <img style="width:70px;" src="~/Images/DiscoverCardLogo.png" />
+                                }
+                                else if(item.Card.Brand.ToLower().Contains("amex")){
+                                    <img style="width: 130px; margin-top: -10px; margin-right: -20px;" src="~/Images/AmexCardLogo.png" />
+                                }
+                                else if(item.Card.Brand.ToLower().Contains("diner")){
+                                    <img style="width: 80px; margin-top: -10px; margin-right: -10px;" src="~/Images/DinersCardLogo.png" />
+                                }
+                                
                             </div>
                         </div>
                     </div>
-                }
-            </div> 
+                </div>
+            }
         </div>
     </div>
 

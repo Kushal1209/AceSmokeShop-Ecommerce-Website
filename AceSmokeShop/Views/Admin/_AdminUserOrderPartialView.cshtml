@@ -1,7 +1,7 @@
 ﻿@using AceSmokeShop.ViewModel
 @model AdminOrderDetailsViewModel
 
-<div class="row"  style="width:90%; margin:0;" id="userorders">
+<div class="row" style="width:90%; margin:0;" id="userorders">
         <div class="col-4" style="padding:0px;">
             <div class="product-card" style="width: 330px">
 		        <div class="product-details"  style="padding: 1rem 2rem;">
@@ -106,10 +106,9 @@
                     </div>
                 </div>
             </div>
-            <hr/>
         </div>
     </div>
-    <table class="table" style="width:85%;">
+    <table class="table mt-5" style="width:85%;">
         <tbody>
             @foreach (var i in @Model.ListOfOrderItem)
             {
@@ -135,7 +134,7 @@
                         <label>@i.Quantity</label>
                     </td>
                     <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                        <label>$@i.Product.SalePrice</label>
+                        <label>$@i.Price</label>
                     </td>
                 </tr>
             }

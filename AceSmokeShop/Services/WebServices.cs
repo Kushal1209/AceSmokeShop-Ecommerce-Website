@@ -68,7 +68,7 @@ namespace AceSmokeShop.Services
             return new String(stringChars);
         }
 
-        public UHomeViewModel GetHomeViewModel()
+        public UHomeViewModel GetHomeViewModel(AppUser user)
         {
             var model = new UHomeViewModel();
 
@@ -78,17 +78,25 @@ namespace AceSmokeShop.Services
             foreach(var item in model.FeaturedList)
             {
                 item.BasePrice = 0;
+                if(user != null && user.UserRole.ToLower() != "vendor")
+                {
+                    item.VendorPrice = 0;
+                }
             }
             foreach (var item in model.PromotedList)
             {
                 item.BasePrice = 0;
+                if (user != null && user.UserRole.ToLower() != "vendor")
+                {
+                    item.VendorPrice = 0;
+                }
             }
 
             return model;
 
         }
 
-        public UProductViewModel GetUserProductsViewModel(int CategoryID = 0, int SubCategoryID = 0, int pageFrom = 1, int ItemsPerPage = 10,
+        public UProductViewModel GetUserProductsViewModel(AppUser user, int CategoryID = 0, int SubCategoryID = 0, int pageFrom = 1, int ItemsPerPage = 10,
                                                 string search = "", string type = "")
         {
             var model = new UProductViewModel();
@@ -135,6 +143,10 @@ namespace AceSmokeShop.Services
             foreach(var items in model.ProdctList)
             {
                 items.BasePrice = 0;
+                if (user != null && user.UserRole.ToLower() != "vendor")
+                {
+                    items.VendorPrice = 0;
+                }
             }
             model.CurrentPage = ++pageFrom;
             model.Type = type;
@@ -153,7 +165,16 @@ namespace AceSmokeShop.Services
             {
                 return "Only " + product.Stock + " of " + product.ProductName + " remain in stock, Please reduce Quantity";
             }
-            double SubTotal = product.SalePrice * qty;
+            double SubTotal = 0.00;
+            if (user.UserRole.ToLower().Contains("vendor"))
+            {
+               SubTotal = product.VendorPrice * qty;
+            }
+            else
+            {
+               SubTotal = product.SalePrice * qty;
+            }
+            
             double Tax = 6.625;
             var GrandTotal = SubTotal + (SubTotal * Tax / 100);
 
@@ -196,7 +217,17 @@ namespace AceSmokeShop.Services
 
             var orderItem = new OrderItem();
             orderItem.OrderId = Order.Id;
-            orderItem.Price = product.SalePrice;
+
+            if (user.UserRole.ToLower().Contains("vendor"))
+            {
+                orderItem.Price = product.VendorPrice;
+            }
+            else
+            {
+                orderItem.Price = product.SalePrice;
+            }
+
+           
             orderItem.ProductId = product.ProductID;
             orderItem.CustOrderId = OrderId;
             orderItem.Quantity = qty;
@@ -261,7 +292,15 @@ namespace AceSmokeShop.Services
                 {
                     return item.Product.ProductName + " is Out Of Stock, Please try again";
                 }
-                SubTotal += (item.Product.SalePrice * item.Quantity);
+                if (user.UserRole.ToLower().Contains("vendor"))
+                {
+                    SubTotal += (item.Product.VendorPrice * item.Quantity);
+                }
+                else
+                {
+                    SubTotal += (item.Product.SalePrice * item.Quantity);
+                }
+                
             }
             var Tax = 6.625;
             var GrandTotal = SubTotal + (SubTotal * Tax / 100);
@@ -308,7 +347,15 @@ namespace AceSmokeShop.Services
             {
                 var orderItem = new OrderItem();
                 orderItem.OrderId = Order.Id;
-                orderItem.Price = item.Product.SalePrice;
+                if (user.UserRole.ToLower().Contains("vendor"))
+                {
+                    orderItem.Price = item.Product.VendorPrice;
+                }
+                else
+                {
+                    orderItem.Price = item.Product.SalePrice;
+                }
+              
                 orderItem.ProductId = item.Product.ProductID;
                 orderItem.CustOrderId = OrderId;
                 item.IsRemoved = true;
@@ -405,7 +452,14 @@ namespace AceSmokeShop.Services
                 var product = _productRepository._dbSet.Where(x => x.Barcode == productId && x.IsRemoved == false && x.Stock >= qty).FirstOrDefault();
                 if(product != null)
                 {
-                    model.Subtotal = product.SalePrice * qty;
+                    if (user.UserRole.ToLower().Contains("vendor"))
+                    {
+                        model.Subtotal = product.VendorPrice * qty;
+                    }
+                    else
+                    {
+                        model.Subtotal = product.SalePrice * qty;
+                    }
                     model.BuyNowProduct = product;
                     model.Qty = qty;
                 }
@@ -420,8 +474,19 @@ namespace AceSmokeShop.Services
                 foreach(var item in cartItems)
                 {
                     item.Product.BasePrice = 0;
+                    if (!user.UserRole.ToLower().Contains("vendor"))
+                    {
+                        item.Product.VendorPrice = 0;
+                    }
                 }
-                model.Subtotal = cartItems.Select(x => x.Quantity * x.Product.SalePrice).Sum();
+                if (user.UserRole.ToLower().Contains("vendor"))
+                {
+                    model.Subtotal = cartItems.Select(x => x.Quantity * x.Product.VendorPrice).Sum();
+                }
+                else
+                {
+                    model.Subtotal = cartItems.Select(x => x.Quantity * x.Product.SalePrice).Sum();
+                }         
                 model.CartList = cartItems;
             }
 
@@ -675,7 +740,7 @@ namespace AceSmokeShop.Services
             
         }
 
-        public  ProductDescriptionViewModel GetProductDetailsViewModel(string productid)
+        public  ProductDescriptionViewModel GetProductDetailsViewModel(AppUser user, string productid)
         {
             var model = new ProductDescriptionViewModel();
 
@@ -685,6 +750,10 @@ namespace AceSmokeShop.Services
             foreach(var item in model.RecomendedProductList)
             {
                 item.BasePrice = 0;
+                if (user != null && user.UserRole.ToLower() != "vendor")
+                {
+                    item.VendorPrice = 0;
+                }
             }
 
             return model;

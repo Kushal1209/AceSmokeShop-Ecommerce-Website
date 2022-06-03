@@ -40,17 +40,24 @@ namespace AceSmokeShop.Controllers
                 new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            _uHomeViewModel = _webServices.GetHomeViewModel();
+            var user = await _userManager.GetUserAsync(User);
+            _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
             return View("Index",_uHomeViewModel);
         }
 
-        public IActionResult Products(int CategoryID = 0, int SubCategoryID = 0, int pageFrom = 1, int pageTotal = 10, 
+        public async Task<IActionResult> Products(int CategoryID = 0, int SubCategoryID = 0, int pageFrom = 1, int pageTotal = 10, 
                                                 string search = "", string type = "")
         {
-            _uProductViewModel = _webServices.GetUserProductsViewModel(CategoryID, SubCategoryID, pageFrom, pageTotal, search,
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                user = new AppUser();
+            }
+
+            _uProductViewModel = _webServices.GetUserProductsViewModel(user, CategoryID, SubCategoryID, pageFrom, pageTotal, search,
                 type);
             _uProductViewModel.CategorySelect.CategoryID = CategoryID;
             _uProductViewModel.SubCategorySelect.SubCategoryID = SubCategoryID;
@@ -74,9 +81,14 @@ namespace AceSmokeShop.Controllers
             return StatusCode(500, result);
         }
 
-        public IActionResult ProductDetails(string productid = "")
+        public async Task<IActionResult> ProductDetails(string productid = "")
         {
-            _productDescriptionViewModel = _webServices.GetProductDetailsViewModel(productid);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                user = new AppUser();
+            }
+            _productDescriptionViewModel = _webServices.GetProductDetailsViewModel(user, productid);
             return View("ProductDetails", _productDescriptionViewModel);
         }
 
@@ -90,12 +102,16 @@ namespace AceSmokeShop.Controllers
                 foreach (var item in model)
                 {
                     item.Product.BasePrice = 0;
+                    if (user.UserRole.ToLower() != "vendor")
+                    {
+                        item.Product.VendorPrice = 0;
+                    }
                 }
                 return View("MyCart", model);
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             }
@@ -116,7 +132,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             }
@@ -137,7 +153,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             }
@@ -180,7 +196,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             }
@@ -196,7 +212,7 @@ namespace AceSmokeShop.Controllers
 
                 if(model.Subtotal == 0)
                 {
-                    _uHomeViewModel = _webServices.GetHomeViewModel();
+                    _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                     return View("Index", _uHomeViewModel);
                 }
@@ -205,7 +221,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
                 return View("Index", _uHomeViewModel);
             }
         }
@@ -260,7 +276,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
                 return View("Index", _uHomeViewModel);
             }
         }
@@ -331,7 +347,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             }
@@ -352,7 +368,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             }
@@ -371,7 +387,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             } 
@@ -395,7 +411,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             }
@@ -421,7 +437,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel();
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
                 return View("Index", _uHomeViewModel);
             }

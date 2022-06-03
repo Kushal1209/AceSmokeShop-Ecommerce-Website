@@ -2,6 +2,9 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 
+
+
+
 nav, footer{
     background-color: #000;
 }
@@ -103,6 +106,7 @@ img {
 
 span {
     cursor: pointer;
+
 }
 
 .minus, .plus {

@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Change User Order Status";
     Layout = null;
-    List<string> Statuses = new List<string> { "Select Status", "Order Placed", "Order Packaging", "Order Dispatched", "Delivered", "Cancelled", "Return Requested", "Return Approved", "Return Shipped", "Return Delivered" };
+    List<string> Statuses = new List<string> { "Select Status", "Order Placed", "Order Packaging", "Order Dispatched", "Delivered", "Cancelled" };
     List<string> Statuses2 = new List<string>();
     var orderid = @Model.Split(':')[1];
     var orderstatus = @Model.Split(':')[0];

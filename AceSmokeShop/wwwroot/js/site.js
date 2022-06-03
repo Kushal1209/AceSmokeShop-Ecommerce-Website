@@ -5,6 +5,7 @@
 
 // Write your JavaScript code.
 
+
 const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
 
 accordionItemHeaders.forEach(accordionItemHeader => {

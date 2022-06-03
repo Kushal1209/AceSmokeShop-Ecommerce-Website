@@ -10,6 +10,11 @@ namespace AceSmokeShop.Areas.Identity.Data
     // Add profile data for application users by adding properties to the AppUser class
     public class AppUser : IdentityUser
     {
+        public AppUser(){
+
+            UserRole = "USER";
+        }
+
         [PersonalData]
         [Column(TypeName = "nvarchar(256)")]
         public string Fullname { get; set; }
