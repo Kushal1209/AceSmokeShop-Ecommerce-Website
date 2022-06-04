@@ -699,10 +699,28 @@ namespace AceSmokeShop.Services
             {
                 try
                 {
-                    var prod = _productRepository._dbSet.Where(x => x.ProductID == newProduct.ProductID || x.Barcode == newProduct.Barcode || x.ProductName == newProduct.ProductName).FirstOrDefault();
-                    if (_productRepository._dbSet.Where(x => x.ProductID == newProduct.ProductID || x.Barcode == newProduct.Barcode || x.ProductName == newProduct.ProductName).Any()){
-                        return "This Product Already Exists: ProductID: " + newProduct.ProductID + ", BarCode: " + newProduct.Barcode + ", ProductName: " + newProduct.ProductName;
+                    var existingProd = _productRepository._dbSet.Where(x => x.ProductID == newProduct.ProductID || x.Barcode == newProduct.Barcode || x.ProductName == newProduct.ProductName).FirstOrDefault();
+                    if (existingProd != null){
+
+                        if (existingProd.IsRemoved)
+                        {
+                            existingProd.IsRemoved = false;
+                            existingProd.SalePrice = newProduct.SalePrice;
+                            existingProd.BasePrice = newProduct.BasePrice;
+                            existingProd.VendorPrice = newProduct.VendorPrice;
+                            existingProd.Description = newProduct.Description;
+
+                            _productRepository._dbSet.Update(existingProd);
+                            _productRepository._context.SaveChanges();
+
+                            return "Success";
+                        }
+                        else
+                        {
+                            return "This Product Already Exists: ProductID: " + newProduct.ProductID + ", BarCode: " + newProduct.Barcode + ", ProductName: " + newProduct.ProductName;
+                        }
                     }
+                       
                     else
                     {
                         string err = "Fail:";
