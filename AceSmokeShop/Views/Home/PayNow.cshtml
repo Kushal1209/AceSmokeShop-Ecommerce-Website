@@ -1,0 +1,157 @@
+﻿@using AceSmokeShop.ViewModel
+@model PayNowViewModel
+
+@{
+    ViewData["Title"] = "Pay Now";
+    int cardNumber = -1;
+    int SelectedCard = -1;
+}
+<div id="placeholder"></div>
+<div class="container-fluid" style="padding: 0rem 10rem; padding-bottom: 5rem;">
+    <div class="mt-5">
+        <h2 style="font-weight: 700; font-family: emoji; letter-spacing: -2px;">Orders</h2>
+    </div>
+    <input value=@Model.userOrder.CustOrderId type="hidden" id="orderId"/>
+    <table class="table mt-5">
+        <tbody>
+            @foreach (var i in Model.userOrder.OrderItems)
+            {
+                <tr>
+                    <td class="col-2">
+                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
+                    </td>
+                    <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-12">
+                                <div class="row p-2">
+                                    <div class="col mt-1">
+                                        <h6>@i.Product.ProductName</h6>
+                                        <div class="mt-1 mb-1 spec-1">
+                                            <span>@i.Product.Category.CategoryName</span> - <span>@i.Product.SubCategory.SubCategoryName</span><br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                        <label>@i.Quantity</label>
+                    </td>
+                    <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                        <label>$@i.Price</label>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div class="row mt-5"  style="margin:0;">
+        <div class="col-5">
+            <div class="row" style="margin:0;">
+                <div class="col-6">
+                    <div class="row" style="margin:0;">
+                        <a>Subtotal</a>
+                    </div>
+                    <div class="row" style="margin:0;">
+                            <a>Tax</a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row" style="margin:0;">
+                        <a id="Subtotal">$@Model.userOrder.SubTotal</a>
+                    </div>
+                    <div class="row" style="margin:0;">
+                        <a>@Model.userOrder.Tax%</a>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row" style="margin:0;">
+                <div class="col-6">
+                    <div class="row" style="margin:0;">
+                        <a><b>Grand Total</b></a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row" style="margin:0;">
+                        <a><b>$@Model.userOrder.TotalAmount</b></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h2 style="font-weight: 700; font-family: emoji; letter-spacing: -2px;">Payments Options</h2>
+        <hr/>
+    </div>
+    <div class="mt-4">
+        <div>
+            <h4 style="font-weight: 600; font-family: inherit; letter-spacing: -1px;">Select Payment Options</h4>
+        </div>
+        <div class="row mt-3 row-cols-3 row-cols-lg-3 gy-5 g-lg-4">
+            <input type="hidden" asp-for=@SelectedCard value=@SelectedCard id="inputSelectCardNum"/>
+            @foreach(var item in Model.PaymentMethods)
+            {
+                {
+                    cardNumber = cardNumber + 1;
+                }
+                <div class="col" style="padding-bottom: 1rem; max-width: 410px;">
+                    <div class="product-card" onclick="SelectCard(@cardNumber, @Model.PaymentMethods.Count())" id="@("cardSelect" + cardNumber)" style="width: 360px; height: 210px; color: #000000; background-color: #96672d; background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%); border-radius: 20px;">
+                        <div class="product-details" style="padding:1rem 2rem; height:100%;">
+                            <div style="text-align:-webkit-right;">
+                                <button type="button" onclick="RemoveCard(@cardNumber)" style="cursor:pointer; border:none; background: none;"><i class="bi bi-x-circle-fill" style="font-size: 20px; color:#96672d;" ></i></button>
+                            </div>
+                            <div style="height:80px; margin-top: 20px;">
+                                <h6 style="letter-spacing: 5px;">
+                                    xxxx-xxxx-xxxx-@item.Card.Last4
+                                </h6>
+                                <h6>
+                                    @item.Card.Brand
+                                </h6>
+                                <h6>
+                                    Exp: @item.Card.ExpMonth/@item.Card.ExpYear
+                                </h6>
+                            </div>
+                            <div style="text-align:-webkit-right;">
+                                @if(item.Card.Brand.ToLower().Contains("visa")){
+                                    <img style="width:70px;" src="~/Images/VisaLogo.png" />
+                                }
+                                else if(item.Card.Brand.ToLower().Contains("master")){
+                                    <img style="width:70px;" src="~/Images/MasterCardLogo.png" />
+                                }
+                                else if(item.Card.Brand.ToLower().Contains("discover")){
+                                    <img style="width:70px;" src="~/Images/DiscoverCardLogo.png" />
+                                }
+                                else if(item.Card.Brand.ToLower().Contains("amex")){
+                                    <img style="width: 130px; margin-top: -10px; margin-right: -20px;" src="~/Images/AmexCardLogo.png" />
+                                }
+                                else if(item.Card.Brand.ToLower().Contains("diner")){
+                                    <img style="width: 80px; margin-top: -10px; margin-right: -10px;" src="~/Images/DinersCardLogo.png" />
+                                }
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="col" style="padding-bottom: 1rem; max-width: 410px;">
+                <div class="product-card" style="width: 360px; height: 210px; color: #000000; background-color: #96672d; background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%); border-radius: 20px;">
+                    <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#000000;  width: -webkit-fill-available; height:-webkit-fill-available;" data-toggle="ajax-modal" data-target="#addcardget"
+                data-url="@Url.Action("AddCardGet")">Add New Card</button>
+	            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-10"></div>
+        <div class="col-2">
+            <button type="button" id="placeorderbtn" onclick="PayNow()" class="btn btn-block">Place Order</button>
+            
+            <button type="button" disabled hidden id="processorderbtn" class="btn btn-block">Processing...</button>
+        </div>
+    </div>
+</div>

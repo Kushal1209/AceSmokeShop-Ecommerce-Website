@@ -32,11 +32,12 @@ namespace AceSmokeShop.Controllers
             _adminUserViewModel = new AdminUserViewModel();
             _paymentServices = new PaymentServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
-                new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger));
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger), 
+                new AddressRepository(context, logger), new TransactionRepository(context, logger));
             _adminServices = new AdminServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,
-                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger));
+                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger), new TransactionRepository(context, logger));
         }
 
         [HttpGet]

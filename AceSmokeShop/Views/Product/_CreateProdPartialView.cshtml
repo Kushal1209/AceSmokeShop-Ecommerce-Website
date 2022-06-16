@@ -1,6 +1,9 @@
 ﻿@using AceSmokeShop.ViewModel
 @model AdminProductViewModel
+@{
+    var imgid = 1;
 
+}
 <div id="productpage" class="mt-3">
     <div class="Paginationblock">
         <div class="row">
@@ -120,15 +123,50 @@
 
             </thead>
             <tbody>
-                @foreach (var item in Model.ProductList)
+               @foreach (var item in Model.ProductList)
                {
                    <tr>
                        <td class="col-5">
                            <div class="row d-flex justify-content-center">
                                <div class="col-md-12">
-                                   <div class="row p-2 bg-white">
+                                   <div class="row p-2 bg-white" >
                                        <div class="col-md-3 mt-1">
-                                           <img class="img-fluid img-responsive rounded product-image d-block w-100" src="@item.PrimaryImage"/>
+                                           @*<img class="img-fluid img-responsive rounded product-image d-block w-100" src="@item.PrimaryImage"/>*@
+                                           <div class="product-imgs">
+                                                <div class="img-display" style="border: 1px solid darkgrey;">
+                                                    <div class="img-showcase" id=@item.Barcode>
+                                                        <img src="@item.PrimaryImage" alt="shoe image">
+                                                        <img src="@item.SecondaryImage1" alt="shoe image">
+                                                        <img src="@item.SecondaryImage2" alt="shoe image">
+                                                    </div>
+                                                </div>
+                                                <div class="img-select">
+                                                    <div class="img-item" style="margin:5px;border: 1px solid darkgrey;">
+                                                        <a href="#" data-id="@imgid">
+                                                            <img src="@item.PrimaryImage" alt="shoe image">
+                                                        </a>
+                                                    </div>
+                                                    @{
+                                                        imgid += 1;
+                                                    }
+                                                    <div class="img-item" style="margin:5px;border: 1px solid darkgrey;">
+                                                        <a href="#" data-id="@imgid">
+                                                            <img src="@item.SecondaryImage1" alt="shoe image">
+                                                        </a>
+                                                    </div>
+                                                     @{
+                                                        imgid += 1;
+                                                    }
+                                                    <div class="img-item" style="margin:5px;border: 1px solid darkgrey;">
+                                                        <a href="#" data-id="@imgid">
+                                                            <img src="@item.SecondaryImage2" alt="shoe image">
+                                                        </a>
+                                                    </div>
+                                                     @{
+                                                         imgid += 1;
+                                                    }
+                                                </div>
+                                            </div>
                                        </div>
                                        <div class="col mt-1">
                                            <h6>@item.ProductName - @item.Barcode</h6>
@@ -141,6 +179,10 @@
                                                <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#editProduct"
                                                     data-url="@Url.Action("EditProductGet","Product", @item)" style="border:none; outline:none; background:none;">
                                                     <i class="bi bi-pencil"></i>
+                                               </button>
+                                               <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituploadimgs"
+                                                    data-url="@Url.Action("EditUploadImageGet","Product", @item)" style="border:none; outline:none; background:none;">
+                                                    <i class="fa-solid fa-images"></i>
                                                </button>
                                                <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#deleteProduct"
                                                     data-url="@Url.Action("DeleteProductGet", "Product", @item)" style="border:none; outline:none; background:none;">
@@ -208,4 +250,9 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+
+       
+
+    </script>
 }

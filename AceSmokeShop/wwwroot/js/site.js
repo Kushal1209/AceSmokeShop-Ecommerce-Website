@@ -5,7 +5,6 @@
 
 // Write your JavaScript code.
 
-
 const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
 
 accordionItemHeaders.forEach(accordionItemHeader => {
@@ -43,7 +42,6 @@ accordionItemHeaders.forEach(accordionItemHeader => {
     });
 });
 
-
 function AccordianChange(id, count) {
     var str = "collapse" + id;
     var ishidden = document.getElementById(str).hidden;
@@ -60,6 +58,14 @@ function AccordianChange(id, count) {
             document.getElementById(str).hidden = true;
         }
     }
+
+}
+
+
+function PeriodbtnClick(id) {
+    var url = window.location.href;
+    var period = id;
+    window.location.href = CreateURL(url, { "Period": period, "DateFrom": "", "DateTo": "" });
 
 }
 
@@ -80,23 +86,29 @@ function PlusClickCart(id) {
     return false;
 }
 
-function EditCartQty(cartid, saleprice) {
+function EditCartQty(cartid, price) {
     var prdstr = "#ProductQty" + cartid;
-    salestr = "#SalePrice" + cartid;
+    salestr = "#Price" + cartid;
     var qty = parseInt($(prdstr).val());  
     
     var txt = $('#Subtotal').text();
+
     txt = txt.substring(1);
+
     var SubTotal = parseInt(txt);
 
+
     var txt = $(salestr).text()
+
     txt = txt.substring(1);
+
     var currSalePrice = parseInt(txt);
 
     if (qty > 0) {
         var url = "/Home/EditCartQuantity?CartId=" + cartid + "&Quantity=" + qty;
         $.get(url).done(function (data) {
-            var count = saleprice * qty;
+            var count = price * qty;
+            count = Math.round(count * 100) / 100;
             $(salestr).text('$' + count);
             $(salestr).change();
             if (currSalePrice > count) {
@@ -105,6 +117,7 @@ function EditCartQty(cartid, saleprice) {
             else {
                 SubTotal = SubTotal + (count - currSalePrice);
             }
+
             $('#Subtotal').text('$' + SubTotal);
             $('#Subtotal').change();
             return false;
@@ -113,6 +126,8 @@ function EditCartQty(cartid, saleprice) {
                 window.location.href = "/Identity/Account/Login?ReturnUrl=%2F" + page;
             }
             else {
+                //$(prdstr).text(--qty);
+                //$(prdstr).change();
                 $.notify(data.responseText, { globalPosition: 'bottom left', className: 'danger' });
             }
         });
@@ -164,6 +179,29 @@ function RemoveAddress(addressid) {
     });
 }
 
+function PickupAtStore() {
+    var selected = document.getElementById("SelectedField").value;
+    if (selected == 0) {
+
+        document.getElementById("HideShippingAdd").hidden = true;
+        document.getElementById('PickupAddCard').style.border = 'dashed';
+        document.getElementById('PickupAddCard').style.borderColor = '#96672d';
+        document.getElementById("addresses").hidden = true;
+        document.getElementById("addaddresses").hidden = true;
+        document.getElementById("SelectedField").value = 1;
+    }
+    else {
+        document.getElementById("HideShippingAdd").hidden = false;
+        document.getElementById('PickupAddCard').style.border = 'none';
+        document.getElementById('PickupAddCard').style.borderColor = '';
+        document.getElementById("addresses").hidden = false;
+        document.getElementById("addaddresses").hidden = false;
+        document.getElementById("SelectedField").value = 0;
+        $("Selected").val(0);
+        $("Selected").change();
+    }
+}
+
 function SelectCard(cardId, count) {
     $('#inputSelectCardNum').val(cardId);
     $('#inputSelectCardNum').change();
@@ -176,15 +214,65 @@ function SelectCard(cardId, count) {
         if (i != cardId) {
             idstr = "cardSelect" + i;
             document.getElementById(idstr).style.border = 'none';
-            document.getElementById(idstr).style.borderColor = ''
+            document.getElementById(idstr).style.borderColor = '';
         }
+    }
+    try {
+        if (-1 != cardId) {
+            idstr = "cardSelect" + -1;
+            document.getElementById(idstr).style.border = 'none';
+            document.getElementById(idstr).style.borderColor = '';
+        }
+       
+    } catch (Exception) {
+        
     }
 }
 
 function PlaceOrder(productId, qty) {
     document.getElementById('placeorderbtn').hidden = true;
     document.getElementById('processorderbtn').hidden = false;
+    var isPickUp = 0;
+    try {
+        isPickUp = document.getElementById("SelectedField").value
+    } catch (Exception) {
+
+    }
+    
     var url = "/Home/PlaceOrder";
+    var cardId = $('#inputSelectCardNum').val();
+    //if (cardId < 0) {
+    //    document.getElementById('placeorderbtn').hidden = false;
+    //    document.getElementById('processorderbtn').hidden = true;
+    //    $.notify("Please Select a Card", { globalPosition: 'bottom left', className: 'danger' });
+    //    return;
+    //}
+    url = CreateURL(url, { 'cardId': cardId })
+    if (productId != null && productId != undefined && qty != null && qty != undefined && qty >= 1) {
+        url = CreateURL(url, { 'productId': productId, 'qty': qty })
+    }
+    if (isPickUp == 1) {
+        url = CreateURL(url, { 'pickatstore': true })
+    }
+    $.get(url).done(function (data) {
+        window.location.href = "/Home/MyOrders";
+    }).fail(function (data) {
+        if (data.status == 401) {
+            window.location.href = "/Identity/Account/Login?ReturnUrl=%2F" + page;
+        }
+        else {
+            document.getElementById('placeorderbtn').hidden = false;
+            document.getElementById('processorderbtn').hidden = true;
+            $.notify(data.responseText, { globalPosition: 'bottom left', className: 'danger' });
+        }
+    });
+}
+
+function PayNow() {
+    document.getElementById('placeorderbtn').hidden = true;
+    document.getElementById('processorderbtn').hidden = false;
+
+    var url = "/Home/PayNow";
     var cardId = $('#inputSelectCardNum').val();
     if (cardId < 0) {
         document.getElementById('placeorderbtn').hidden = false;
@@ -192,10 +280,9 @@ function PlaceOrder(productId, qty) {
         $.notify("Please Select a Card", { globalPosition: 'bottom left', className: 'danger' });
         return;
     }
-    url = CreateURL(url, { 'cardId': cardId })
-    if (productId != null && productId != undefined && qty != null && qty != undefined && qty >= 1) {
-        url = CreateURL(url, { 'productId': productId, 'qty': qty })
-    }
+    var custOrderId = $('#orderId').val();
+    url = CreateURL(url, { 'cardId': cardId, 'orderId': custOrderId })
+    
     $.get(url).done(function (data) {
         window.location.href = "/Home/MyOrders";
     }).fail(function (data) {
@@ -361,6 +448,28 @@ function OpenUploadPage() {
     window.location = "/Product/UploadDataGet";
 }
 
+function EditOrderItem(custOrderId, OrderId, Qty) {
+    var placeholderElement = $('#placeholder');
+    var url = "/Admin/EditVendorOrderGet";
+    url = CreateURL(url, { 'CustOrderId': custOrderId, 'OrderId': OrderId, 'Qty': Qty })
+
+    $.get(url).done(function (data) {
+        placeholderElement.html(data);
+        placeholderElement.find('.modal').modal('show');
+    });
+}
+
+function DeleteOrderItem(items, OrderId) {
+    var placeholderElement = $('#placeholder');
+    var url = "/Admin/DeleteVendorOrderGet";
+    url = CreateURL(url, { 'items': items, 'OrderId': OrderId})
+
+    $.get(url).done(function (data) {
+        placeholderElement.html(data);
+        placeholderElement.find('.modal').modal('show');
+    });
+}
+
 
 $(function () {
     var placeholderElement = $('#placeholder');
@@ -372,13 +481,24 @@ $(function () {
         });
     });
 
-    $("#fliterbtnsearch").click(function (event) {
-        var url = window.location.href;
+    $("#AdminIndexfliterbtnsearch").click(function (event) {
+        var url = "/Admin/Index";
+        window.location.href = CreateURL(url, {
+            "Period": 0,
+            "DateFrom": $('#datefrom').val(),
+            "DateTo": $('#dateto').val(),
+            "pagefrom": 1,
+            "pagetotal": $('#rowselectId').val()
 
+        });
+    });
+
+    $("#fliterbtnsearch").click(function (event) {
+        var url = "/Product/Product";
         window.location.href = CreateURL(url, {
             "CategoryID": $('#category').val(),
             "SubCategoryId": $('#subcategory').val(),
-            "Search": $('#search').text(),
+            "Search": $('#search').val(),
             "Min": $('#min').val(),
             "Max": $('#max').val(),
             "pagefrom": 1,
@@ -392,6 +512,8 @@ $(function () {
 
         window.location.href = CreateURL(url, {
             "OrderStatus": $('#orderstatus').val(),
+            "SearchUser": $('#searchuser').val(),
+            "PaymentStatus": $('#paymentstatus').val(),
             "Search": $('#search').val(),
             "DateFrom": $('#datefrom').val(),
             "DateTo": $('#dateto').val(),
@@ -401,9 +523,21 @@ $(function () {
         });
     });
 
-    $('#fliterProductsSearch').click(function (event) {
+    $("#flitervendorOrderbtnsearch").click(function (event) {
         var url = window.location.href;
 
+        window.location.href = CreateURL(url, {
+            "OrderStatus": $('#vendororderstatus').val(),
+            "ShippingStatus": $('#vendorshipstatus').val(),
+            "PaymentStatus": $('#vendorpaymentstatus').val(),
+            "Search": $('#search').val(),
+            "DateFrom": $('#datefrom').val(),
+            "DateTo": $('#dateto').val()
+        });
+    });
+
+    $('#fliterProductsSearch').click(function (event) {
+        var url = window.location.href;
         window.location.href = CreateURL(url, {
             "CategoryID": $('#category').val(),
             "SubCategoryId": $('#subcategory').val(),
@@ -539,8 +673,17 @@ $(function () {
         var actionUrl = form.attr('action');
         var sendData = form.serialize();
         $.post(actionUrl, sendData).done(function (data) {
+            var x = data.toString();
             placeholderElement.find('.modal').modal('hide');
-            location.reload();
+            var str = actionUrl.toString();
+            if (str.includes('CreateProduct')) {
+                placeholderElement.html(data);
+                placeholderElement.find('.modal').modal('show')
+            }
+            else {
+                location.reload();
+            }
+          
         }).fail(function (data) {
             $.notify(data.responseText, { globalPosition: 'bottom left', className: 'danger' });
         });

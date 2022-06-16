@@ -20,11 +20,12 @@ namespace AceSmokeShop.Services
         private readonly StateRepository _stateRepository;
         private readonly CartRepository _cartRepository;
         private readonly AddressRepository _addressRepository;
-
+        private readonly TransactionRepository _transactionRepository;
 
         public PaymentServices(ProductRepository productRepository,
             CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
-            StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, AddressRepository addressRepository)
+            StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, 
+            AddressRepository addressRepository, TransactionRepository transactionRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -33,6 +34,7 @@ namespace AceSmokeShop.Services
             _userManager = userManager;
             _cartRepository = cartRepository;
             _addressRepository = addressRepository;
+            _transactionRepository = transactionRepository;
         }
 
         public string AddCard(AppUser user, PaymentCardViewModel model)
@@ -74,6 +76,19 @@ namespace AceSmokeShop.Services
                
             }
             return "Success";
+        }
+
+        public double GetCurrentBalance(AppUser user)
+        {
+            if (user == null || user.UserRole != "ADMIN")
+            {
+                return 0;
+            }
+
+            var service = new BalanceService();
+            Balance balance = service.Get();
+
+            return (double)balance.Available[0].Amount / (double)100;
         }
 
         public StripeList<PaymentMethod> GetMyCards(string customerId)
@@ -137,11 +152,24 @@ namespace AceSmokeShop.Services
                     PaymentMethod = pmId,
                     Customer = user.CustomerId,
                     Description = "Ace Smoke Shop Order",
-                    StatementDescriptor = OrderId,
-                    
+                    StatementDescriptor = OrderId
                 };
                 var service = new PaymentIntentService();
                 var result = service.Create(option);
+
+                var createpayment = new Transactions();
+                createpayment.UserId = user.Id;
+                createpayment.OrderId = OrderId;
+                createpayment.Amount = grandTotal;
+                createpayment.UserRole = user.UserRole;
+                createpayment.CreateDate = DateTime.Now;
+                createpayment.PaymentMethod = "Card";
+                createpayment.PaymentIntentId = result.Id;
+                createpayment.TransactionType = "Full";
+                createpayment.Status = "Completed";
+
+                _transactionRepository._dbSet.Add(createpayment);
+                _transactionRepository._context.SaveChanges();
 
                 return result.Id;
 
@@ -163,6 +191,16 @@ namespace AceSmokeShop.Services
                 };
                 var service = new RefundService();
                 service.Create(options);
+
+                var transaction = _transactionRepository._dbSet.Where(x => x.PaymentIntentId == pmId).FirstOrDefault();
+                if(transaction != null)
+                {
+                    transaction.Status = "Refunded";
+                    transaction.CreateDate = DateTime.Now;
+
+                    _transactionRepository._dbSet.Update(transaction);
+                    _transactionRepository._context.SaveChanges();
+                }
 
                 return "Success";
             }

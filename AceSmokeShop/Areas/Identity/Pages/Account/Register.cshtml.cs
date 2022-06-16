@@ -145,6 +145,13 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
                         await _userManager.UpdateAsync(thisUser);
 
                     }
+                    else
+                    {
+                        var thisUser = await _userManager.FindByIdAsync(user.Id);
+                        thisUser.CustomerId = customers.FirstOrDefault().Id;
+                        thisUser.LockoutEnabled = false;
+                        await _userManager.UpdateAsync(thisUser);
+                    }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

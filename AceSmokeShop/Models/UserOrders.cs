@@ -19,11 +19,9 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "nvarchar(450)")]
         public string UserId { get; set; }
 
-        [Required]
         [ForeignKey("Addresses")]
         public int ShippingAddressId { get; set; }
 
-        [Required]
         [ForeignKey("Addresses")]
         public int BillingAddressId { get; set; }
 
@@ -47,13 +45,8 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "nvarchar(256)")]
         public string OrderStatus { get; set; }
 
-        [Required]
         [Column(TypeName = "nvarchar(256)")]
         public string PaymentId { get; set; }
-
-        [Required]
-        [Column(TypeName = "nvarchar(256)")]
-        public string PaymentStatus { get; set; }
 
         [Required]
         [Column(TypeName = "nvarchar(256)")]
@@ -62,6 +55,11 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "nvarchar(256)")]
         public DateTime DeliveryDate { get; set; }
 
+        [Column(TypeName = "bit")]
+        public bool IsVendor { get; set; }
+
+        [Column(TypeName = "bit")]
+        public bool IsPaid { get; set; }
         public virtual AppUser User { get; set; }
         public virtual Addresses ShippingAddress { get; set; }
         public virtual Addresses BillingAddress { get; set; }

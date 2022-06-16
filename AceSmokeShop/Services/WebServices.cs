@@ -21,12 +21,13 @@ namespace AceSmokeShop.Services
         private readonly AddressRepository _addressRepository;
         private readonly UserOrdersRepository _userOrdersRepository;
         private readonly OrderItemRepository _orderItemRepository;
+        private readonly TransactionRepository _transactionRepository;
         private PaymentServices _paymentServices;
 
         public WebServices(ProductRepository productRepository,
             CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
             StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, AddressRepository addressRepository,
-            PaymentServices paymentServices, UserOrdersRepository userOrdersRepository, OrderItemRepository orderItemRepository)
+            PaymentServices paymentServices, UserOrdersRepository userOrdersRepository, OrderItemRepository orderItemRepository, TransactionRepository transactionRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -38,6 +39,7 @@ namespace AceSmokeShop.Services
             _paymentServices = paymentServices;
             _userOrdersRepository = userOrdersRepository;
             _orderItemRepository = orderItemRepository;
+            _transactionRepository = transactionRepository;
         }
 
         public string GenerateOrderID()
@@ -72,8 +74,8 @@ namespace AceSmokeShop.Services
         {
             var model = new UHomeViewModel();
 
-            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
-            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
+            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured && !x.IsRemoved && x.Stock > 0).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
+            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted && !x.IsRemoved && x.Stock > 0).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
             model.CategoryList = _categoryRepository._dbSet.ToList();
             foreach(var item in model.FeaturedList)
             {
@@ -91,9 +93,7 @@ namespace AceSmokeShop.Services
                     item.VendorPrice = 0;
                 }
             }
-
             return model;
-
         }
 
         public UProductViewModel GetUserProductsViewModel(AppUser user, int CategoryID = 0, int SubCategoryID = 0, int pageFrom = 1, int ItemsPerPage = 10,
@@ -103,6 +103,7 @@ namespace AceSmokeShop.Services
 
             model.CategoryList = _categoryRepository._dbSet.ToList();
             model.CategoryList.Insert(0, new Category { CategoryID = 0, CategoryName = "Select Category" });
+            model.SubCategoryList.Insert(0, new SubCategory { SubCategoryID = 0, SubCategoryName = "Select SubCategory" });
             var ProdctList = _productRepository._dbSet.Where(x => x.IsRemoved == false).Include(x => x.Category).Include(x => x.SubCategory).ToList();
             pageFrom--;
             if(CategoryID > 0)
@@ -154,7 +155,7 @@ namespace AceSmokeShop.Services
             return model;
         }
 
-        public string PlaceProductOrder(AppUser user, int cardId, string productId, int qty)
+        public string PlaceProductOrder(AppUser user, int cardId, string productId, int qty, bool pickatstore)
         {
             var product = _productRepository._dbSet.Where(x => x.Barcode == productId).FirstOrDefault();
             if(product == null || product.IsRemoved)
@@ -174,18 +175,50 @@ namespace AceSmokeShop.Services
             {
                SubTotal = product.SalePrice * qty;
             }
-            
+
+            var ShippingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsShipping).FirstOrDefault();
+            var BillingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsBilling).FirstOrDefault();
+
+            if (user.UserRole.ToLower() != "vendor")
+            {
+                if (ShippingAddress == null || BillingAddress == null)
+                {
+                    return "Fail: Please Choose shipping and billing Addresses";
+                }
+                if (cardId < 0)
+                {
+                    return "Fail: Please Select a Card";
+                }
+            }
+            else
+            {
+                if (pickatstore)
+                {
+                    var add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
+                    if(add == null)
+                    {
+                        add = new Addresses();
+                        add.AddressLineA = "Store Address";
+                        add.AddressLineB = "Store Address";
+                        add.StateID = 5;
+                        add.City = "Blackwood";
+                        add.Zipcode = 17057;
+                        add.UserId = "adminUser";
+                        _addressRepository._dbSet.Add(add);
+                        _addressRepository._context.SaveChanges();
+                        add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
+                    }
+                    ShippingAddress = add;
+                }
+
+                BillingAddress = ShippingAddress;
+            }
+
+
             double Tax = 6.625;
             var GrandTotal = SubTotal + (SubTotal * Tax / 100);
 
             var OrderId = GenerateOrderID();
-            var result = _paymentServices.PlaceOrder(user, cardId, GrandTotal, OrderId);
-
-            if (result.ToLower().Contains("err"))
-            {
-                return result;
-            }
-            //Create Order and Update
 
             var Order = new UserOrders();
             Order.CustOrderId = OrderId;
@@ -194,25 +227,44 @@ namespace AceSmokeShop.Services
             Order.TotalAmount = GrandTotal;
             Order.SubTotal = SubTotal;
             Order.Tax = Tax;
-            Order.PaymentId = result;
-            Order.PaymentStatus = "Paid";
             Order.CreateDate = DateTime.Today;
-            var ShippingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsShipping).FirstOrDefault();
-            var BillingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsBilling).FirstOrDefault();
-
+            Order.IsVendor = user.UserRole.ToLower().Contains("vendor") ? true : false;
             Order.ShippingAddressId = ShippingAddress.Id;
             Order.BillingAddressId = BillingAddress.Id;
+            var paymentResult = "";
 
-            _userOrdersRepository._dbSet.Add(Order);
-            _userOrdersRepository._context.SaveChanges();
-
-            Order = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == OrderId).FirstOrDefault();
-            if (Order == null)
+            if (user.UserRole.ToLower() != "vendor" || cardId >= 0)
             {
-                //Refund
-                var refund = _paymentServices.CreateRefund(result, "duplicate");
+                paymentResult = _paymentServices.PlaceOrder(user, cardId, GrandTotal, OrderId);
+                if (paymentResult.ToLower().Contains("err"))
+                {
+                    return paymentResult;
+                }
+                Order.IsPaid = true;
+                Order.PaymentId = paymentResult;
+                _userOrdersRepository._dbSet.Add(Order);
+                _userOrdersRepository._context.SaveChanges();
+                Order = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == OrderId).FirstOrDefault();
 
-                return "Payment Processed but Something Went Wrong! Refund is in Process";
+                if (Order == null)
+                {
+                    //Refund
+                    var refund = _paymentServices.CreateRefund(paymentResult, "duplicate");
+
+                    return "Payment Processed but Something Went Wrong! Refund is in Process";
+                }
+            }
+            else
+            {
+                Order.IsPaid = false;
+                Order.PaymentId = "";
+                _userOrdersRepository._dbSet.Add(Order);
+                _userOrdersRepository._context.SaveChanges();
+                Order = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == OrderId).FirstOrDefault();
+                if (Order == null)
+                {
+                    return "Something Went Wrong! Please Try Again";
+                }
             }
 
             var orderItem = new OrderItem();
@@ -235,9 +287,12 @@ namespace AceSmokeShop.Services
             _orderItemRepository._dbSet.Add(orderItem);
             _orderItemRepository._context.SaveChanges();
 
-            product.Stock = product.Stock - qty;
-            _productRepository._dbSet.Update(product);
-            _productRepository._context.SaveChanges();
+            if (user.UserRole.ToLower() != "vendor" || cardId >= 0)
+            {
+                product.Stock = product.Stock - qty;
+                _productRepository._dbSet.Update(product);
+                _productRepository._context.SaveChanges();
+            }
 
             return "Success";
         }
@@ -267,7 +322,7 @@ namespace AceSmokeShop.Services
             }
         }
 
-        public string PlaceCartOrder(AppUser user, int cardId)
+        public string PlaceCartOrder(AppUser user, int cardId, bool pickatstore)
         {
             //Validate Everything and Calculate Total
             var cartItems = GetMyCart(user);
@@ -277,9 +332,41 @@ namespace AceSmokeShop.Services
             {
                 return "Please Add Items to Cart";
             }
-            if(ShippingAddress == null || BillingAddress == null)
+
+            if (user.UserRole.ToLower() != "vendor")
             {
-                return "Fail: Please Choose shipping and billing Addresses";
+                if (ShippingAddress == null || BillingAddress == null)
+                {
+                    return "Fail: Please Choose shipping and billing Addresses";
+                }
+                if (cardId < 0)
+                {
+                    return "Fail: Please Select a Card";
+                }
+
+            }
+            else
+            {
+                if (pickatstore)
+                {
+                    var add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
+                    if (add == null)
+                    {
+                        add = new Addresses();
+                        add.AddressLineA = "Store Address";
+                        add.AddressLineB = "Store Address";
+                        add.StateID = _stateRepository._dbSet.Where(x => x.StateName.Contains("Jersey")).FirstOrDefault().StateID;
+                        add.City = "Blackwood";
+                        add.Zipcode = 17057;
+                        add.UserId = _userManager.Users.Where(x => x.UserRole == "ADMIN").FirstOrDefault().Id;
+                        _addressRepository._dbSet.Add(add);
+                        _addressRepository._context.SaveChanges();
+                        add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
+                    }
+                    ShippingAddress = add;
+                }
+
+                BillingAddress = ShippingAddress;
             }
             double SubTotal = 0.0;
             foreach(var item in cartItems)
@@ -305,15 +392,9 @@ namespace AceSmokeShop.Services
             var Tax = 6.625;
             var GrandTotal = SubTotal + (SubTotal * Tax / 100);
 
-            // Make Payment
             var OrderId = GenerateOrderID();
-            var result = _paymentServices.PlaceOrder(user, cardId, GrandTotal, OrderId);
 
-            if (result.ToLower().Contains("err"))
-            {
-                return result;
-            }
-            //Create Order and Update
+            var paymentResult = "";
 
             var Order = new UserOrders();
             Order.CustOrderId = OrderId;
@@ -322,24 +403,46 @@ namespace AceSmokeShop.Services
             Order.TotalAmount = GrandTotal;
             Order.SubTotal = SubTotal;
             Order.Tax = Tax;
-            Order.PaymentId = result;
-            Order.PaymentStatus = "Paid";
             Order.CreateDate = DateTime.Today;
             Order.ShippingAddressId = ShippingAddress.Id;
             Order.BillingAddressId = BillingAddress.Id;
-            
-            _userOrdersRepository._dbSet.Add(Order);
-            _userOrdersRepository._context.SaveChanges();
+            Order.IsVendor = user.UserRole.ToLower().Contains("vendor") ? true : false;
 
-            Order = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == OrderId).FirstOrDefault();
-            if(Order == null)
+            if (user.UserRole.ToLower() != "vendor" || cardId >= 0)
             {
-                //Refund
-                var refund = _paymentServices.CreateRefund(result, "duplicate");
+                paymentResult = _paymentServices.PlaceOrder(user, cardId, GrandTotal, OrderId);
+                if (paymentResult.ToLower().Contains("err"))
+                {
+                    return paymentResult;
+                }
+                Order.IsPaid = true;
+                Order.PaymentId = paymentResult;
 
-                return "Payment Processed but Something Went Wrong! Refund is in Process";
+                _userOrdersRepository._dbSet.Add(Order);
+                _userOrdersRepository._context.SaveChanges();
+                Order = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == OrderId).FirstOrDefault();
+                if (Order == null)
+                {
+                    //Refund
+                    var refund = _paymentServices.CreateRefund(paymentResult, "duplicate");
+
+                    return "Payment Processed but Something Went Wrong! Refund is in Process";
+                }
             }
+            else
+            {
+                Order.IsPaid = false;
+                Order.PaymentId = paymentResult;
 
+                _userOrdersRepository._dbSet.Add(Order);
+                _userOrdersRepository._context.SaveChanges();
+
+                Order = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == OrderId).FirstOrDefault();
+                if (Order == null)
+                {
+                    return "Something Went Wrong Please Try Again";
+                }
+            }
             var OrderItems = new List<OrderItem>();
             var productList = new List<Product>();
 
@@ -370,15 +473,67 @@ namespace AceSmokeShop.Services
             _orderItemRepository._dbSet.AddRange(OrderItems);
             _orderItemRepository._context.SaveChanges();
 
-            //Reduce product stock by Qty.
-            _productRepository._dbSet.UpdateRange(productList);
-            _productRepository._context.SaveChanges();
+            if (user.UserRole.ToLower() != "vendor" || cardId >= 0)
+            {
+                _productRepository._dbSet.UpdateRange(productList);
+                _productRepository._context.SaveChanges();
+            }
+          
 
             //Empty cart after order placing
             _cartRepository._dbSet.UpdateRange(cartItems);
             _cartRepository._context.SaveChanges();
 
             return "Success";
+        }
+
+        public string PayNow(AppUser user, int cardId, string custOrderId)
+        {
+            var order = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == custOrderId).FirstOrDefault();
+            if (order == null || order.UserId != user.Id || order.IsPaid || order.OrderStatus.ToLower().Contains("cancel"))
+            {
+                return "Error: Something Went Wrong";
+            }
+
+            //Stripe Payment
+            var paymentDetails = _paymentServices.PlaceOrder(user, cardId, order.TotalAmount, custOrderId);
+            if (paymentDetails.ToLower().Contains("err"))
+            {
+                return paymentDetails;
+            }
+            //UserOrder Update
+            order.IsPaid = true;
+            order.PaymentId = paymentDetails;
+            _userOrdersRepository._dbSet.Update(order);
+            _userOrdersRepository._context.SaveChanges();
+
+            return "Success";
+        }
+
+        public PayNowViewModel GetPayNowViewModel(AppUser user, string custOrderId)
+        {
+            var order = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == custOrderId).FirstOrDefault();
+            if(order == null || order.UserId != user.Id || order.IsPaid || order.OrderStatus.ToLower().Contains("cancel"))
+            {
+                return null;
+            }
+            //prepare order: fill Shipping, Billing Address & OrderItem(Include:Product=>Category=>Subcategory)
+
+            order.ShippingAddress = _addressRepository._dbSet.Where(x => x.Id == order.ShippingAddressId).FirstOrDefault();
+            order.BillingAddress = _addressRepository._dbSet.Where(x => x.Id == order.BillingAddressId).FirstOrDefault();
+            order.OrderItems = _orderItemRepository._dbSet.Where(x => x.CustOrderId == custOrderId).Include(x => x.Product).Include(x => x.Product.Category).Include(x => x.Product.SubCategory).ToList();
+
+            if(order.IsVendor == true && order.ShippingAddress.AddressLineA.ToLower().Contains("store address") && order.BillingAddress.AddressLineA.ToLower().Contains("store address"))
+            {
+                order.ShippingAddress = null;
+                order.BillingAddress = null;
+            }
+
+            var model = new PayNowViewModel();
+            model.userOrder = order;
+            model.PaymentMethods = _paymentServices.GetMyCards(user.CustomerId);
+
+            return model;
         }
 
         public string CancelOrder(string orderId)
@@ -425,13 +580,22 @@ namespace AceSmokeShop.Services
             return "Success";
         }
 
-        public OrderViewModel GetOrdersViewModel(AppUser user)
+        public OrderViewModel GetOrdersViewModel(AppUser user, string OrderStatus, string ShippingStatus, string PaymentStatus, string Search, DateTime datefrom, DateTime dateto)
         {
             var model = new OrderViewModel();
-
-            model.userOrdersList = _userOrdersRepository._dbSet.Where(x => x.UserId == user.Id).OrderByDescending(x => x.Id).ToList();
-            model.States = _stateRepository._dbSet.ToList();
             var addresses = _addressRepository._dbSet.Where(x => x.UserId == user.Id).ToList();
+
+            if (user != null && user.UserRole == "VENDOR") {
+                model.userOrdersList = GetFilteredVendorOrderList(user, addresses, OrderStatus, ShippingStatus, PaymentStatus, Search, datefrom, dateto);
+                model.UnPaidAmount = model.userOrdersList.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Select(x => x.TotalAmount).Sum();
+                model.UnPaidOrders = model.userOrdersList.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Count();
+                model.search = Search;
+                model.OrderStatus = OrderStatus;
+                model.PaymentStatus = PaymentStatus;
+                model.ShippingStatus = ShippingStatus;
+            }
+            else model.userOrdersList = _userOrdersRepository._dbSet.Where(x => x.UserId == user.Id).OrderByDescending(x => x.Id).ToList();
+            model.States = _stateRepository._dbSet.ToList();           
 
             foreach(var items in model.userOrdersList)
             {
@@ -443,13 +607,48 @@ namespace AceSmokeShop.Services
             return model;
         }
 
+        //TODO: Ship Status Filter for Vendor Product Filter
+        private List<UserOrders> GetFilteredVendorOrderList(AppUser user, List<Addresses> addresses, string orderStatus, string shippingStatus, string paymentStatus, string search, DateTime datefrom, DateTime dateto)
+        {
+            List<string> orderItemCustId = new List<string>();
+            string str = "";
+            if (!search.Equals(""))
+            {
+                orderItemCustId = _orderItemRepository._dbSet.Include(x => x.UserOrders).Include(x => x.Product).Include(x => x.Product.Category).Include(x => x.Product.SubCategory)
+                                    .Where(x => x.UserOrders.UserId == user.Id &&
+                                    (x.Product.ProductName.ToLower().Contains(search)
+                                    || x.Product.Category.CategoryName.ToLower().Contains(search)
+                                    || x.Product.SubCategory.SubCategoryName.ToLower().Contains(search))).Select(x => x.CustOrderId).Distinct().ToList();
+
+
+                foreach (var item in orderItemCustId)
+                {
+                    str += item.ToString() + "/";
+                }
+            }
+            string addressstr = "-";
+            foreach(var item in addresses)
+            {
+                addressstr += item.Id + "-";
+            }
+            
+            var list = _userOrdersRepository._dbSet.Where(x => x.UserId == user.Id 
+                                                            && (orderStatus.Equals("") ? true : x.OrderStatus.ToLower().Contains(orderStatus))
+                                                            && (paymentStatus.Equals("") ? true : paymentStatus.Equals("paid") ? (x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")) : (!x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")))
+                                                            && (search.Equals("") ? true : (x.CustOrderId.ToLower().Contains(search) || str.Contains(x.CustOrderId)))
+                                                            && (shippingStatus.Equals("") ? true : shippingStatus.Contains("store") ? !addressstr.Contains("-" + x.ShippingAddressId + "-") : addressstr.Contains("-" + x.ShippingAddressId + "-"))
+                                                            && (x.CreateDate >= datefrom && x.CreateDate <= dateto)).ToList();
+
+            return list;
+        }
+
         public CheckoutViewModel GetCheckoutViewModel(AppUser user, string productId, int qty)
         {
             var model = new CheckoutViewModel();
             model.Tax = 6.625;
             if (productId != null && productId.Length > 3)
             {
-                var product = _productRepository._dbSet.Where(x => x.Barcode == productId && x.IsRemoved == false && x.Stock >= qty).FirstOrDefault();
+                var product = _productRepository._dbSet.Where(x => x.Barcode.Equals(productId) && x.IsRemoved == false && x.Stock >= qty).FirstOrDefault();
                 if(product != null)
                 {
                     if (user.UserRole.ToLower().Contains("vendor"))
@@ -674,15 +873,28 @@ namespace AceSmokeShop.Services
             }
             catch (Exception)
             {
-
                 return "Fail: Something went Wrong";
             }
-
         }
 
         public List<Cart> GetMyCart(AppUser user)
         {
-            var cartItems = _cartRepository._dbSet.Include(x => x.Product).Where(x => x.IsRemoved == false && x.UserId == user.Id && x.Product.IsRemoved == false).ToList();
+            var cartItems = _cartRepository._dbSet.Include(x => x.Product).Where(x => x.IsRemoved == false && x.UserId == user.Id && x.Product.IsRemoved == false && x.Product.Stock > 0).ToList();
+            var updatedCartList = new List<Cart>();
+            foreach (var item in cartItems)
+            {
+                if (item.Quantity > item.Product.Stock)
+                {
+                    item.Quantity = item.Product.Stock;
+                    updatedCartList.Add(item);          
+                }
+            }
+            if (updatedCartList.Count() > 0)
+            {
+                _cartRepository._dbSet.UpdateRange(updatedCartList);
+                _cartRepository._context.SaveChanges();
+            }
+
             return cartItems;
         }
 

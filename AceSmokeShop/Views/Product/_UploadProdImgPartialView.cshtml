@@ -1,0 +1,57 @@
+﻿@model int
+
+@{
+    ViewData["Title"] = "Add Images";
+    Layout = null;
+
+    int prodId = @Model;
+}
+
+<div id="uploadProductImgs"></div>
+
+<div class="modal" tabindex="-1" role="dialog" id="uploadimgs">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadimgslbl">Add Product Images</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border:none; outline:none">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <div class="container">
+                    <form method="post" asp-controller="Product" asp-action="UploadProdImage" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="@prodId" name="prodId"/>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Primary Img</label>
+                                    <input type="file" name="primary" class="custom-file" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Secondary Img1</label>
+                                    <input type="file" name="second" class="custom-file" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Secondary Img2</label>
+                                    <input type="file" name="third" class="custom-file" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <button type="submit" class="btn btn-block">Create</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}

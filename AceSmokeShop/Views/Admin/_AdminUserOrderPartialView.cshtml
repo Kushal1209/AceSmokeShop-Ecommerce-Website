@@ -1,7 +1,151 @@
 ﻿@using AceSmokeShop.ViewModel
 @model AdminOrderDetailsViewModel
 
-<div class="row mt-5" style="width:90%; margin:0;" id="userorders">
+@if(Model.userOrder.IsVendor == true)
+{
+    <div class="row mt-5" style="width:90%; margin:0;" id="userorders">
+        @if(Model.ShippingAddress == null)
+        {
+            <div class="product-card" style="width: 330px">
+		        <div class="product-details"  style="padding: 1rem 2rem;">
+                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
+			        </div>
+                    <br/>
+                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
+			        </div>
+                    <br/>
+                </div>
+	        </div>
+        }
+        else
+        {
+            <div class="col-4" style="padding:0px;">
+                <div class="product-card" style="width: 330px">
+                    <div class="product-details"  style="padding: 1rem 2rem;">
+                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
+                        </div>
+                        @if(@Model.ShippingAddress != null && @Model.ShippingAddress.AddressLineA != null)
+                        {
+                            <h7>
+                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.AddressLineA  </a>
+                            </h7>
+                            <br/>
+                            @if (Model.ShippingAddress.AddressLineB != null && @Model.ShippingAddress.AddressLineB.Length > 0)
+                            {
+                                <h7>
+                                    <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.AddressLineB</a>
+                                </h7>
+                                <br/>
+                            }
+                            <h7>
+                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.City</a>
+                            </h7>
+                            <br/>
+                            <h7>
+                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@Model.ShippingAddress.StateID - 1].StateName @Model.ShippingAddress.Zipcode</a>
+                            </h7>
+                            <br/>
+                            @if(Model.ShippingAddress.AddressLineB != null && Model.ShippingAddress.AddressLineB.Length <= 0)
+                            {
+                                <br/>
+                            }
+                        }   
+                    </div>
+	            </div>
+            </div>
+        }
+        
+        <div class="col-4" style="padding:0px;">
+        </div>
+        @*Insert Calc Section here*@
+        <div class="col-4" style="padding:0px;">
+            <hr/>
+            <div class="row" style="margin:0;">
+                <div class="col-6">
+                    <div class="row" style="margin:0;">
+                        <a>Subtotal</a>
+                    </div>
+                    <div class="row" style="margin:0;">
+                            <a>Tax</a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row" style="margin:0;">
+                        <a id="Subtotal">$@Model.userOrder.SubTotal</a>
+                    </div>
+                    <div class="row" style="margin:0;">
+                        <a>@Model.userOrder.Tax%</a>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row" style="margin:0;">
+                <div class="col-6">
+                    <div class="row" style="margin:0;">
+                        <a><b>Grand Total</b></a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row" style="margin:0;">
+                        <a><b>$@Model.userOrder.TotalAmount</b></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table mt-5" style="width:85%;">
+        <tbody>
+            @foreach (var i in @Model.ListOfOrderItem)
+            {
+                <tr>
+                    <td class="col-2">
+                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
+                    </td>
+                    <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-12">
+                                <div class="row p-2">
+                                    <div class="col mt-1">
+                                        <h6>@i.Product.ProductName</h6>
+                                        <div class="mt-1 mb-1 spec-1">
+                                            <span>@i.Product.Category.CategoryName</span> - <span>@i.Product.SubCategory.SubCategoryName</span><br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                        <label>@i.Quantity</label>
+                    </td>
+                    <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                        <label>$@i.Price</label>
+                    </td>
+
+                    @if(@Model.userOrder.IsPaid == false && @Model.userOrder.OrderStatus.ToLower().Contains("place"))
+                    {
+                        <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                            <button type="button" class="d-inline" style="border:none; outline:none; background:none;"
+                                OnClick=EditOrderItem("@i.CustOrderId","@i.Id","@i.Quantity")>
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button type="button" class="d-inline" style="border:none; outline:none; background:none;"
+                                OnClick=DeleteOrderItem("@Model.ListOfOrderItem.Count()","@i.Id")>
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
+                    }            
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="row mt-5" style="width:90%; margin:0;" id="userorders">
         <div class="col-4" style="padding:0px;">
             <div class="product-card" style="width: 330px">
 		        <div class="product-details"  style="padding: 1rem 2rem;">
@@ -140,3 +284,4 @@
             }
         </tbody>
     </table>
+}

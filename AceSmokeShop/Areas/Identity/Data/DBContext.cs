@@ -35,6 +35,7 @@ namespace AceSmokeShop.Data
         public DbSet<AceSmokeShop.Models.UserOrders> tbl_userorders { get; set; }
         public DbSet<AceSmokeShop.Models.OrderItem> tbl_orderitem { get; set; }
         public DbSet<AceSmokeShop.Models.OrderShipStatus> tbl_ordershipstatus { get; set; }
+        public DbSet<AceSmokeShop.Models.Transactions> tbl_transactions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

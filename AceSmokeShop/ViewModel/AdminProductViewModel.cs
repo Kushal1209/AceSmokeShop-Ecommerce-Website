@@ -1,4 +1,5 @@
 ﻿using AceSmokeShop.Models;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
 namespace AceSmokeShop.ViewModel
@@ -33,7 +34,7 @@ namespace AceSmokeShop.ViewModel
             CurrentPage = 1;
             TotalPages = 0;
             ItemsPerPage = 10;
-            
+
             newProduct = new Product();
             editproduct = new Product();
             newcategory = new Category();
@@ -73,5 +74,6 @@ namespace AceSmokeShop.ViewModel
         public string Search { get; set; }
         public int SortByOrder { get; set; }
         public int SortByID { get; set; }
+
     }
 }

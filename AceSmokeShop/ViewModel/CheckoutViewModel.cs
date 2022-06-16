@@ -9,7 +9,6 @@ namespace AceSmokeShop.ViewModel
         public CheckoutViewModel()
         {
             Address = new AddressViewModel();
-            PaymentCards = new PaymentCardViewModel();
             PaymentMethods = new Stripe.StripeList<Stripe.PaymentMethod>();
             Subtotal = 0;
             Qty = 1;
@@ -22,7 +21,6 @@ namespace AceSmokeShop.ViewModel
             CartList = new List<Cart>();
         }
         public AddressViewModel Address { get; set; }
-        public PaymentCardViewModel PaymentCards { get; set; }
         public Stripe.StripeList<Stripe.PaymentMethod> PaymentMethods { get; set; }
         public double Subtotal { get; set; }
         public double Tax { get; set; }

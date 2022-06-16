@@ -1,12 +1,22 @@
 ﻿@using AceSmokeShop.ViewModel
+@using Microsoft.AspNetCore.Identity
+@using AceSmokeShop.Areas.Identity.Data
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 @model ProductDescriptionViewModel
 
 @{
     ViewData["Title"] = "Product Description";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    AppUser user = null;
+    if(User != null)
+    {
+      user = await @UserManager.GetUserAsync(User);
+    }
 }
 
-<div class="container mt-4" style="margin-bottom: 1rem;">
+<div class="container-fluid mt-4" style="padding:0rem 8rem; padding-bottom: 5rem;">
 
     <div class="row">
         <!-- card left -->
@@ -42,7 +52,14 @@
             <a class = "product-link" style="font-weight: 400;">@Model.product.Category.CategoryName</a>
       
             <div class="product-price">
-                <p class="new-price" style="font-weight: 700;font-size: 1.5rem;"><span>$@Model.product.SalePrice</span></p>
+                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                {
+                    <p class="new-price" style="font-weight: 700;font-size: 1.5rem;"><span>$@Model.product.VendorPrice</span></p>
+                }
+                else
+                {
+                    <p class="new-price" style="font-weight: 700;font-size: 1.5rem;"><span>$@Model.product.SalePrice</span></p>
+                }
             </div>
 
             <div class="product-quantity">
@@ -55,8 +72,8 @@
             </div>
 
             <div class="row mt-3">
-                <button class="btn" type="button" onclick="AddtoCart(@Model.product.Barcode, $('#ProductQty').val(), 'Home/ProductDetails?Productid=' + @Model.product.Barcode )" style="background-color: gray;border-radius: 0px;width:inherit;max-width:150px;min-width:100px;margin-right:10px;">Add to Cart</button>
-                <button type="button" class="btn" onclick="BuyNow(@Model.product.Barcode, $('#ProductQty').val())" style="background-color: black; border-radius: 0px;color: #dfcece;width: inherit;max-width:150px;min-width:100px">Buy Now</button>
+                <button class="btn" type="button" onclick="AddtoCart('@Model.product.Barcode', $('#ProductQty').val(), 'Home/ProductDetails?Productid=' + @Model.product.Barcode )" style="background-color: gray;border-radius: 0px;width:inherit;max-width:150px;min-width:100px;margin-right:10px;">Add to Cart</button>
+                <button type="button" class="btn" onclick="BuyNow('@Model.product.Barcode', $('#ProductQty').val())" style="background-color: black; border-radius: 0px;color: #dfcece;width: inherit;max-width:150px;min-width:100px">Buy Now</button>
             </div>
 
         </div>
@@ -93,7 +110,15 @@
 		                </div>
 		                <div class="product-details" style="padding:0px;">
                             <div style="padding: 5px; min-height: 87px;">
-                                <div class="product-price">$@item.SalePrice</div>
+                                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                                {
+                                    <div class="product-price">$@item.VendorPrice</div>
+                                }
+                                else
+                                {
+                                    <div class="product-price">$@item.SalePrice</div>
+                                }
+                                
 			                    <h7>
                                     <a style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px;">@item.Category.CategoryName - @item.ProductName</a>
                                 </h7>
@@ -101,7 +126,7 @@
 			                <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
                                 <div class="col" style="padding: 0px;height: -webkit-fill-available;">
                                     <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
-                                    onclick="AddtoCart(@item.Barcode, 1, 'Home/Products')">Add to Cart</button>
+                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
                                 </div>
 			                </div>
 		                </div>

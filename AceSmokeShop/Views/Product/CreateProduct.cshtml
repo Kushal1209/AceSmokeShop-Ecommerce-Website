@@ -16,7 +16,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="CreateProduct" method="post">
+                <form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <div class="row">
@@ -74,11 +74,30 @@
                                 <input asp-for="newProduct.Description" class="form-control" />
                             </div>
                         </div>
+                        <br/>
+                       @* <div class="row">
+                            <div class="col-md-12">
+                                <h5>Add Images</h5>
+                                <hr/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Primary Img</label>
+                                 <input asp-for="Primaryimg" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Secondary Img</label>
+                                <input type="file" asp-for="Secondimg" class="form-control"/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Secondary Img2</label>
+                                <input type="file" asp-for="Thirdimg" class="form-control"/>
+                            </div>
+                        </div>*@
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-block" data-save="modal">Save</button>
+                <button type="button" class="btn btn-block" data-save="modal">Next</button>
             </div>
         </div>
     </div>

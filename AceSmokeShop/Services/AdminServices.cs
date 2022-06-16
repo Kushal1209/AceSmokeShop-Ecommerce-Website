@@ -5,11 +5,14 @@ using AceSmokeShop.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace AceSmokeShop.Services
@@ -25,15 +28,15 @@ namespace AceSmokeShop.Services
         private readonly AddressRepository _addressRepository;
         private readonly UserOrdersRepository _userOrdersRepository;
         private readonly OrderItemRepository _orderItemRepository;
+        private readonly TransactionRepository _transactionRepository;
         private PaymentServices _paymentServices;
         private int ProductCount = 0;
         private int UserCount = 0;
         private int UserOrderCount = 0;
 
-        public AdminServices(ProductRepository productRepository,
-            CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
-            StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, AddressRepository addressRepository,
-            PaymentServices paymentServices, UserOrdersRepository userOrdersRepository, OrderItemRepository orderItemRepository)
+        public AdminServices(ProductRepository productRepository, CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
+                StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, AddressRepository addressRepository,
+                PaymentServices paymentServices, UserOrdersRepository userOrdersRepository, OrderItemRepository orderItemRepository, TransactionRepository transactionRepository)
         {
             //_userManager = userManager;
             _productRepository = productRepository;
@@ -46,6 +49,68 @@ namespace AceSmokeShop.Services
             _paymentServices = paymentServices;
             _userOrdersRepository = userOrdersRepository;
             _orderItemRepository = orderItemRepository;
+            _transactionRepository = transactionRepository;
+        }
+
+        public AdminFinancialViewModel GetAdminFinancialViewModel(AppUser user, int pageFrom, int pageTotal, int period,
+                         DateTime datefrom, DateTime dateto)
+        {
+            var model = new AdminFinancialViewModel();
+            List<string> months = new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" };
+            if (user == null || user.UserRole != "ADMIN")
+            {
+                return null;
+            }
+
+            model.currentBalance = _paymentServices.GetCurrentBalance(user);
+            model.Period = period;
+            model.CurrentPage = pageFrom;
+            model.ItemsPerPage = pageTotal;
+            if (!(period <= 0 || period > 3))
+            {
+                dateto = DateTime.Now;
+                if(period == 1)
+                {
+                    datefrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+                    var days = dateto.Day;
+                    var templist = _transactionRepository._dbSet.Where(x => x.CreateDate >= datefrom && x.CreateDate <= dateto).ToList();
+                    model.TotalTransactions = templist.Count();
+                    model.yValues = new int[days];
+                    model.xValues = new string[days];
+                    for (int i = 0; i<days; i++)
+                    {
+                        var tempDateStart = datefrom.AddDays(i);
+                        var tempDateEnd = tempDateStart.AddHours(24).AddSeconds(-1);
+                        model.xValues[i] = tempDateStart.Day + " " + months[tempDateStart.Month - 1];
+                        model.yValues[i] = (int)Math.Ceiling(templist.Where(x => x.CreateDate >= tempDateStart && x.CreateDate <= tempDateEnd).Select(x => x.Amount).Sum());
+                    }
+
+                    
+                }
+                else if (period == 2)
+                {
+                    datefrom = DateTime.Now.AddMonths(-6);
+                }
+                else
+                {
+                    datefrom = DateTime.Now.AddYears(-1);
+                }
+               
+            }
+            pageFrom--;
+            model.ListofTransactions = _transactionRepository._dbSet.Where(x => x.CreateDate >= datefrom && x.CreateDate <= dateto).Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+            model.TotalRevenue = model.ListofTransactions.Where(x => !x.Status.Equals("Refunded")).Select(x => x.Amount).Sum();
+            model.VendorRevenue = model.ListofTransactions.Where(x => x.UserRole == "VENDOR" && !x.Status.Equals("Refunded")).Select(x => x.Amount).Sum();
+            model.UserRevenue = (model.TotalRevenue - model.VendorRevenue);
+            model.TaxCollected = (model.TotalRevenue / 1.0625);
+            model.CardPayment = model.ListofTransactions.Where(x => x.PaymentMethod.Equals("Card")).Select(x => x.Amount).Sum();
+            model.InStorePayment = model.TotalRevenue - model.CardPayment;
+            model.TotalPages = (int)Math.Ceiling((double)(model.TotalTransactions / pageTotal));
+            model.DateFrom = datefrom;
+            model.DateTo = dateto;
+
+            return model;
         }
 
         public async Task<AdminProductViewModel> GetAdminProductViewModelAsync(AppUser user, int CategoryId = 0, int SubCategoryId = 0, int Min = 0,
@@ -92,6 +157,13 @@ namespace AceSmokeShop.Services
             model.ShippingAddress = _addressRepository._dbSet.Where(x => x.Id == userOrder.ShippingAddressId).FirstOrDefault();
             model.BillingAddress = _addressRepository._dbSet.Where(x => x.Id == userOrder.BillingAddressId).FirstOrDefault();
             model.ListOfOrderItem = _orderItemRepository._dbSet.Where(x => x.CustOrderId == order).Include(x => x.Product).Include(x => x.Product.Category).Include(x => x.Product.SubCategory).ToList();
+            
+            if(model.ShippingAddress.AddressLineA.ToLower().Contains("store address") || model.ShippingAddress.AddressLineB.ToLower().Contains("store address")) 
+            {
+                model.ShippingAddress = null;
+                model.BillingAddress= null;
+            }
+            
             model.userOrder = userOrder;
             model.States = _stateRepository._dbSet.ToList();
             return model;
@@ -124,6 +196,10 @@ namespace AceSmokeShop.Services
                         return "Fail: Cannot change status of a Delivered Item";
                     }
                     userorder.OrderStatus = orderstatus;
+                    if (orderstatus.ToLower().Contains("deliver"))
+                    {
+                        userorder.DeliveryDate = DateTime.Now;
+                    }
                     if (userorder.OrderStatus.ToLower().Contains("cancelled"))
                     {
                         var refund = _paymentServices.CreateRefund(userorder.PaymentId, "duplicate");
@@ -151,7 +227,238 @@ namespace AceSmokeShop.Services
             }
         }
 
-        public AdminUserOrderViewModel GetAdminUserOrderViewModel(AppUser user, string orderstatus, int sortbyorder, 
+        public string DeleteVendorOrder(AppUser user, int items, int orderId)
+        {
+            if (user.UserRole != "ADMIN" || user.LockoutEnabled)
+            {
+                return "UnAuthorized!";
+            }
+            else
+            {
+                var thisVendorOrder = _orderItemRepository._dbSet.Where(x => x.Id == orderId).Include(x => x.Product).FirstOrDefault();
+                thisVendorOrder.UserOrders = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == thisVendorOrder.CustOrderId).FirstOrDefault();
+                if (thisVendorOrder == null || thisVendorOrder.UserOrders == null)
+                {
+                    return "Fail: Something Went Wrong";
+                }
+                if (thisVendorOrder.UserOrders.IsPaid == false && thisVendorOrder.UserOrders.OrderStatus.ToLower().Contains("place"))
+                {
+                    if(items <= 1)
+                    {
+                        //Change Order Status to Cancelled and Return
+                        thisVendorOrder.UserOrders.OrderStatus = "Cancelled";
+                        _userOrdersRepository._dbSet.Update(thisVendorOrder.UserOrders);
+                        _userOrdersRepository._context.SaveChanges();
+
+                        return "Success";
+                    }
+                    else
+                    {
+                        //Delete from DB
+                        //Reduce SubTotal and GrandTotal in User Orders and return
+                        double oldPrice = thisVendorOrder.Price * thisVendorOrder.Quantity;
+                        _orderItemRepository._dbSet.Remove(thisVendorOrder);
+                        _orderItemRepository._context.SaveChanges();
+                        double newPrice = 0;
+                        var userorder = thisVendorOrder.UserOrders;
+                        userorder.SubTotal += (newPrice - oldPrice);
+                        userorder.TotalAmount = userorder.SubTotal + (userorder.SubTotal * userorder.Tax / 100);
+
+                        _userOrdersRepository._dbSet.Update(userorder);
+                         _userOrdersRepository._context.SaveChanges();
+                    }
+                   
+
+                    return "Success";
+                }
+                else
+                {
+                    return "Fail: Error occured while deleting Order Item!";
+                }
+            }
+        }
+
+        public string UploadProductImages(AppUser user, int prodId, IFormFile primary, IFormFile second, IFormFile third)
+        {
+            if(user == null || user.UserRole != "ADMIN")
+            {
+                return "UnAuthorized";
+            }
+
+            var product = _productRepository._dbSet.Where(x => x.ProductID == prodId).FirstOrDefault();
+            var defaultImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl20Tuf0ZhpbNa24X1Kaw3NgZ1Rhy2bdbkGw&usqp=CAU";
+
+            if (product == null) return "Fail";
+
+            var img1 = (product.PrimaryImage != null && product.PrimaryImage.Length > 5) ? product.PrimaryImage : defaultImage;
+            var img2 = (product.SecondaryImage1 != null && product.SecondaryImage1.Length > 5) ? product.SecondaryImage1 : defaultImage;
+            var img3 = (product.SecondaryImage2 != null && product.SecondaryImage2.Length > 5) ? product.SecondaryImage2 : defaultImage;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(" https://api.imgbb.com/1/upload?key=fa4f68b086423d3975452aa7d7676daf");
+                MultipartFormDataContent multiContent = new MultipartFormDataContent();
+                byte[] data;
+                HttpResponseMessage result = new HttpResponseMessage();
+
+                //Image 1
+                try
+                {
+                    using (var br = new BinaryReader(primary.OpenReadStream()))
+                        data = br.ReadBytes((int)primary.OpenReadStream().Length);
+                    multiContent.Add(new ByteArrayContent(data), "image", primary.FileName);
+                    result = client.PostAsync("", multiContent).Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var response = JsonConvert.DeserializeObject<ImageAPIResponse>(result.Content.ReadAsStringAsync().Result);
+                        img1 = response.data.display_url;
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+                
+
+                //Image 2
+                try
+                {
+                    using (var br = new BinaryReader(second.OpenReadStream()))
+                        data = br.ReadBytes((int)second.OpenReadStream().Length);
+                    multiContent = new MultipartFormDataContent();
+                    multiContent.Add(new ByteArrayContent(data), "image", second.FileName);
+                    result = client.PostAsync("", multiContent).Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var response = JsonConvert.DeserializeObject<ImageAPIResponse>(result.Content.ReadAsStringAsync().Result);
+                        img2 = response.data.display_url;
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+                
+
+                //Image 3
+                try
+                {
+                    using (var br = new BinaryReader(third.OpenReadStream()))
+                        data = br.ReadBytes((int)third.OpenReadStream().Length);
+                    multiContent = new MultipartFormDataContent();
+                    multiContent.Add(new ByteArrayContent(data), "image", third.FileName);
+                    result = client.PostAsync("", multiContent).Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var response = JsonConvert.DeserializeObject<ImageAPIResponse>(result.Content.ReadAsStringAsync().Result);
+                        img3 = response.data.display_url;
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+
+                if(product != null)
+                {
+                    product.PrimaryImage = img1;
+                    product.SecondaryImage1 = img2;
+                    product.SecondaryImage2 = img3;
+
+                    _productRepository._dbSet.Update(product);
+                    _productRepository._context.SaveChanges();
+                }
+
+                return product.Barcode;
+
+            }
+        }
+
+        public string MarkAsPaid(AppUser user, string custOrderId)
+        {
+            if (user == null || user.UserRole != "ADMIN")
+            {
+                return "UnAuthorized!";
+            }
+
+            var userorder = _userOrdersRepository._dbSet.Where(x => x.CustOrderId == custOrderId).FirstOrDefault();
+
+            if(userorder == null)
+            {
+                return "Err: This user doesn't exist";
+            }
+            if (userorder.OrderStatus.ToLower().Contains("cancel"))
+            {
+                return "Fail: Cannot accept payment for cancelled Orders";
+            }
+            if (userorder.IsPaid)
+            {
+                return "Fail: This order is already PaidOff";
+            }
+
+            userorder.IsPaid = true;
+
+            _userOrdersRepository._dbSet.Update(userorder);
+            _userOrdersRepository._context.SaveChanges();
+
+            var createpayment = new Transactions();
+            createpayment.UserId = userorder.UserId;
+            createpayment.OrderId = custOrderId;
+            createpayment.Amount = userorder.TotalAmount;
+            createpayment.UserRole = "VENDOR";
+            createpayment.CreateDate = DateTime.Now;
+            createpayment.PaymentMethod = "PAID AT STORE";
+            createpayment.TransactionType = "Full";
+            createpayment.Status = "Completed";
+
+            _transactionRepository._dbSet.Add(createpayment);
+            _transactionRepository._context.SaveChanges();
+
+
+            return "Success";
+        }
+
+        public async Task<string> EditVendorOrder(AppUser user, string custOrderId, int orderId, int qty)
+        {
+            if (user.UserRole != "ADMIN" || user.LockoutEnabled)
+            {
+                return "UnAuthorized!";
+            }
+            else
+            {
+                if (qty <= 0)
+                {
+                    return "Fail: InValid Qty.";
+                }
+                var thisVendorOrder = await _orderItemRepository._dbSet.Where(x => x.CustOrderId == custOrderId && x.Id == orderId).Include(x => x.Product).FirstOrDefaultAsync();
+                thisVendorOrder.UserOrders = await _userOrdersRepository._dbSet.Where(x => x.CustOrderId == custOrderId).FirstOrDefaultAsync();
+                if(thisVendorOrder == null || thisVendorOrder.UserOrders == null)
+                {
+                    return "Fail: Something Went Wrong";
+                }
+                if(thisVendorOrder.UserOrders.IsPaid == false && thisVendorOrder.UserOrders.OrderStatus.ToLower().Contains("place"))
+                {
+                    var userorder = thisVendorOrder.UserOrders;
+                    double oldPrice = thisVendorOrder.Price * thisVendorOrder.Quantity;
+                    thisVendorOrder.Price = thisVendorOrder.Product.VendorPrice;
+                    thisVendorOrder.Quantity = qty;
+                    double newPrice = thisVendorOrder.Price * thisVendorOrder.Quantity;
+                    userorder.SubTotal += (newPrice - oldPrice);
+                    userorder.TotalAmount = userorder.SubTotal + (userorder.SubTotal * userorder.Tax / 100);
+
+                    _userOrdersRepository._dbSet.Update(userorder);
+                    await _userOrdersRepository._context.SaveChangesAsync();
+
+                    _orderItemRepository._dbSet.Update(thisVendorOrder);
+                    await _orderItemRepository._context.SaveChangesAsync();
+
+                    return "Success";
+                }
+                else
+                {
+                    return "Err: Cannot change Qty of the Order";
+                }
+            }
+        }
+
+        public AdminUserOrderViewModel GetAdminUserOrderViewModel(AppUser user, string orderstatus, string paymentstatus, string searchuser, int sortbyorder, 
                         int sortbyid, string search, int pageFrom, int pageTotal, DateTime datefrom, DateTime dateto)
         {
             var model = new AdminUserOrderViewModel();
@@ -161,15 +468,23 @@ namespace AceSmokeShop.Services
             }
             else
             {
-                model.userOrdersList = GetFilteredUserOrderList(user, orderstatus, sortbyorder, sortbyid, search, pageFrom, pageTotal, datefrom, dateto);
-                model.TotalOrders = UserOrderCount;
+                model.userOrdersList = GetFilteredUserOrderList(user, orderstatus, searchuser, paymentstatus, sortbyorder, sortbyid, search, pageFrom, pageTotal, datefrom, dateto);
+                model.FilteredOrders = UserOrderCount;
+                model.TotalOrders = _userOrdersRepository._dbSet.Count();
+                model.VendorOrder = _userOrdersRepository._dbSet.Where(x => x.IsVendor).Count();
+                model.UserOrder = _userOrdersRepository._dbSet.Where(x => x.IsVendor == false).Count();
+                model.CancelledOrders = _userOrdersRepository._dbSet.Where(x => x.OrderStatus.ToLower().Contains("cancelled")).Count();
+                model.UnPaidAmount = model.userOrdersList.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Select(x => x.TotalAmount).Sum();
+                model.UnPaidOrders = model.userOrdersList.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Count();
                 model.CurrentPage = pageFrom;
+                model.NewOrders = _userOrdersRepository._dbSet.Where(x => x.OrderStatus.ToLower().Contains("place")).Count();
                 model.ItemsPerPage = pageTotal;
-                model.TotalPages = (int)Math.Ceiling((double)((double)model.TotalOrders / (double)pageTotal));
+                model.TotalPages = (int)Math.Ceiling((double)((double)model.FilteredOrders / (double)pageTotal));
                 model.search = search;
                 model.DateFrom = datefrom;
                 model.DateTo = dateto;
                 model.OrderStatus = orderstatus;
+                model.SearchByUser = searchuser;
                 model.SortByID = 0;
                 model.SortByOrder = sortbyorder;
 
@@ -177,7 +492,7 @@ namespace AceSmokeShop.Services
             }
         }
 
-        public List<UserOrders> GetFilteredUserOrderList(AppUser user, string orderstatus, int sortbyorder, int sortbyid, string search, int pageFrom, int pageTotal, DateTime datefrom, DateTime dateto)
+        public List<UserOrders> GetFilteredUserOrderList(AppUser user, string orderstatus, string searchuser, string paymentstatus, int sortbyorder, int sortbyid, string search, int pageFrom, int pageTotal, DateTime datefrom, DateTime dateto)
         {
             var orderlist = new List<UserOrders>();
             pageFrom--;
@@ -186,11 +501,22 @@ namespace AceSmokeShop.Services
                 return orderlist;
             }
             else
-            {
-               if(sortbyorder == 1)
+            {   
+                //paymentStatus: Paid ---> userOrder.isPaid, UnPaid -->> UserOrder.IsPaid == false, Refunded ---> isPaid and OrderStatus.Cancelled, Paid in Card ---> paymentId, InStore ---> isPaid  and PaymentId null 
+
+
+                if (sortbyorder == 1)
                 {
+                    
                     orderlist = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
                        x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
+                       && (searchuser.ToLower().Equals("") ? true : searchuser.ToLower().Contains("vendor") ? x.IsVendor == true : x.IsVendor == false) 
+                       &&(paymentstatus.Equals("") ? true : 
+                            paymentstatus.Equals("paid") ? (x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")) : 
+                            paymentstatus.Equals("unpaid") ? (x.IsPaid == false && !x.OrderStatus.ToLower().Contains("cancel")) : 
+                            paymentstatus.Equals("refunded") ? (x.IsPaid && x.OrderStatus.ToLower().Contains("cancel")) : 
+                            paymentstatus.Contains("card payment") ? (x.PaymentId != "" && !x.OrderStatus.ToLower().Contains("cancel")) : 
+                            paymentstatus.Contains("in-store") ? (x.IsPaid && x.PaymentId == "" && !x.OrderStatus.ToLower().Contains("cancel")) : false)
                        && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
                        && x.CreateDate >= datefrom && x.CreateDate <= dateto).Include(x => x.User).OrderByDescending(x => x.CreateDate)
                            .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
@@ -199,13 +525,30 @@ namespace AceSmokeShop.Services
                 {
                     orderlist = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
                        x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
+                       && (searchuser.ToLower().Equals("") ? true : searchuser.ToLower().Contains("vendor") ? x.IsVendor == true : x.IsVendor == false)
+                        && (paymentstatus.Equals("") ? true :
+                            paymentstatus.Equals("paid") ? (x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")) :
+                            paymentstatus.Equals("unpaid") ? (x.IsPaid == false && !x.OrderStatus.ToLower().Contains("cancel")) :
+                            paymentstatus.Equals("refunded") ? (x.IsPaid && x.OrderStatus.ToLower().Contains("cancel")) :
+                            paymentstatus.Contains("card payment") ? (x.PaymentId != "" && !x.OrderStatus.ToLower().Contains("cancel")) :
+                            paymentstatus.Contains("in-store") ? (x.IsPaid && x.PaymentId == "" && !x.OrderStatus.ToLower().Contains("cancel")) : false)
                        && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
                        && x.CreateDate >= datefrom && x.CreateDate <= dateto).Include(x => x.User)
                         .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
                 }
                
 
-                UserOrderCount = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) || x.User.Fullname.Contains(search) || (x.User.Email.Contains(search)))  ).Count();
+                UserOrderCount = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
+                       x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
+                       && (searchuser.ToLower().Equals("") ? true : searchuser.ToLower().Contains("vendor") ? x.IsVendor == true : x.IsVendor == false)
+                        && (paymentstatus.Equals("") ? true :
+                            paymentstatus.Equals("paid") ? (x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")) :
+                            paymentstatus.Equals("unpaid") ? (x.IsPaid == false && !x.OrderStatus.ToLower().Contains("cancel")) :
+                            paymentstatus.Equals("refunded") ? (x.IsPaid && x.OrderStatus.ToLower().Contains("cancel")) :
+                            paymentstatus.Contains("card payment") ? (x.PaymentId != "" && !x.OrderStatus.ToLower().Contains("cancel")) :
+                            paymentstatus.Contains("in-store") ? (x.IsPaid && x.PaymentId == "" && !x.OrderStatus.ToLower().Contains("cancel")) : false)
+                       && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).Count();
                 
                 return orderlist;
             }
@@ -495,8 +838,6 @@ namespace AceSmokeShop.Services
 
                 }
                
-
-
                 return userlist;
             }
 
@@ -755,12 +1096,15 @@ namespace AceSmokeShop.Services
                         }
                         newProduct.IsFeatured = false;
                         newProduct.IsPromoted = false;
+                        newProduct.PrimaryImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl20Tuf0ZhpbNa24X1Kaw3NgZ1Rhy2bdbkGw&usqp=CAU";
+                        newProduct.SecondaryImage1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl20Tuf0ZhpbNa24X1Kaw3NgZ1Rhy2bdbkGw&usqp=CAU";
+                        newProduct.SecondaryImage2 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl20Tuf0ZhpbNa24X1Kaw3NgZ1Rhy2bdbkGw&usqp=CAU";
                         var currentCount = _productRepository._dbSet.Count();
-                        _productRepository._dbSet.Add(newProduct);
+                        var prod = _productRepository._dbSet.Add(newProduct);
                         await _productRepository._context.SaveChangesAsync();
                         if(currentCount == _productRepository._dbSet.Count() - 1)
                         {
-                            return "Success";
+                            return "Success" + prod.Entity.ProductID;
                         }
 
                         return "Something went wrong!";

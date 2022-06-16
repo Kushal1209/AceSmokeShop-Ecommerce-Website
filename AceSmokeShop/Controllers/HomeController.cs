@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Stripe;
+using System;
 
 namespace AceSmokeShop.Controllers
 {
@@ -33,16 +34,21 @@ namespace AceSmokeShop.Controllers
             Input = new CartInputModel();
             _paymentServices = new PaymentServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
-                new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger));
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger), 
+                new AddressRepository(context, logger), new TransactionRepository(context, logger));
             _webServices = new WebServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,
-                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger));
+                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger), new TransactionRepository(context, logger));
         }
 
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
+            if(user != null && user.UserRole == "ADMIN")
+            {
+                return RedirectToAction("Index", "Admin");
+            }
             _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
             return View("Index",_uHomeViewModel);
@@ -159,7 +165,7 @@ namespace AceSmokeShop.Controllers
             }
         }
 
-        public async Task<IActionResult> PlaceOrder(int cardId, string productId = "", int qty = 0)
+        public async Task<IActionResult> PlaceOrder(int cardId, string productId = "", int qty = 0, bool pickatstore = false)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -171,7 +177,7 @@ namespace AceSmokeShop.Controllers
                 {
                     if(qty > 0)
                     {
-                        str = _webServices.PlaceProductOrder(user, cardId, productId, qty);
+                        str = _webServices.PlaceProductOrder(user, cardId, productId, qty, pickatstore);
                         if (str.ToLower().Contains("success"))
                         {
                             return StatusCode(200, str);
@@ -185,7 +191,7 @@ namespace AceSmokeShop.Controllers
                 }
                 else
                 {
-                    str = _webServices.PlaceCartOrder(user, cardId);
+                    str = _webServices.PlaceCartOrder(user, cardId, pickatstore);
                     if (str.ToLower().Contains("success"))
                     {
                         return StatusCode(200, str);
@@ -374,14 +380,30 @@ namespace AceSmokeShop.Controllers
             }
         }
 
-        public async Task<IActionResult> MyOrders()
+        public async Task<IActionResult> MyOrders(string OrderStatus = "", string ShippingStatus = "", string PaymentStatus = "", string Search = "", string datefrom = "", string dateto = "")
         {
             var user = await _userManager.GetUserAsync(User);
 
             if (user != null)
             {
-                var model = _webServices.GetOrdersViewModel(user);
+                DateTime DateFrom = datefrom == null || datefrom == "" ? DateTime.MinValue : DateTime.Parse(datefrom);
+                DateTime DateTo;
+                if (dateto == null || dateto == "")
+                {
+                    DateTo = DateTime.MaxValue;
+                }
+                else
+                {
+                    DateTo = DateTime.Parse(dateto);
+                    DateTo = new DateTime(DateTo.Year, DateTo.Month, DateTo.Day, 23, 59, 59);
 
+                }
+                OrderStatus = OrderStatus == null || OrderStatus.ToLower().Contains("select") ? "" : OrderStatus.ToLower();
+                ShippingStatus = ShippingStatus == null || ShippingStatus.ToLower().Contains("select") ? "" : ShippingStatus.ToLower();
+                PaymentStatus = PaymentStatus == null || PaymentStatus.ToLower().Contains("select") ? "" : PaymentStatus.ToLower();
+                Search = Search == null || Search.Length <= 1 ? "" : Search.ToLower();
+
+                var model = _webServices.GetOrdersViewModel(user, OrderStatus, ShippingStatus, PaymentStatus, Search, DateFrom, DateTo);
 
                 return View("MyOrders", model);
             }
@@ -443,6 +465,49 @@ namespace AceSmokeShop.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> PayNowGet(string CustOrderId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
+
+                return View("Index", _uHomeViewModel);
+            }
+            var result = _webServices.GetPayNowViewModel(user, CustOrderId);
+           
+            if(result == null)
+            {
+                _uHomeViewModel = _webServices.GetHomeViewModel(user);
+
+                return View("Index", _uHomeViewModel);
+            }
+
+            return View("PayNow", result);
+        }
+
+        public async Task<IActionResult> PayNow(int cardId, string orderId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return StatusCode(401);
+            }
+
+            var result = _webServices.PayNow(user, cardId, orderId);
+
+            if (result.ToLower().Contains("success"))
+            {
+                return StatusCode(200);
+            }
+
+
+            _uHomeViewModel = _webServices.GetHomeViewModel(user);
+
+            return View("Index", _uHomeViewModel);
+
+        }
         public IActionResult Privacy()
         {
             return View();

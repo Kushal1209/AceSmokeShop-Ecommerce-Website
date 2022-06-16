@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AceSmokeShop.Models
@@ -80,5 +81,6 @@ namespace AceSmokeShop.Models
         public virtual Category Category { get; set; }
 
         public virtual SubCategory SubCategory { get; set; }
+
     }
 }

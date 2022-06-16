@@ -11,7 +11,6 @@ namespace AceSmokeShop.Models
 
         [Required]
         [ForeignKey("UserOrders")]
-        [Column(TypeName = "int")]
         public int OrderId { get; set; }
 
         [Required]
@@ -32,6 +31,6 @@ namespace AceSmokeShop.Models
 
         public virtual Product Product { get; set; }
 
-        public virtual UserOrders UserOrder { get; set; }
+        public virtual UserOrders UserOrders { get; set; }
     }
 }

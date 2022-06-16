@@ -1,0 +1,49 @@
+﻿@using AceSmokeShop.ViewModel
+@model EditVendorOrderViewModel
+
+@{
+    ViewData["Title"] = "MArk as Paid";
+    Layout = null;
+}
+
+<div class="modal" tabindex="-1" role="dialog" id="markaspaid">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="markaspaidlbl">Mark As Paid</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border:none; outline:none">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="MarkAsPaid" method="post" autocomplete="off">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">
+                    </div>
+                    <input type="hidden" asp-for="@Model.CustOrderId" />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <div class="product-quantity">
+                                    <div>
+                                        <h5>Are you sure?</h5>
+                                        <h7>This order will be marked as PAID AT STORE.</h7>                              
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-block" data-save="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}
+

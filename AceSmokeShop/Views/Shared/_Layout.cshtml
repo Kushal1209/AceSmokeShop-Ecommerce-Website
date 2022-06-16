@@ -7,9 +7,10 @@
 
     <title>@ViewData["Title"] - AceSmokeShop</title>
 
-    <link href="~/lib/jquery-ui-1.13.1.custom/jquery-ui-1.13.1.custom/jquery-ui.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/bootstrap/scss" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site_mobileView.css" />
     <link rel="stylesheet" href="~/css/accordian.css" />
     <link rel="stylesheet" href="~/css/carousel.css" />
 
@@ -27,18 +28,18 @@
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span><i style="color: #FFF;" class="fa-solid fa-bars"></i></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Products">Explore</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="MyOrders">My Orders</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="MyOrders">Orders</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="">Contact</a>
@@ -52,105 +53,11 @@
             </div>
         </nav>
     </header>
-    <div class="container" style="min-width: -webkit-fill-available;">
+
+    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
-
-    <div class="mt-5" style="padding-bottom:5rem;background-color: #F7F7F7;">
-        <div class="row" style="margin:0rem; padding:2rem 8rem;">
-            <div class="col-3">
-                <div class="row" style="margin:0rem;">
-                    <h6>
-                        <a><b>Menu 1</b></a>
-                    </h6>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 1</a>
-                    </h7>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 2</a>
-                    </h7>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 3</a>
-                    </h7>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="row" style="margin:0rem;">
-                    <h6>
-                        <a><b>Menu 2</b></a>
-                    </h6>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 1</a>
-                    </h7>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 2</a>
-                    </h7>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 3</a>
-                    </h7>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="row" style="margin:0rem;">
-                    <h6>
-                        <a><b>Menu 3</b></a>
-                    </h6>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 1</a>
-                    </h7>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 2</a>
-                    </h7>
-                </div>
-                <div class="row" style="margin:0rem;">
-                    <h7>
-                        <a>Title 3</a>
-                    </h7>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="row" style="margin:0rem;">
-                    <h6>
-                        <a><b>Follow Us</b></a>
-                    </h6>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <i style="font-size: 2rem;" class="fa-brands fa-facebook"></i>
-                    </div>
-                    <div class="col-2">
-                        <i style="font-size: 2rem;" class="fa-brands fa-pinterest-square"></i>
-                    </div>
-                    <div class="col-2">
-                        <i style="font-size: 2rem;" class="fa-brands fa-twitter-square"></i>
-                    </div>
-                    <div class="col-2">
-                        <i style="font-size: 2rem;" class="fa-brands fa-instagram-square"></i>
-                    </div>
-                    <div class="col-2">
-                        <i style="font-size: 2rem;" class="fa-brands fa-linkedin"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <footer class="border-top footer text-muted">
@@ -173,7 +80,6 @@
         <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     </environment>
 
-    <script src="~/lib/jquery-ui-1.13.1.custom/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

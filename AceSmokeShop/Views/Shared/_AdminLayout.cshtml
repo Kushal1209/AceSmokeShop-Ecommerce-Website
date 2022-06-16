@@ -7,11 +7,12 @@
 
     <title>@ViewData["Title"] - AceSmokeShop</title>
 
-    <link href="~/lib/jquery-ui-1.13.1.custom/jquery-ui-1.13.1.custom/jquery-ui.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/accordian.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site_mobileView.css" />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
@@ -24,12 +25,12 @@
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span><i style="color: #FFF;" class="fa-solid fa-bars"></i></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Index"><i class="fa-solid fa-house"></i></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="UserAccount" asp-action="UserAccount">Users</a>
@@ -53,12 +54,6 @@
         </main>
     </div>
 
-@*    <footer class="border-top footer text-muted">
-        <div class="container text-white">
-            &copy; 2022 - AceSmokeShop - <a asp-area="" asp-controller="Admin" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>*@
-
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/jquery-validate/jquery.validate.js"></script>
@@ -73,7 +68,6 @@
         <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     </environment>
 
-    <script src="~/lib/jquery-ui-1.13.1.custom/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/notify.min.js" asp-append-version="true"></script>

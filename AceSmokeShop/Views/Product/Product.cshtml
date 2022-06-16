@@ -7,7 +7,7 @@
 }
 
 <div id="placeholder"></div>
-<div class="container">
+<div class="container-fluid" style="padding: 0rem 7rem;">
     <form asp-action="Product" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -60,66 +60,68 @@
         </div>
     </form>
 
-    <div class="row">
-        <div class="col-xl-3 col-lg-3">
-            <div class="card l-bg-cherry">
-                <div class="card-statistic-3 p-2">
-                    <div class="mb-3">
-                        <h6 class="card-title mb-0">Total Products</h6>
-                    </div>
-                    <div class="row align-items-center mb-2 d-flex">
-                        <div class="col-8">
-                            <h5 class="d-flex align-items-center mb-0">
-                                @Model.TotalProducts
-                            </h5>
+    <div class="mt-3">
+        <div class="row">
+            <div class="col-xl-2 col-lg-3">
+                <div class="card l-bg-cherry">
+                    <div class="card-statistic-3 p-2">
+                        <div class="mb-3">
+                            <h6 class="card-title mb-0">Total Products</h6>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h5 class="d-flex align-items-center mb-0">
+                                    @Model.TotalProducts
+                                </h5>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-lg-3">
-            <div class="card l-bg-blue-dark">
-                <div class="card-statistic-3 p-2">
-                    <div class="mb-3">
-                        <h6 class="card-title mb-0">Out of Stock</h6>
-                    </div>
-                    <div class="row align-items-center mb-2 d-flex">
-                        <div class="col-8">
-                            <h5 class="d-flex align-items-center mb-0">
-                                @Model.OutOfStock
-                            </h5>
+            <div class="col-xl-2 col-lg-3">
+                <div class="card l-bg-blue-dark">
+                    <div class="card-statistic-3 p-2">
+                        <div class="mb-3">
+                            <h6 class="card-title mb-0">Out of Stock</h6>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h5 class="d-flex align-items-center mb-0">
+                                    @Model.OutOfStock
+                                </h5>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-lg-3">
-            <div class="card l-bg-green-dark">
-                <div class="card-statistic-3 p-2">
-                    <div class="mb-2">
-                        <h6 class="card-title mb-0">Running Out of Stock</h6>
-                    </div>
-                    <div class="row align-items-center mb-2 d-flex">
-                        <div class="col-8">
-                            <h5 class="d-flex align-items-center mb-0">
-                                @Model.RunningOutOfStock
-                            </h5>
+            <div class="col-xl-2 col-lg-3">
+                <div class="card l-bg-green-dark">
+                    <div class="card-statistic-3 p-2">
+                        <div class="mb-2">
+                            <h6 class="card-title mb-0">Running Out of Stock</h6>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h5 class="d-flex align-items-center mb-0">
+                                    @Model.RunningOutOfStock
+                                </h5>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-lg-3">
-            <div class="card l-bg-orange-dark">
-                <div class="card-statistic-3 p-2">
-                    <div class="mb-3">
-                        <h6 class="card-title mb-0">Total Unit</h6>
-                    </div>
-                    <div class="row align-items-center mb-2 d-flex">
-                        <div class="col-8">
-                            <h5 class="d-flex align-items-center mb-0">
-                                @Model.TotalUnits
-                            </h5>
+            <div class="col-xl-2 col-lg-3">
+                <div class="card l-bg-orange-dark">
+                    <div class="card-statistic-3 p-2">
+                        <div class="mb-3">
+                            <h6 class="card-title mb-0">Total Unit</h6>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h5 class="d-flex align-items-center mb-0">
+                                    @Model.TotalUnits
+                                </h5>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,5 +150,48 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
+         const imgs = document.querySelectorAll('.img-select a');
+         const ids = document.querySelectorAll('.img-showcase');
+         const idList = [];
+            var i = 0;
+            ids.forEach((item) => {
+                idList[i] = item.id;
+                i++;
+            });
+            const imgBtns = [...imgs];
+            let imgId = 1;
+
+            imgBtns.forEach((imgItem) => {
+                imgItem.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    imgId = imgItem.dataset.id;
+                    slideImage();
+                });
+            });
+
+            function slideImage(){
+               
+                var x = imgId
+                var barcodeIndex = Math.floor(imgId/3);
+                if (imgId % 3 == 0) {
+                    barcodeIndex -= 1;
+                }
+                 const displayWidth = document.getElementById(idList[barcodeIndex]).clientWidth;
+                if (imgId > 3) {
+                    if (imgId % 3 == 1) {
+                        x = 1;
+                    }
+                    else if (imgId % 3 == 2) {
+                        x = 2;
+                    }
+                    else {
+                        x = 3;
+                    }
+
+                }
+                document.getElementById(idList[barcodeIndex]).style.transform = `translateX(${- (x - 1) * displayWidth}px)`;
+            }
+
+            window.addEventListener('resize', slideImage);
     </script>
 }

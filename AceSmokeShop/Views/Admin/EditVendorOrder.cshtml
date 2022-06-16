@@ -1,0 +1,51 @@
+﻿@using AceSmokeShop.ViewModel
+@model EditVendorOrderViewModel
+
+@{
+    ViewData["Title"] = "Edit Vendor Order Qty.";
+    Layout = null;
+}
+
+<div class="modal" tabindex="-1" role="dialog" id="editvendorOrder">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editvendorOrderlbl">Edit Quantity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border:none; outline:none">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="EditVendorOrder" method="post" autocomplete="off">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">
+                    </div>
+                    <input type="hidden" asp-for=CustOrderId />
+                    <input type="hidden" asp-for=OrderId />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="product-quantity">
+                                    <div>
+                                        <label>Qty. </label>
+	                                    <span class="minus" onclick="MinusClickCart(1)" id="minus"><a style="vertical-align:middle;">-</a></span>
+	                                    <input class="inputquantity" id="ProductQty1" type="text" asp-for="Qty" />
+	                                    <span class="plus" onclick="PlusClickCart(1)" id="plus"><a style="vertical-align:middle;">+</a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-block" data-save="modal">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}

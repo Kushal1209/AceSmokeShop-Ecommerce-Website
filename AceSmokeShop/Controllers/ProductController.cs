@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AceSmokeShop.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace AceSmokeShop.Controllers
 {
@@ -31,11 +32,12 @@ namespace AceSmokeShop.Controllers
             _productViewModel = new AdminProductViewModel();
             _paymentServices = new PaymentServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
-                new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger));
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger), 
+                new AddressRepository(context, logger), new TransactionRepository(context, logger));
             _adminServices = new AdminServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,
-                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger));
+                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger), new TransactionRepository(context, logger));
         }
 
         [HttpGet]
@@ -215,19 +217,52 @@ namespace AceSmokeShop.Controllers
         public async Task<IActionResult> CreateProduct(AdminProductViewModel adminProductViewModel)
         {
             var user = await _userManager.GetUserAsync(User);
-            adminProductViewModel.newProduct.PrimaryImage = "https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png";
+            // adminProductViewModel.newProduct.PrimaryImage = "https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png";
             var result = await _adminServices.addProductAsync(user, adminProductViewModel.newProduct);
-            if (result.ToLower().Equals("success")) 
+            if (result.ToLower().Contains("success"))
             {
-                return View(adminProductViewModel);
+                int prodId = int.Parse(result.Replace("Success", ""));
+
+                return View("_UploadProdImgPartialView", prodId);
             }
             else
             {
                 return StatusCode(500, result);
             }
-
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadProdImage(int prodId, IFormFile primary, IFormFile second, IFormFile third)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = _adminServices.UploadProductImages(user, prodId, primary, second, third);
+
+            if (result != "Fail")
+            {
+                return await Product(0, 0, 0, 1000, result, 0, 0, 1, 10);
+            }
+            return await Product(0, 0, 0, 1000, "", 0, 0, 1, 10);
+        }
+
+        [HttpGet]
+        public IActionResult EditUploadImageGet(Product product)
+        {
+            return View("EditUploadImage", product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUploadImage(int prodId, IFormFile primary, IFormFile second, IFormFile third)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = _adminServices.UploadProductImages(user, prodId, primary, second, third);
+            if (result != "Fail")
+            {
+                return await Product(0, 0, 0, 1000, result, 0, 0, 1, 10);
+            }
+            return await Product(0, 0, 0, 1000, "", 0, 0, 1, 10);
+        }
 
         [HttpGet]
         public IActionResult EditProductGet(Product product)
