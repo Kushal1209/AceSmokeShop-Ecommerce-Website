@@ -4,9 +4,9 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="container-fluid" style="padding-bottom: 5rem;">
-    <div class="row" style="margin:0rem 12rem;">
-        <div class="col-7" style="padding: 100px;border: 2px solid;margin-left: 0px;background-color: #efefef;">
+<div class="container-fluid" style="padding: 1rem 8rem; padding-bottom: 4rem;">
+    <div class="row" style="margin: 0; justify-content:center;">
+        <div class="col-8" style="padding: 100px;border: 2px solid;margin-left: 0px;background-color: #efefef;">
             <div class="form-group">
                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -68,7 +68,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-5" style="padding:0rem;">
+        <div class="col-4" style="padding:0rem;">
             <div style="width:450px;">
                 <img src="~/Images/loginimg.png" />
             </div>

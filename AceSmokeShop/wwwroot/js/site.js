@@ -69,6 +69,11 @@ function PeriodbtnClick(id) {
 
 }
 
+function RedirectToProdDetails(productid) {
+    var url = "/Home/ProductDetails?ProductId=" + productid;
+    window.location.href = url;
+}
+
 function MinusClickCart(id) {
     var str = "#ProductQty" + id;
     var count = $(str).val() - 1;
@@ -186,7 +191,10 @@ function PickupAtStore() {
         document.getElementById("HideShippingAdd").hidden = true;
         document.getElementById('PickupAddCard').style.border = 'dashed';
         document.getElementById('PickupAddCard').style.borderColor = '#96672d';
-        document.getElementById("addresses").hidden = true;
+        var x = document.getElementsByClassName('col addresses');
+        for (var i = 0; i < x.length; i++) {
+            x[i].hidden = true;
+        }
         document.getElementById("addaddresses").hidden = true;
         document.getElementById("SelectedField").value = 1;
     }
@@ -194,7 +202,10 @@ function PickupAtStore() {
         document.getElementById("HideShippingAdd").hidden = false;
         document.getElementById('PickupAddCard').style.border = 'none';
         document.getElementById('PickupAddCard').style.borderColor = '';
-        document.getElementById("addresses").hidden = false;
+        var x = document.getElementsByClassName('col addresses');
+        for (var i = 0; i < x.length; i++) {
+            x[i].hidden = false;
+        }
         document.getElementById("addaddresses").hidden = false;
         document.getElementById("SelectedField").value = 0;
         $("Selected").val(0);
@@ -363,7 +374,6 @@ function ChangeClick(stri, str) {
 function BuyNow(prodId, qty) {
     var url = "/Home/Checkout";
     url = CreateURL(url, { 'ProductId': prodId, 'Quantity': qty })
-
     window.location.href = url;
 }
 
@@ -614,7 +624,7 @@ $(function () {
     $("#rowselectId").change(function (event) {
         var url = window.location.href;
 
-        window.location.href = CreateURL(url, { "pagetotal": $('#rowselectId').val() });
+        window.location.href = CreateURL(url, { "pagetotal": $('#rowselectId').val(), "pagefrom": 1 });
     });
 
     $('#category').change(function (event) {

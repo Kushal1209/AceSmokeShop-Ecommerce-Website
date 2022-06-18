@@ -8,7 +8,6 @@ namespace AceSmokeShop.ViewModel
         public AdminOrderDetailsViewModel()
         {
             ShippingAddress = new Addresses();
-            BillingAddress = new Addresses();
             ListOfOrderItem = new List<OrderItem>();
             userOrder = new UserOrders();
             States = new List<State>();
@@ -16,7 +15,6 @@ namespace AceSmokeShop.ViewModel
 
         public UserOrders userOrder { get; set; }
         public Addresses ShippingAddress { get; set; }
-        public Addresses BillingAddress { get; set; }
         public List<OrderItem> ListOfOrderItem { get; set; }
 
         public List<State> States { get; set; }

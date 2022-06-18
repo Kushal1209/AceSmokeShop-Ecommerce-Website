@@ -127,9 +127,6 @@ namespace AceSmokeShop.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR(256)");
 
-                    b.Property<bool>("IsBilling")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
 
@@ -441,9 +438,6 @@ namespace AceSmokeShop.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BillingAddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CreateDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(256)");
@@ -492,8 +486,6 @@ namespace AceSmokeShop.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BillingAddressId");
 
                     b.HasIndex("ShippingAddressId");
 
@@ -740,11 +732,6 @@ namespace AceSmokeShop.Migrations
 
             modelBuilder.Entity("AceSmokeShop.Models.UserOrders", b =>
                 {
-                    b.HasOne("AceSmokeShop.Models.Addresses", "BillingAddress")
-                        .WithMany()
-                        .HasForeignKey("BillingAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("AceSmokeShop.Models.Addresses", "ShippingAddress")
                         .WithMany()
@@ -755,8 +742,6 @@ namespace AceSmokeShop.Migrations
                     b.HasOne("AceSmokeShop.Areas.Identity.Data.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.Navigation("BillingAddress");
 
                     b.Navigation("ShippingAddress");
 

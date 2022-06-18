@@ -1,10 +1,20 @@
-﻿@using AceSmokeShop.ViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using AceSmokeShop.Areas.Identity.Data
+@using AceSmokeShop.ViewModel
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 @model OrderViewModel
 
 
 @{
     ViewData["Title"] = "My Orders";
     List<string> months = new List<string>{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" };
+    AppUser user = null;
+    if(User != null)
+    {
+      user = await @UserManager.GetUserAsync(User);
+    } 
 }
 
 
@@ -12,13 +22,11 @@
     @if (Model.userOrdersList.Count() == 0)
     {
         <div class="container mt-4" style="padding-bottom: 7rem;">
-            <div style="font-size: 13rem; text-align: center;">
-                <i class="fa-solid fa-cart-plus"></i>
+            <div style="text-align: -webkit-center;">
+                <img src="~/Images/EmptyOrder.png" style="width:750px;" />
             </div>
             <div>
                 <h2 style="font-size: 1.5rem;font-weight: 500; font-family: inherit; letter-spacing: -2px; text-align: center;">
-                    No Past Orders.
-                    <br/>
                     Please Order Something. Click <a href="@Url.Action("Products", "Home")" style="color: #96672d;">here</a>
                 </h2>
             </div>
@@ -27,83 +35,90 @@
     else
     {
         <div id="placeholder"></div>
-        <div>
-            <div class="mt-4">
-                <form asp-action="Orders" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-2">
-                                <select asp-for=@Model.OrderStatus id="vendororderstatus" class="form-control"
-                                        asp-items="@(new SelectList(@Model.OrderStatusList))">
-                                </select>
-                            </div>
-                            <div class="col-2">
-                                <select asp-for=@Model.ShippingStatus id="vendorshipstatus" class="form-control"
-                                        asp-items="@(new SelectList(@Model.ShippingStatusList))">
-                                </select>
-                            </div>
-                             <div class="col-2">
-                                <select asp-for=@Model.PaymentStatus id="vendorpaymentstatus" class="form-control"
-                                        asp-items="@(new SelectList(@Model.PaymentStatusList))">
-                                </select>
-                            </div>
-                            <div class="col-2">
-                                <i class="fas fa-search"></i><input type="text" value=@Model.search asp-for=@Model.search id="search" class="form-control form-input SearchIcon" placeholder="Search" />
-                            </div>
-                            <div class="col-2">
-                                <input asp-for="@Model.DateFrom" id="datefrom" class="form-control" />
-                            </div>
-                            <div class="col-2">
-                                <input asp-for="@Model.DateTo" id="dateto" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-2">
-                                <button type="button" class="btn btn-block" id="flitervendorOrderbtnsearch">Search</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="mt-3">
-                <div class="row">
-                    <div class="col-xl-2 col-lg-3">
-                        <div class="card l-bg-acesmokeshop">
-                            <div class="card-statistic-3 p-2">
-                                <div class="mb-3">
-                                    <h6 class="card-title mb-0">UnPaid Orders</h6>
+        <div class="mt-4">
+            @if (user.UserRole == "VENDOR")
+            {
+                <div>
+                    <form asp-action="Orders" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2">
+                                    <select asp-for=@Model.OrderStatus id="vendororderstatus" class="form-control"
+                                            asp-items="@(new SelectList(@Model.OrderStatusList))">
+                                    </select>
                                 </div>
-                                <div class="row align-items-center mb-2 d-flex">
-                                    <div class="col-8">
-                                        <h5 class="d-flex align-items-center mb-0">
-                                            @Model.UnPaidOrders
-                                        </h5>
+                                <div class="col-2">
+                                    <select asp-for=@Model.ShippingStatus id="vendorshipstatus" class="form-control"
+                                            asp-items="@(new SelectList(@Model.ShippingStatusList))">
+                                    </select>
+                                </div>
+                                 <div class="col-2">
+                                    <select asp-for=@Model.PaymentStatus id="vendorpaymentstatus" class="form-control"
+                                            asp-items="@(new SelectList(@Model.PaymentStatusList))">
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <i class="fas fa-search"></i><input type="text" value=@Model.search asp-for=@Model.search id="search" class="form-control form-input SearchIcon" placeholder="Search" />
+                                </div>
+                                <div class="col-2">
+                                    <input asp-for="@Model.DateFrom" id="datefrom" class="form-control" />
+                                </div>
+                                <div class="col-2">
+                                    <input asp-for="@Model.DateTo" id="dateto" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-block" id="flitervendorOrderbtnsearch">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="mt-3">
+                    <div class="row">
+                        <div class="col-xl-2 col-lg-3">
+                            <div class="card l-bg-acesmokeshop">
+                                <div class="card-statistic-3 p-2">
+                                    <div class="mb-3">
+                                        <h6 class="card-title mb-0">UnPaid Orders</h6>
+                                    </div>
+                                    <div class="row align-items-center mb-2 d-flex">
+                                        <div class="col-8">
+                                            <h5 class="d-flex align-items-center mb-0">
+                                                @Model.UnPaidOrders
+                                            </h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3">
-                        <div class="card l-bg-acesmokeshop">
-                            <div class="card-statistic-3 p-2">
-                                <div class="mb-3">
-                                    <h6 class="card-title mb-0">UnPaid Amount</h6>
-                                </div>
-                                <div class="row align-items-center mb-2 d-flex">
-                                    <div class="col-8">
-                                        <h5 class="d-flex align-items-center mb-0">
-                                            $@(Math.Floor(Model.UnPaidAmount * 100) / 100)
-                                        </h5>
+                        <div class="col-xl-2 col-lg-3">
+                            <div class="card l-bg-acesmokeshop">
+                                <div class="card-statistic-3 p-2">
+                                    <div class="mb-3">
+                                        <h6 class="card-title mb-0">UnPaid Amount</h6>
+                                    </div>
+                                    <div class="row align-items-center mb-2 d-flex">
+                                        <div class="col-8">
+                                            <h5 class="d-flex align-items-center mb-0">
+                                                $@(Math.Floor(Model.UnPaidAmount * 100) / 100)
+                                            </h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            }
+            else
+            {
+                
+            }
+            
             <div class="mt-3">
                 <div class="row mt-3 row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="margin:0rem;">
                     <div class="accordion">
@@ -247,9 +262,6 @@
 	                                                        </div>
                                                         }
                                                     </div>
-                                                    @* Insert Billing Address here *@
-                                                    <div class="col-4" style="padding:0px;">
-                                                    </div>
                                                     @*Insert Calc Section here*@
                                                     <div class="col-4" style="padding:0px;">
                                                         <hr/>
@@ -359,92 +371,80 @@
                                         <div class="accordion-item-body-content">
                                             <div class="container" style="margin:1rem">
                                                 @* Insert Img here *@
-                                                @if(item.OrderStatus.ToLower().Equals("order placed")){
-                                                    <div class="row" style="width:100%;">
-                                                        <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
-                                                    </div>
-                                                }
-                                                @if(item.OrderStatus.ToLower().Equals("order packaging")){
-                                                    <div class="row" style="width:100%;">
-                                                        <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
-                                                    </div>
-                                                }
-                                                @if(item.OrderStatus.ToLower().Equals("order dispatched")){
-                                                    <div class="row" style="width:100%;">
-                                                        <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
-                                                    </div>
-                                                }
-                                                @if(item.OrderStatus.ToLower().Equals("delivered")){
-                                                    <div class="row" style="width:100%;">
-                                                        <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
-                                                    </div>
+                                                @if(item.ShippingAddress != null)
+                                                {
+                                                    @if(item.OrderStatus.ToLower().Equals("order placed")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                    @if(item.OrderStatus.ToLower().Equals("order packaging")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                    @if(item.OrderStatus.ToLower().Equals("order dispatched")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                    @if(item.OrderStatus.ToLower().Equals("delivered")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
                                                 }
                                                 @* Insert Shipping Address here *@
                                                 <div class="row mt-5"  style="width:90%; margin:0;">
                                                     <div class="col-4" style="padding:0px;">
-                                                        <div class="product-card" style="width: 330px">
-		                                                    <div class="product-details"  style="padding: 1rem 2rem;">
-                                                                <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                                                    <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
-			                                                    </div>
-                                                                <h7>
-                                                                    <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineA</a>
-                                                                </h7>
-                                                                <br/>
-                                                                @if (item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length > 0)
-                                                                {
-                                                                    <h7>
-                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineB</a>
-                                                                    </h7>
+                                                        @if(item.ShippingAddress == null)
+                                                        {
+                                                            <div class="product-card" style="width: 330px">
+		                                                        <div class="product-details"  style="padding: 1rem 2rem;">
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
+			                                                        </div>
                                                                     <br/>
-                                                                }
-                                                                <h7>
-                                                                    <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.City</a>
-                                                                </h7>
-                                                                <br/>
-                                                                <h7>
-                                                                    <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.ShippingAddress.StateID - 1].StateName @item.ShippingAddress.Zipcode</a>
-                                                                </h7>
-                                                                <br/>
-                                                                @if(item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length <= 0)
-                                                                {
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
+			                                                        </div>
                                                                     <br/>
-                                                                }
+                                                                </div>
                                                             </div>
-	                                                    </div>
-                                                    </div>
-                                                    @* Insert Billing Address here *@
-                                                    <div class="col-4" style="padding:0px;">
-                                                        <div class="product-card" style="width: 330px">
-		                                                    <div class="product-details"  style="padding: 1rem 2rem;">
-                                                                <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                                                    <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Billing Address</a>
-			                                                    </div>
-                                                                <h7>
-                                                                    <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.BillingAddress.AddressLineA</a>
-                                                                </h7>
-                                                                <br/>
-                                                                @if (item.BillingAddress.AddressLineB != null && item.BillingAddress.AddressLineB.Length > 0)
-                                                                {
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="product-card" style="width: 330px">
+		                                                        <div class="product-details"  style="padding: 1rem 2rem;">
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
+			                                                        </div>
                                                                     <h7>
-                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.BillingAddress.AddressLineB</a>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineA</a>
                                                                     </h7>
                                                                     <br/>
-                                                                }
-                                                                <h7>
-                                                                    <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.BillingAddress.City</a>
-                                                                </h7>
-                                                                <br/>
-                                                                <h7>
-                                                                    <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.BillingAddress.StateID - 1].StateName @item.BillingAddress.Zipcode</a>
-                                                                </h7>
-                                                                <br/>
-                                                                    @if(item.BillingAddress.AddressLineB != null && item.BillingAddress.AddressLineB.Length <= 0)
-                                                                {
+                                                                    @if (item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length > 0)
+                                                                    {
+                                                                        <h7>
+                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineB</a>
+                                                                        </h7>
+                                                                        <br/>
+                                                                    }
+                                                                    <h7>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.City</a>
+                                                                    </h7>
                                                                     <br/>
-                                                                }
-		                                                    </div>
-	                                                    </div>
+                                                                    <h7>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.ShippingAddress.StateID - 1].StateName @item.ShippingAddress.Zipcode</a>
+                                                                    </h7>
+                                                                    <br/>
+                                                                    @if(item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length <= 0)
+                                                                    {
+                                                                        <br/>
+                                                                    }
+                                                                </div>
+	                                                        </div>
+                                                        }
                                                     </div>
                                                     @*Insert Calc Section here*@
                                                     <div class="col-4" style="padding:0px;">

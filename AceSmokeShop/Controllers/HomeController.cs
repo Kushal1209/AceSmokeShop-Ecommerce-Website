@@ -227,8 +227,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel(user);
-                return View("Index", _uHomeViewModel);
+                return Redirect("/Identity/Account/Login?ReturnUrl=%2FHome/Checkout?productid=" + ProductId + "&Quantity=" + Quantity);
             }
         }
 
@@ -238,24 +237,6 @@ namespace AceSmokeShop.Controllers
             if (user != null)
             {
                 var result = _webServices.SetAsShipping(addressId, user);
-                if (result.ToLower().Contains("success"))
-                {
-                    return StatusCode(200);
-                }
-                return StatusCode(500, result);
-            }
-            else
-            {
-                return StatusCode(401, "Unauthorized");
-            }
-        }
-
-        public async Task<IActionResult> SetAsBilling (int addressId)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                var result = _webServices.SetAsBilling(addressId, user);
                 if (result.ToLower().Contains("success"))
                 {
                     return StatusCode(200);
@@ -409,9 +390,7 @@ namespace AceSmokeShop.Controllers
             }
             else
             {
-                _uHomeViewModel = _webServices.GetHomeViewModel(user);
-
-                return View("Index", _uHomeViewModel);
+                return Redirect("/Identity/Account/Login?ReturnUrl=%2FHome/MyOrders");
             } 
         }
 

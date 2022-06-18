@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace AceSmokeShop.Services
@@ -53,7 +52,7 @@ namespace AceSmokeShop.Services
         }
 
         public AdminFinancialViewModel GetAdminFinancialViewModel(AppUser user, int pageFrom, int pageTotal, int period,
-                         DateTime datefrom, DateTime dateto)
+                         DateTime chooseDateFrom, DateTime chooseDateTo)
         {
             var model = new AdminFinancialViewModel();
             List<string> months = new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" };
@@ -66,49 +65,89 @@ namespace AceSmokeShop.Services
             model.Period = period;
             model.CurrentPage = pageFrom;
             model.ItemsPerPage = pageTotal;
-            if (!(period <= 0 || period > 3))
+            model.TotalTransactions = _transactionRepository._dbSet.Where(x => x.CreateDate >= chooseDateFrom && x.CreateDate <= chooseDateTo).Count();
+            var dateto = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            if(period != 2 && period != 3)
             {
-                dateto = DateTime.Now;
-                if(period == 1)
+                var temp = DateTime.Now.AddMonths(-1);
+                var datefrom = new DateTime(temp.Year, temp.Month, temp.Day, 0, 0, 0); 
+
+                var days = Math.Ceiling((dateto - datefrom).TotalDays);
+                var templist = _transactionRepository._dbSet.Where(x => x.CreateDate >= datefrom && x.CreateDate <= dateto && !x.Status.Equals("Refunded")).ToList();
+
+                var xstr = "";
+                var ystr = "";
+
+                for (int i = 0; i<=days; i++)
                 {
-                    datefrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-
-                    var days = dateto.Day;
-                    var templist = _transactionRepository._dbSet.Where(x => x.CreateDate >= datefrom && x.CreateDate <= dateto).ToList();
-                    model.TotalTransactions = templist.Count();
-                    model.yValues = new int[days];
-                    model.xValues = new string[days];
-                    for (int i = 0; i<days; i++)
-                    {
-                        var tempDateStart = datefrom.AddDays(i);
-                        var tempDateEnd = tempDateStart.AddHours(24).AddSeconds(-1);
-                        model.xValues[i] = tempDateStart.Day + " " + months[tempDateStart.Month - 1];
-                        model.yValues[i] = (int)Math.Ceiling(templist.Where(x => x.CreateDate >= tempDateStart && x.CreateDate <= tempDateEnd).Select(x => x.Amount).Sum());
-                    }
-
+                    var tempDateStart = datefrom.AddDays(i);
+                    var tempDateEnd = tempDateStart.AddHours(24).AddSeconds(-1);
+                    xstr += tempDateStart.Day + "-" + months[tempDateStart.Month - 1] + ",";
+                    ystr += (int)Math.Ceiling(templist.Where(x => x.CreateDate >= tempDateStart && x.CreateDate <= tempDateEnd).Select(x => x.Amount).Sum()) + ",";
+                }
                     
-                }
-                else if (period == 2)
-                {
-                    datefrom = DateTime.Now.AddMonths(-6);
-                }
-                else
-                {
-                    datefrom = DateTime.Now.AddYears(-1);
-                }
-               
+                model.xValues = xstr.Remove(xstr.Length - 1);
+                model.yValues = ystr.Remove(ystr.Length - 1);
+                    
             }
+            else if (period == 2)
+            {
+                var temp = DateTime.Now.AddMonths(-6);
+                var datefrom = new DateTime(temp.Year, temp.Month, temp.Day, 0, 0, 0);
+
+                var totalmonths = 6;
+                var templist = _transactionRepository._dbSet.Where(x => x.CreateDate >= datefrom && x.CreateDate <= dateto && !x.Status.Equals("Refunded")).ToList();
+
+                var xstr = "";
+                var ystr = "";
+
+                for (int i = 0; i <= totalmonths; i++)
+                {
+                    var tempDateStart = datefrom.AddMonths(i);
+                    var tempDateEnd = tempDateStart.AddMonths(1);
+                    xstr += months[tempDateStart.Month - 1] + ",";
+                    ystr += (int)Math.Ceiling(templist.Where(x => x.CreateDate >= tempDateStart && x.CreateDate <= tempDateEnd).Select(x => x.Amount).Sum()) + ",";
+                }
+
+                model.xValues = xstr.Remove(xstr.Length - 1);
+                model.yValues = ystr.Remove(ystr.Length - 1);
+
+            }
+            else if (period == 3)
+            {
+
+                var temp = DateTime.Now.AddMonths(-12);
+                var datefrom = new DateTime(temp.Year, temp.Month, temp.Day, 0, 0, 0);
+
+                var totalmonths = 12;
+                var templist = _transactionRepository._dbSet.Where(x => x.CreateDate >= datefrom && x.CreateDate <= dateto && !x.Status.Equals("Refunded")).ToList();
+
+                var xstr = "";
+                var ystr = "";
+
+                for (int i = 0; i <= totalmonths; i++)
+                {
+                    var tempDateStart = datefrom.AddMonths(i);
+                    var tempDateEnd = tempDateStart.AddMonths(1);
+                    xstr += months[tempDateStart.Month - 1] + ",";
+                    ystr += (int)Math.Ceiling(templist.Where(x => x.CreateDate >= tempDateStart && x.CreateDate <= tempDateEnd).Select(x => x.Amount).Sum()) + ",";
+                }
+
+                model.xValues = xstr.Remove(xstr.Length - 1);
+                model.yValues = ystr.Remove(ystr.Length - 1);
+            }
+               
             pageFrom--;
-            model.ListofTransactions = _transactionRepository._dbSet.Where(x => x.CreateDate >= datefrom && x.CreateDate <= dateto).Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+            model.ListofTransactions = _transactionRepository._dbSet.Where(x => x.CreateDate >= chooseDateFrom && x.CreateDate <= chooseDateTo).OrderByDescending(x => x.Id).Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
             model.TotalRevenue = model.ListofTransactions.Where(x => !x.Status.Equals("Refunded")).Select(x => x.Amount).Sum();
             model.VendorRevenue = model.ListofTransactions.Where(x => x.UserRole == "VENDOR" && !x.Status.Equals("Refunded")).Select(x => x.Amount).Sum();
             model.UserRevenue = (model.TotalRevenue - model.VendorRevenue);
             model.TaxCollected = (model.TotalRevenue / 1.0625);
-            model.CardPayment = model.ListofTransactions.Where(x => x.PaymentMethod.Equals("Card")).Select(x => x.Amount).Sum();
+            model.CardPayment = model.ListofTransactions.Where(x => !x.Status.Equals("Refunded") && x.PaymentMethod.Equals("Card")).Select(x => x.Amount).Sum();
             model.InStorePayment = model.TotalRevenue - model.CardPayment;
-            model.TotalPages = (int)Math.Ceiling((double)(model.TotalTransactions / pageTotal));
-            model.DateFrom = datefrom;
-            model.DateTo = dateto;
+            model.TotalPages = (int)Math.Ceiling((double)((double)model.TotalTransactions / (double)pageTotal));
+            model.DateFrom = chooseDateFrom;
+            model.DateTo = chooseDateTo;
 
             return model;
         }
@@ -155,13 +194,11 @@ namespace AceSmokeShop.Services
                 return model;
             }
             model.ShippingAddress = _addressRepository._dbSet.Where(x => x.Id == userOrder.ShippingAddressId).FirstOrDefault();
-            model.BillingAddress = _addressRepository._dbSet.Where(x => x.Id == userOrder.BillingAddressId).FirstOrDefault();
             model.ListOfOrderItem = _orderItemRepository._dbSet.Where(x => x.CustOrderId == order).Include(x => x.Product).Include(x => x.Product.Category).Include(x => x.Product.SubCategory).ToList();
             
-            if(model.ShippingAddress.AddressLineA.ToLower().Contains("store address") || model.ShippingAddress.AddressLineB.ToLower().Contains("store address")) 
+            if(model.ShippingAddress.AddressLineA.ToLower().Contains("store address") || (model.ShippingAddress.AddressLineB!= null && model.ShippingAddress.AddressLineB.ToLower().Contains("store address"))) 
             {
                 model.ShippingAddress = null;
-                model.BillingAddress= null;
             }
             
             model.userOrder = userOrder;

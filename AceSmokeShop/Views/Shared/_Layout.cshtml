@@ -7,8 +7,8 @@
 
     <title>@ViewData["Title"] - AceSmokeShop</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/bootstrap/scss" />
+    <link rel="stylesheet" href="~/bootstrap/scss/_navbar.scss" />
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/site_mobileView.css" />
     <link rel="stylesheet" href="~/css/accordian.css" />
@@ -26,11 +26,10 @@
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/Images/logo2.png" class="logo-img" />
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span><i style="color: #FFF;" class="fa-solid fa-bars"></i></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i></a>
@@ -80,8 +79,8 @@
         <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     </environment>
 
+    <script src="~/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/notify.min.js" asp-append-version="true"></script>
 

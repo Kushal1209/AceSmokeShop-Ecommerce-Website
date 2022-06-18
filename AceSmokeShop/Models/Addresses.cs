@@ -46,9 +46,6 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "bit")]
         public bool IsShipping { get; set; }
 
-        [Column(TypeName = "bit")]
-        public bool IsBilling { get; set; }
-
         public virtual State State { get; set; }
         public virtual AppUser User { get; set; }
     }

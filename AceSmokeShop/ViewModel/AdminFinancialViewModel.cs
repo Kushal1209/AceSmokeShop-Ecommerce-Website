@@ -21,7 +21,7 @@ namespace AceSmokeShop.ViewModel
             CurrentPage = 1;
             TotalPages = 0;
             ItemsPerPage = 10;
-            RowPerPage = new List<int> { 2, 10, 20, 50, 100 };
+            RowPerPage = new List<int> { 10, 20, 50, 100 };
 
             Period = 0;
 
@@ -55,7 +55,7 @@ namespace AceSmokeShop.ViewModel
         public double CardPayment { get; set; }
         public double InStorePayment { get; set; }
 
-        public int [] yValues { get; set; }
-        public string [] xValues { get; set; }
+        public string yValues { get; set; }
+        public string xValues { get; set; }
     }
 }

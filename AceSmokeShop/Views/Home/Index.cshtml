@@ -30,11 +30,11 @@
         <div class="col-3">
             <div>
                 <div>
-                    <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Featured Items</h1></a>
+                    <span class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Featured Items</h1></span>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
-                    <a class="font-weight-normal">Shop from out most premium <br/> brands and products.</a>
+                    <span class="font-weight-normal">Shop from out most premium <br/> brands and products.</span>
                 </div>
                 <div class="mt-2 mb-0">
                     <a href="@Url.Action("Products", "Home", new{type = "featured"})" class="font-weight-bold" style="color:#96672d;"><b>See All Featured Items</b></a>
@@ -42,38 +42,39 @@
             </div>
         </div>
         <div class="col-9">
-            <div class="row row-cols-4 row-cols-lg-4 g-5 g-lg-4">
+            <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 3rem;">
                 @foreach(var item in Model.FeaturedList)
                 {
-                    <div class="product-card" style="width: 245px; margin: 0rem 1.5rem;">
-		                <div class="product-tumb" style="height: 260px;">
-                            <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
-                                <img  src="@item.PrimaryImage" alt="">
-                            </a>
-			                    
-		                </div>
-		                <div class="product-details" style="padding:0px;">
-                            <div style="padding: 5px; min-height: 87px;">
-                                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
-                                {
-                                    <div class="product-price">$@item.VendorPrice</div>
-                                }
-                                else
-                                {
+                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
+                        <div class="product-card" style="width: 245px">
+		                    <div class="product-tumb" style="height: 260px;">
+                                <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                    <img  src="@item.PrimaryImage" alt="">
+                                </a>
+		                    </div>
+		                    <div class="product-details" style="padding:0px;">
+                                <div style="padding: 5px; min-height: 87px;">
+                                    @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                                    {
+                                        <div class="product-price">$@item.VendorPrice</div>
+                                    }
+                                    else
+                                    {
                                         <div class="product-price">$@item.SalePrice</div>
-                                }
-                                <h7>
-                                    <a style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px;">@item.Category.CategoryName - @item.ProductName</a>
-                                </h7>
-                            </div>
-			                <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
-                                <div class="col" style="padding: 0px;height: -webkit-fill-available;">
-                                    <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
-                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
+                                    }
+			                        <h7>
+                                        <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
+                                    </h7>
                                 </div>
-			                </div>
-		                </div>
-	                </div>
+			                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                    <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                        <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
+                                        onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
+                                    </div>
+			                    </div>
+		                    </div>
+	                    </div>
+                    </div>
                 }
             </div>
         </div>
@@ -85,11 +86,11 @@
         <div class="col-3">
             <div>
                 <div>
-                    <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Popular Products</h1></a>
+                    <span class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Popular Products</h1></span>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
-                    <a class="font-weight-normal">See from our collections of the most purchasedproducts.</a>
+                    <span class="font-weight-normal">See from our collections of the most purchasedproducts.</span>
                 </div>
                 <div class="mt-2 mb-0">
                     <a href="@Url.Action("Products", "Home", new{type = "popular"})" class="font-weight-bold" style="color:#96672d;"><b>See All Popular Products</b></a>
@@ -97,38 +98,39 @@
             </div>
         </div>
         <div class="col-9">
-            <div class="row row-cols-4 row-cols-lg-4 g-5 g-lg-4">
+            <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 3rem;">
                 @foreach(var item in Model.PromotedList)
                 {
-                    <div class="product-card" style="width: 245px; margin: 0rem 1.5rem;">
-		                <div class="product-tumb" style="height: 260px;">
-                            <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
-                                <img  src="@item.PrimaryImage" alt="">
-                            </a>
-			                    
-		                </div>
-		                <div class="product-details" style="padding:0px;">
-                            <div style="padding: 5px; min-height: 87px;">
-                                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
-                                {
-                                    <div class="product-price">$@item.VendorPrice</div>
-                                }
-                                else
-                                {
+                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
+                        <div class="product-card" style="width: 245px">
+		                    <div class="product-tumb" style="height: 260px;">
+                                <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                    <img  src="@item.PrimaryImage" alt="">
+                                </a>
+		                    </div>
+		                    <div class="product-details" style="padding:0px;">
+                                <div style="padding: 5px; min-height: 87px;">
+                                    @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                                    {
+                                        <div class="product-price">$@item.VendorPrice</div>
+                                    }
+                                    else
+                                    {
                                         <div class="product-price">$@item.SalePrice</div>
-                                }
-			                    <h7>
-                                    <a style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px;">@item.Category.CategoryName - @item.ProductName</a>
-                                </h7>
-                            </div>
-			                <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
-                                <div class="col" style="padding: 0px;height: -webkit-fill-available;">
-                                    <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
-                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
+                                    }
+			                        <h7>
+                                        <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
+                                    </h7>
                                 </div>
-			                </div>
-		                </div>
-	                </div>
+			                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                    <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                        <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
+                                        onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
+                                    </div>
+			                    </div>
+		                    </div>
+	                    </div>
+                    </div>
                 }
             </div>
         </div>
@@ -140,16 +142,16 @@
         <div class="col-3">
             <div>
                 <div>
-                    <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Top Categories</h1></a>
+                    <span class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Top Categories</h1></span>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
-                    <a class="font-weight-normal">Choose from our top product categories</a>
+                    <span class="font-weight-normal">Choose from our top product categories</span>
                 </div>
             </div>
         </div>
         <div class="col-9">
-			<div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 1rem;">
+			<div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-3" style="padding: 0rem 3rem;">
                 @for(var i = 0; i<6; i++){
 					<div class="col" style="padding-bottom: 1rem;max-width: 283px;">
 					    <div class="product-card">
@@ -171,7 +173,7 @@
         <div class="col-3">
             <div>
                 <div>
-                    <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; color: #FFF; font-family: emoji; letter-spacing: -4px;">Our Promise</h1></a>
+                    <span class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; color: #FFF; font-family: emoji; letter-spacing: -4px;">Our Promise</h1></span>
                     <div class="mt-0" style="border-bottom: 5px solid #FFF; width: 50px;"></div>
                 </div>
             </div>
@@ -218,14 +220,14 @@
         <div class="col-3">
             <div>
                 <div>
-                    <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">'High' Praise</h1></a>
+                    <span class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">'High' Praise</h1></span>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
-                    <a class="font-weight-normal">Hear words from our high customers.</a>
+                    <span class="font-weight-normal">Hear words from our high customers.</span>
                 </div>
                 <div class="mt-2 mb-0">
-                    <a><i class="fa-solid fa-arrow-left-long"></i> <i class="fa-solid fa-arrow-right-long"></i></a>
+                    <span><i class="fa-solid fa-arrow-left-long"></i> <i class="fa-solid fa-arrow-right-long"></i></span>
                 </div>
             </div>
         </div>
@@ -320,16 +322,16 @@
         <div class="col-3">
             <div>
                 <div>
-                    <a class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">About Us</h1></a>
+                    <span class="font-weight-bolder"><h1 style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">About Us</h1></span>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
-                    <a class="font-weight-normal">Know our story as to how we started and what we bring to the table for you.</a>
+                    <span class="font-weight-normal">Know our story as to how we started and what we bring to the table for you.</span>
                 </div>
             </div>
         </div>
         <div class="col-9">
-			<div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 0rem;">
+			<div class="row" style="padding: 0rem 0rem;">
                 <div class="col-8">
                     <p style="font-size: 1rem; font-weight: 400; font-style: italic; letter-spacing: 1px;">
                         Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
@@ -349,7 +351,7 @@
 
 <div class="mt-5" style="padding: 0rem 5rem;">
     <div>
-        <a class="font-weight-bolder text-uppercase"><h1 style="font-size: 2.2rem; text-align:center; font-weight: 600; font-family: emoji; letter-spacing: 0px;">Our Brands</h1></a>
+        <span class="font-weight-bolder text-uppercase"><h1 style="font-size: 2.2rem; text-align:center; font-weight: 600; font-family: emoji; letter-spacing: 0px;">Our Brands</h1></span>
     </div>
     <div class="mt-3">
 

@@ -83,6 +83,12 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var user = await _userManager.FindByEmailAsync(Input.Email);
+                if(user == null)
+                {
+                    _logger.LogWarning("Email or Password is Wrong");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Page();
+                }
                 if (user.LockoutEnabled == true)
                 {
                     _logger.LogWarning("User account locked out.");

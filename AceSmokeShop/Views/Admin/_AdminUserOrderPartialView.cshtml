@@ -148,72 +148,55 @@ else
     <div class="row mt-5" style="width:90%; margin:0;" id="userorders">
         <div class="col-4" style="padding:0px;">
             <div class="product-card" style="width: 330px">
-		        <div class="product-details"  style="padding: 1rem 2rem;">
-                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
-			        </div>
-                    @if(@Model.ShippingAddress != null && @Model.ShippingAddress.AddressLineA != null)
-                    {
-                        <h7>
-                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.AddressLineA  </a>
-                        </h7>
-                        <br/>
-                        @if (Model.ShippingAddress.AddressLineB != null && @Model.ShippingAddress.AddressLineB.Length > 0)
+                @if(Model.ShippingAddress == null)
+                {
+                    <div class="product-card" style="width: 330px">
+		                <div class="product-details"  style="padding: 1rem 2rem;">
+                            <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
+			                </div>
+                            <br/>
+                            <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
+			                </div>
+                            <br/>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="product-details"  style="padding: 1rem 2rem;">
+                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
+			            </div>
+                        @if(@Model.ShippingAddress != null && @Model.ShippingAddress.AddressLineA != null)
                         {
                             <h7>
-                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.AddressLineB</a>
+                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.AddressLineA  </a>
                             </h7>
                             <br/>
-                        }
-                        <h7>
-                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.City</a>
-                        </h7>
-                        <br/>
-                        <h7>
-                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@Model.ShippingAddress.StateID - 1].StateName @Model.ShippingAddress.Zipcode</a>
-                        </h7>
-                        <br/>
-                        @if(Model.ShippingAddress.AddressLineB != null && Model.ShippingAddress.AddressLineB.Length <= 0)
-                        {
-                            <br/>
-                        }
-                    }
-                </div>
-	        </div>
-        </div>
-        <div class="col-4" style="padding:0px;">
-            <div class="product-card" style="width: 330px">
-		        <div class="product-details"  style="padding: 1rem 2rem;">
-                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Billing Address</a>
-			        </div>
-                    @if(@Model.BillingAddress != null && @Model.BillingAddress.AddressLineA != null)
-                    {
-                        <h7>
-                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.BillingAddress.AddressLineA</a>
-                        </h7>
-                        <br/>
-                        @if (Model.BillingAddress.AddressLineB != null && Model.BillingAddress.AddressLineB.Length > 0)
-                        {
+                            @if (Model.ShippingAddress.AddressLineB != null && @Model.ShippingAddress.AddressLineB.Length > 0)
+                            {
+                                <h7>
+                                    <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.AddressLineB</a>
+                                </h7>
+                                <br/>
+                            }
                             <h7>
-                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.BillingAddress.AddressLineB</a>
+                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.ShippingAddress.City</a>
                             </h7>
                             <br/>
-                        }
-                        <h7>
-                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.BillingAddress.City</a>
-                        </h7>
-                        <br/>
-                        <h7>
-                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@Model.BillingAddress.StateID - 1].StateName @Model.BillingAddress.Zipcode</a>
-                        </h7>
-                        <br/>
-                            @if(Model.BillingAddress.AddressLineB != null && Model.BillingAddress.AddressLineB.Length <= 0)
-                        {
+                            <h7>
+                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@Model.ShippingAddress.StateID - 1].StateName @Model.ShippingAddress.Zipcode</a>
+                            </h7>
                             <br/>
+                            @if(Model.ShippingAddress.AddressLineB != null && Model.ShippingAddress.AddressLineB.Length <= 0)
+                            {
+                                <br/>
+                            }
                         }
-                    }
-                </div>
+                    </div>
+                }
 	        </div>
         </div>
         @*Insert Calc Section here*@

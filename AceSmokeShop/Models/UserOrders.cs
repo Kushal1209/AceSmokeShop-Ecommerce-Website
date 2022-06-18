@@ -22,9 +22,6 @@ namespace AceSmokeShop.Models
         [ForeignKey("Addresses")]
         public int ShippingAddressId { get; set; }
 
-        [ForeignKey("Addresses")]
-        public int BillingAddressId { get; set; }
-
         [Required]
         [Column(TypeName = "decimal(35,2)")]
         public double TotalAmount { get; set; }
@@ -62,7 +59,6 @@ namespace AceSmokeShop.Models
         public bool IsPaid { get; set; }
         public virtual AppUser User { get; set; }
         public virtual Addresses ShippingAddress { get; set; }
-        public virtual Addresses BillingAddress { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
         public virtual List<OrderShipStatus> OrderShipStatus { get; set; }
     }

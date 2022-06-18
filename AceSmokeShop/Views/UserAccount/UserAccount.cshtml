@@ -22,7 +22,7 @@
                     </select>
                 </div>
                 <div class="col-3">
-                    <i class="fas fa-search"></i><input type="text" value=@Model.Search asp-for=@Model.Search id="searchUser" class="form-control form-input SearchIcon" placeholder="Search" />
+                    <input type="text" value=@Model.Search asp-for=@Model.Search id="searchUser" class="form-control form-input SearchIcon" placeholder="Search" />
                 </div>
                 <div class="col-2">
                     <button type="button" id="fliterbtnsearchUser" class="btn btn-block">Search</button>  
@@ -162,42 +162,41 @@
                 <thead>
                     <tr>
                         <th class="col-2">
-                            <div class="h6 text-uppercase font-weight-bold" style="color: #145DA0;">
+                            <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Name
-                            </div>
+                            </a>
                         </th>
                         <th class="col-2">
-                            <div class="h6 text-uppercase font-weight-bold" style="color: #145DA0;">
+                            <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Username
-                            </div>
+                            </a>
                         </th>
                         <th class="col-2">
-                            <div class="h6 text-uppercase font-weight-bold" style="color: #145DA0;">
+                            <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 State
-                            </div>
+                            </a>
                         </th>
                         <th  class="col-2">
-                            <div class="h6 text-uppercase font-weight-bold" style="color: #145DA0;">
+                            <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Contact
-                            </div>
+                            </a>
                         </th>
                         <th class="col-2">
-                            <div class="h6 text-uppercase font-weight-bold" style="color: #145DA0;">
+                            <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Roles
-                            </div>
+                            </a>
                         </th>
                         <th class="col-2">
-                            <div class="h6 text-uppercase font-weight-bold" style="color: #145DA0;">
+                            <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Status
-                            </div>
+                            </a>
                         </th>
                         <th class="col-1">
-                            <div class="h6 text-uppercase font-weight-bold" style="color: #145DA0;">
+                            <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Actions
-                            </div>
+                            </a>
                         </th>
                     </tr>
-
                 </thead>
                 <tbody>
                     @foreach (var item in Model.UserList)

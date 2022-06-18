@@ -234,7 +234,8 @@ namespace AceSmokeShop.Migrations
                     Zipcode = table.Column<int>(type: "int", nullable: false),
                     IsRemoved = table.Column<bool>(type: "bit", nullable: false),
                     IsShipping = table.Column<bool>(type: "bit", nullable: false),
-                    IsBilling = table.Column<bool>(type: "bit", nullable: false)
+                    Is
+                    = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -302,7 +303,6 @@ namespace AceSmokeShop.Migrations
                     CustOrderId = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ShippingAddressId = table.Column<int>(type: "int", nullable: false),
-                    BillingAddressId = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(35,2)", nullable: false),
                     SubTotal = table.Column<decimal>(type: "decimal(35,2)", nullable: false),
                     Tax = table.Column<decimal>(type: "decimal(35,2)", nullable: false),
@@ -323,12 +323,6 @@ namespace AceSmokeShop.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_tbl_userorders_tbl_addresses_BillingAddressId",
-                        column: x => x.BillingAddressId,
-                        principalTable: "tbl_addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_tbl_userorders_tbl_addresses_ShippingAddressId",
                         column: x => x.ShippingAddressId,
@@ -506,11 +500,6 @@ namespace AceSmokeShop.Migrations
                 name: "IX_tbl_subcategory_CategoryID",
                 table: "tbl_subcategory",
                 column: "CategoryID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_tbl_userorders_BillingAddressId",
-                table: "tbl_userorders",
-                column: "BillingAddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tbl_userorders_ShippingAddressId",

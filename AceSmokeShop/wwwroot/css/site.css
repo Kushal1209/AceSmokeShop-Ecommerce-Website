@@ -1,43 +1,54 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0;
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 768px;
+    }
+}
+
+@media (min-width: 778px) {
+    .container {
+        max-width: 992px;
+    }
+    li.nav-item{
+        margin: 0;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 1200px;
+    }
+    li.nav-item {
+        margin: 0rem 0.5rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 2800px;
+        padding: 0px;
+    }
+    li.nav-item {
+        margin: 0rem 1.2rem;
+    }
+}
+
+
+
 nav, footer{
     background-color: #000;
 }
 
-.navbar > .container{
-    display: contents;
-}
 
-.navbar-toggler {
-    font-size: 1.5em;
-    background-color: transparent;
-    border: none;
-}
-
-.navbar-nav {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    list-style: none;
-    justify-content: center;
-}
-
-.navbar-brand {
-    display: inline-block;
-    padding-top: 0.3125rem;
-    padding-bottom: 0.3125rem;
-    font-size: 1.25rem;
-    line-height: inherit;
-    white-space: nowrap;
-}
-
-a.navbar-brand {
-    white-space: normal;
-    text-align: center;
-    word-break: break-all;
-}
 
 .logo-img{
     height: 60px;
@@ -133,7 +144,7 @@ span {
 
 .product-tumb {
     display: flex;
-    height: 200px;
+    height: 250px;
     padding: 0px 0px;
     background: #f0f0f0;
 }
@@ -141,7 +152,8 @@ span {
 .product-tumb img {
     max-width: 100%;
     max-height: 100%;
-    width: fit-content;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
 }
 
 .product-details {
@@ -226,18 +238,7 @@ a {
     border-radius: 8px;
 }
 
-.row .fa-search {
-    position: absolute;
-    top: 12px;
-    left: 25px;
-    color: rgb(50, 49, 50);
-}
 
-.SearchIcon {
-    color: rgb(50, 49, 50);
-    text-indent: 20px;
-    border-radius: 8px;
-}
 
 .btn-block {
     color: #000000;

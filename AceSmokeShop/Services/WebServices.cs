@@ -176,42 +176,37 @@ namespace AceSmokeShop.Services
                SubTotal = product.SalePrice * qty;
             }
 
-            var ShippingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsShipping).FirstOrDefault();
-            var BillingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsBilling).FirstOrDefault();
+            var ShippingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsShipping == false).FirstOrDefault();
 
             if (user.UserRole.ToLower() != "vendor")
             {
-                if (ShippingAddress == null || BillingAddress == null)
-                {
-                    return "Fail: Please Choose shipping and billing Addresses";
-                }
                 if (cardId < 0)
                 {
                     return "Fail: Please Select a Card";
                 }
             }
-            else
-            {
-                if (pickatstore)
-                {
-                    var add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
-                    if(add == null)
-                    {
-                        add = new Addresses();
-                        add.AddressLineA = "Store Address";
-                        add.AddressLineB = "Store Address";
-                        add.StateID = 5;
-                        add.City = "Blackwood";
-                        add.Zipcode = 17057;
-                        add.UserId = "adminUser";
-                        _addressRepository._dbSet.Add(add);
-                        _addressRepository._context.SaveChanges();
-                        add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
-                    }
-                    ShippingAddress = add;
-                }
 
-                BillingAddress = ShippingAddress;
+            if (pickatstore)
+            {
+                var add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
+                if(add == null)
+                {
+                    add = new Addresses();
+                    add.AddressLineA = "Store Address";
+                    add.AddressLineB = "Store Address";
+                    add.StateID = 5;
+                    add.City = "Blackwood";
+                    add.Zipcode = 17057;
+                    add.UserId = "adminUser";
+                    _addressRepository._dbSet.Add(add);
+                    _addressRepository._context.SaveChanges();
+                    add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
+                }
+                ShippingAddress = add;
+            }
+            else if (!pickatstore && ShippingAddress == null)
+            {
+                return "Fail: Please Select a Shipping Location or Select to Pick At Store";
             }
 
 
@@ -230,7 +225,6 @@ namespace AceSmokeShop.Services
             Order.CreateDate = DateTime.Today;
             Order.IsVendor = user.UserRole.ToLower().Contains("vendor") ? true : false;
             Order.ShippingAddressId = ShippingAddress.Id;
-            Order.BillingAddressId = BillingAddress.Id;
             var paymentResult = "";
 
             if (user.UserRole.ToLower() != "vendor" || cardId >= 0)
@@ -327,7 +321,6 @@ namespace AceSmokeShop.Services
             //Validate Everything and Calculate Total
             var cartItems = GetMyCart(user);
             var ShippingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsShipping).FirstOrDefault();
-            var BillingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsBilling).FirstOrDefault();
             if (cartItems == null)
             {
                 return "Please Add Items to Cart";
@@ -335,39 +328,35 @@ namespace AceSmokeShop.Services
 
             if (user.UserRole.ToLower() != "vendor")
             {
-                if (ShippingAddress == null || BillingAddress == null)
-                {
-                    return "Fail: Please Choose shipping and billing Addresses";
-                }
                 if (cardId < 0)
                 {
                     return "Fail: Please Select a Card";
                 }
-
             }
-            else
+
+            if (pickatstore)
             {
-                if (pickatstore)
+                var add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
+                if (add == null)
                 {
-                    var add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
-                    if (add == null)
-                    {
-                        add = new Addresses();
-                        add.AddressLineA = "Store Address";
-                        add.AddressLineB = "Store Address";
-                        add.StateID = _stateRepository._dbSet.Where(x => x.StateName.Contains("Jersey")).FirstOrDefault().StateID;
-                        add.City = "Blackwood";
-                        add.Zipcode = 17057;
-                        add.UserId = _userManager.Users.Where(x => x.UserRole == "ADMIN").FirstOrDefault().Id;
-                        _addressRepository._dbSet.Add(add);
-                        _addressRepository._context.SaveChanges();
-                        add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
-                    }
-                    ShippingAddress = add;
+                    add = new Addresses();
+                    add.AddressLineA = "Store Address";
+                    add.AddressLineB = "Store Address";
+                    add.StateID = _stateRepository._dbSet.Where(x => x.StateName.Contains("Jersey")).FirstOrDefault().StateID;
+                    add.City = "Blackwood";
+                    add.Zipcode = 17057;
+                    add.UserId = _userManager.Users.Where(x => x.UserRole == "ADMIN").FirstOrDefault().Id;
+                    _addressRepository._dbSet.Add(add);
+                    _addressRepository._context.SaveChanges();
+                    add = _addressRepository._dbSet.Where(x => x.AddressLineA == "Store Address").FirstOrDefault();
                 }
-
-                BillingAddress = ShippingAddress;
+                ShippingAddress = add;
             }
+            else if(!pickatstore && ShippingAddress == null)
+            {
+                return "Fail: Please Select a Shipping Location or Select to Pick At Store";
+            }
+
             double SubTotal = 0.0;
             foreach(var item in cartItems)
             {
@@ -405,7 +394,6 @@ namespace AceSmokeShop.Services
             Order.Tax = Tax;
             Order.CreateDate = DateTime.Today;
             Order.ShippingAddressId = ShippingAddress.Id;
-            Order.BillingAddressId = BillingAddress.Id;
             Order.IsVendor = user.UserRole.ToLower().Contains("vendor") ? true : false;
 
             if (user.UserRole.ToLower() != "vendor" || cardId >= 0)
@@ -517,16 +505,14 @@ namespace AceSmokeShop.Services
             {
                 return null;
             }
-            //prepare order: fill Shipping, Billing Address & OrderItem(Include:Product=>Category=>Subcategory)
+            //prepare order: fill Shipping & OrderItem(Include:Product=>Category=>Subcategory)
 
             order.ShippingAddress = _addressRepository._dbSet.Where(x => x.Id == order.ShippingAddressId).FirstOrDefault();
-            order.BillingAddress = _addressRepository._dbSet.Where(x => x.Id == order.BillingAddressId).FirstOrDefault();
             order.OrderItems = _orderItemRepository._dbSet.Where(x => x.CustOrderId == custOrderId).Include(x => x.Product).Include(x => x.Product.Category).Include(x => x.Product.SubCategory).ToList();
 
-            if(order.IsVendor == true && order.ShippingAddress.AddressLineA.ToLower().Contains("store address") && order.BillingAddress.AddressLineA.ToLower().Contains("store address"))
+            if(order.IsVendor == true && order.ShippingAddress.AddressLineA.ToLower().Contains("store address"))
             {
                 order.ShippingAddress = null;
-                order.BillingAddress = null;
             }
 
             var model = new PayNowViewModel();
@@ -585,7 +571,8 @@ namespace AceSmokeShop.Services
             var model = new OrderViewModel();
             var addresses = _addressRepository._dbSet.Where(x => x.UserId == user.Id).ToList();
 
-            if (user != null && user.UserRole == "VENDOR") {
+            if (user != null && user.UserRole == "VENDOR")
+            {
                 model.userOrdersList = GetFilteredVendorOrderList(user, addresses, OrderStatus, ShippingStatus, PaymentStatus, Search, datefrom, dateto);
                 model.UnPaidAmount = model.userOrdersList.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Select(x => x.TotalAmount).Sum();
                 model.UnPaidOrders = model.userOrdersList.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Count();
@@ -594,13 +581,15 @@ namespace AceSmokeShop.Services
                 model.PaymentStatus = PaymentStatus;
                 model.ShippingStatus = ShippingStatus;
             }
-            else model.userOrdersList = _userOrdersRepository._dbSet.Where(x => x.UserId == user.Id).OrderByDescending(x => x.Id).ToList();
-            model.States = _stateRepository._dbSet.ToList();           
+            else
+            {
+                model.userOrdersList = _userOrdersRepository._dbSet.Where(x => x.UserId == user.Id).OrderByDescending(x => x.Id).ToList();
+            }
+            model.States = _stateRepository._dbSet.ToList();
 
-            foreach(var items in model.userOrdersList)
+            foreach (var items in model.userOrdersList)
             {
                 items.ShippingAddress = addresses.Where(x => x.Id == items.ShippingAddressId).FirstOrDefault();
-                items.BillingAddress = addresses.Where(x => x.Id == items.BillingAddressId).FirstOrDefault();
                 items.OrderItems = _orderItemRepository._dbSet.Where(x => x.OrderId == items.Id).Include(x => x.Product).Include(x => x.Product.Category).Include(x => x.Product.SubCategory).ToList();
             }
 
@@ -727,35 +716,6 @@ namespace AceSmokeShop.Services
             return "Success";
         }
 
-        public string SetAsBilling(int addressId, AppUser user)
-        {
-            var currAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && !x.IsRemoved && x.Id == addressId).FirstOrDefault();
-
-            if (currAddress == null)
-            {
-                return "Fail: The address doesn't exist";
-            }
-
-            var billingAddress = _addressRepository._dbSet.Where(x => x.IsBilling && x.UserId == user.Id && !x.IsRemoved).FirstOrDefault();
-
-            if (billingAddress == null)
-            {
-                return "Fail: Something Went Wrong";
-            }
-            else if (billingAddress.Id == currAddress.Id)
-            {
-                return "Fail: Already is Shipping";
-            }
-
-            billingAddress.IsBilling = false;
-            currAddress.IsBilling = true;
-            _addressRepository._dbSet.Update(billingAddress);
-            _addressRepository._dbSet.Update(currAddress);
-            _addressRepository._context.SaveChanges();
-
-            return "Success";
-        }
-
         public List<State> GetStateList()
         {
             return _stateRepository._dbSet.ToList();
@@ -778,14 +738,12 @@ namespace AceSmokeShop.Services
                 address.Zipcode = newAddress.Zipcode;
                 address.UserId = user.Id;
                 address.IsRemoved = false;
-                address.IsBilling = false;
                 address.IsShipping = false;
 
                 var addExists = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false).Any();
 
                 if (!addExists)
                 {
-                    address.IsBilling = true;
                     address.IsShipping = true;
                 }
                 
@@ -822,9 +780,9 @@ namespace AceSmokeShop.Services
             {
                 return "UnAuthorized";
             }
-            if (addressItem.IsShipping || addressItem.IsBilling)
+            if (addressItem.IsShipping)
             {
-                return "Fail: You cannot delete Shipping Or Billing Address. Please Select another Address Or Add a new Address.";
+                return "Fail: You cannot delete Shipping Address. Please Select another Address Or Add a new Address.";
             }
             
             try
