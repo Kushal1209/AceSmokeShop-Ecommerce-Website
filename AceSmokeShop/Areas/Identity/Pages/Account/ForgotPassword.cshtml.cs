@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using AceSmokeShop.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace AceSmokeShop.Areas.Identity.Pages.Account
 {
@@ -18,12 +22,14 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly MyEmailSender _emailSender;
 
-        public ForgotPasswordModel(UserManager<AppUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<AppUser> userManager, IConfiguration configuration, IServiceProvider serviceProvider,
+            ITempDataProvider tempDataProvider,
+            IRazorViewEngine razorViewEngine)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _emailSender = new MyEmailSender(configuration, serviceProvider, tempDataProvider, razorViewEngine);
         }
 
         [BindProperty]
@@ -57,10 +63,10 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                var body = await _emailSender.GetHtmlBody("ResetPasswordLink", callbackUrl);
+
+                _emailSender.SendEmail(
+                    Input.Email, "Reset Password", body);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

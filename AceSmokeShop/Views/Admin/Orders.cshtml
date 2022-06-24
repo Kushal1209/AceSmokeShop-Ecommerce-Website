@@ -14,17 +14,17 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-2">
-                    <select asp-for=@Model.OrderStatus id="orderstatus" class="form-control"
+                    <select asp-for=@Model.OrderStatus id="orderstatus" class="form-select"
                             asp-items="@(new SelectList(@Model.OrderStatusList))">
                     </select>
                 </div>
                 <div class="col-2">
-                    <select asp-for=@Model.SearchByUser id="searchuser" class="form-control"
+                    <select asp-for=@Model.SearchByUser id="searchuser" class="form-select"
                             asp-items="@(new SelectList(@Model.SearchByUserList))">
                     </select>
                 </div>
                  <div class="col-2">
-                    <select asp-for=@Model.PaymentStatus id="paymentstatus" class="form-control"
+                    <select asp-for=@Model.PaymentStatus id="paymentstatus" class="form-select"
                             asp-items="@(new SelectList(@Model.PaymentStatusList))">
                     </select>
                 </div>
@@ -196,204 +196,212 @@
         </div>
     </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="col-3">
-                    @if(Model.SortByID == 1)
-                    {
-                        <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
-                        <a class="h6 text-uppercase font-weight-bold" id="QtyPriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
-                            Date 
-                        </a>
-                        if (@Model.SortByOrder == 1)
+    <div class="visible-scrollbar">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-3">
+                        @if(Model.SortByID == 1)
                         {
-                            <i class="bi bi-arrow-up" style="color: #145DA0;  cursor: pointer;"></i>
+                            <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
+                            <a class="h6 text-uppercase font-weight-bold" id="QtyPriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
+                                Date 
+                            </a>
+                            if (@Model.SortByOrder == 1)
+                            {
+                                <i class="bi bi-arrow-up" style="color: #145DA0;  cursor: pointer;"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-arrow-down" style="color: #145DA0;  cursor: pointer;"></i>
+                            }
                         }
                         else
                         {
-                            <i class="bi bi-arrow-down" style="color: #145DA0;  cursor: pointer;"></i>
+                            <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
+                            <a id="QtyPriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
+                                Date <b><i class="bi bi-arrow-down-up"></i></b>
+                            </a>
                         }
-                    }
-                    else
-                    {
-                        <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
-                        <a id="QtyPriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
-                            Date <b><i class="bi bi-arrow-down-up"></i></b>
-                        </a>
-                    }
 
-                </th>
-            </tr>
-        </thead>
-    </table>
-
-    <div>
-        <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="margin:0rem;">
-            <div class="accordion">
-                @foreach (var item in Model.userOrdersList)
-                {
-                    @if (@item.IsVendor == true)
-                    {
-                        <div class="accordion-item" style="background-color:#AFE1AF">
-                            <div class="accordion-item-header" id="@item.CustOrderId">
-                                <div class="row" style="padding:1rem 1rem; width: 100%;">
-                                    <div class="col-2">
-                                        <a style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></a>
-                                    </div>
-                                    <div class="col-2">
-                                        <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
-                                    </div>
-                                    <div class="col-2">
-                                        @*<a  style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>*@
-                                        @if (item.OrderStatus.ToLower().Contains("cancelled") || item.OrderStatus.ToLower().Contains("delivered"))
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="margin:0rem;">
+                                <div class="accordion">
+                                    @foreach (var item in Model.userOrdersList)
+                                    {
+                                        @if (@item.IsVendor == true)
                                         {
-                                            <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
+                                            <div class="accordion-item" style="background-color:#AFE1AF">
+                                                <div class="accordion-item-header" id="@item.CustOrderId">
+                                                    <div class="row" style="padding:1rem 1rem; width: 100%;">
+                                                        <div class="col-2">
+                                                            <a style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></a>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            @*<a  style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>*@
+                                                            @if (item.OrderStatus.ToLower().Contains("cancelled") || item.OrderStatus.ToLower().Contains("delivered"))
+                                                            {
+                                                                <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituserorderstatus"
+                                                                    data-url="@Url.Action("EditUserOrderStatusGet", "Admin", new{orderid = @item.CustOrderId})" style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
+                                                                    <b>@item.OrderStatus.ToUpper()</b>
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <a href="~/UserAccount/UserAccount?search=@item.User.Fullname" target="_blank" style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>@item.User.Fullname</b></a>
+                                                        </div>
+                                                        @if(item.IsPaid && item.OrderStatus.ToLower().Contains("cancel"))
+                                                        {
+                                                            <div class="col-2">
+                                                                <a style="color:green; font-size: 13px;font-weight: 500;"><b>REFUNDED</b></a>
+                                                            </div>
+                                                        }
+                                                        else if (item.IsPaid && !item.OrderStatus.ToLower().Contains("cancel"))
+                                                        {
+                                                            <div class="col-2">
+                                                                <a style="color:green; font-size: 13px;font-weight: 500;"><b>PAID</b></a>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-2">
+                                                                <a style="color:red; font-size: 13px;font-weight: 500;"><b>PAY LATER</b></a>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="accordion-item-body">
+                                                    <div class="accordion-item-body-content">
+                                                        <div class="container" style="margin:1rem">
+                                                            @if(@item.IsPaid == false && !@item.OrderStatus.ToLower().Contains("cancel"))
+                                                            {
+                                                                <div class="row">
+                                                                    <div class=col-9></div>
+                                                                    <div class=col->
+                                                                        <button type="button" class="btn btn-block" data-toggle="ajax-modal" data-target="#markaspaid"
+                                                                            data-url="@Url.Action("MarkAsPaidGet", "Admin", new{CustOrderId = @item.CustOrderId})">Paid at Store</button>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            @* Insert Img here *@
+                                                            @if(item.ShippingAddress != null)
+                                                            {
+                                                                @if(item.OrderStatus.ToLower().Equals("order placed")){
+                                                                    <div class="row" style="width:100%;">
+                                                                        <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
+                                                                    </div>
+                                                                }
+                                                                @if(item.OrderStatus.ToLower().Equals("order packaging")){
+                                                                    <div class="row" style="width:100%;">
+                                                                        <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
+                                                                    </div>
+                                                                }
+                                                                @if(item.OrderStatus.ToLower().Equals("order dispatched")){
+                                                                    <div class="row" style="width:100%;">
+                                                                        <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
+                                                                    </div>
+                                                                }
+                                                                @if(item.OrderStatus.ToLower().Equals("delivered")){
+                                                                    <div class="row" style="width:100%;">
+                                                                        <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
+                                                                    </div>
+                                                                }
+                                                            }
+                                                            @* PartialView _AdminUserOrderViewModel *@
+                                                            <div id="userorders-@item.CustOrderId">
+                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         }
                                         else
                                         {
-                                            <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituserorderstatus"
-                                                data-url="@Url.Action("EditUserOrderStatusGet", "Admin", new{orderid = @item.CustOrderId})" style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
-                                                <b>@item.OrderStatus.ToUpper()</b>
-                                            </button>
-                                        }
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="~/UserAccount/UserAccount?search=@item.User.Fullname" target="_blank" style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>@item.User.Fullname</b></a>
-                                    </div>
-                                    @if(item.IsPaid && item.OrderStatus.ToLower().Contains("cancel"))
-                                    {
-                                        <div class="col-2">
-                                            <a style="color:green; font-size: 13px;font-weight: 500;"><b>REFUNDED</b></a>
-                                        </div>
-                                    }
-                                    else if (item.IsPaid && !item.OrderStatus.ToLower().Contains("cancel"))
-                                    {
-                                        <div class="col-2">
-                                            <a style="color:green; font-size: 13px;font-weight: 500;"><b>PAID</b></a>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-2">
-                                            <a style="color:red; font-size: 13px;font-weight: 500;"><b>PAY LATER</b></a>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                            <div class="accordion-item-body">
-                                <div class="accordion-item-body-content">
-                                    <div class="container" style="margin:1rem">
-                                        @if(@item.IsPaid == false && !@item.OrderStatus.ToLower().Contains("cancel"))
-                                        {
-                                            <div class="row">
-                                                <div class=col-9></div>
-                                                <div class=col->
-                                                    <button type="button" class="btn btn-block" data-toggle="ajax-modal" data-target="#markaspaid"
-                                                        data-url="@Url.Action("MarkAsPaidGet", "Admin", new{CustOrderId = @item.CustOrderId})">Paid at Store</button>
+                                            <div class="accordion-item">
+                                                <div class="accordion-item-header" id="@item.CustOrderId">
+                                                    <div class="row" style="padding:1rem 1rem; width: 100%;">
+                                                        <div class="col-2">
+                                                            <a style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></a>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            @*<a  style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>*@
+                                                            @if (item.OrderStatus.ToLower().Contains("cancelled") || item.OrderStatus.ToLower().Contains("delivered"))
+                                                            {
+                                                                <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituserorderstatus"
+                                                                    data-url="@Url.Action("EditUserOrderStatusGet", "Admin", new{orderid = @item.CustOrderId})" style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
+                                                                    <b>@item.OrderStatus.ToUpper()</b>
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <a href="~/UserAccount/UserAccount?search=@item.User.Fullname" target="_blank" style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>@item.User.Fullname</b></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="accordion-item-body">
+                                                    <div class="accordion-item-body-content">
+                                                        <div class="container" style="margin:1rem">
+                                                            @* Insert Img here *@
+                                                            @if(item.OrderStatus.ToLower().Equals("order placed")){
+                                                                <div class="row" style="width:100%;">
+                                                                    <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
+                                                                </div>
+                                                            }
+                                                            @if(item.OrderStatus.ToLower().Equals("order packaging")){
+                                                                <div class="row" style="width:100%;">
+                                                                    <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
+                                                                </div>
+                                                            }
+                                                            @if(item.OrderStatus.ToLower().Equals("order dispatched")){
+                                                                <div class="row" style="width:100%;">
+                                                                    <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
+                                                                </div>
+                                                            }
+                                                            @if(item.OrderStatus.ToLower().Equals("delivered")){
+                                                                <div class="row" style="width:100%;">
+                                                                    <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
+                                                                </div>
+                                                            }
+                                                            @* PartialView _AdminUserOrderViewModel *@
+                                                            <div id="userorders-@item.CustOrderId">
+                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         }
-                                        @* Insert Img here *@
-                                        @if(item.ShippingAddress != null)
-                                        {
-                                            @if(item.OrderStatus.ToLower().Equals("order placed")){
-                                                <div class="row" style="width:100%;">
-                                                    <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
-                                                </div>
-                                            }
-                                            @if(item.OrderStatus.ToLower().Equals("order packaging")){
-                                                <div class="row" style="width:100%;">
-                                                    <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
-                                                </div>
-                                            }
-                                            @if(item.OrderStatus.ToLower().Equals("order dispatched")){
-                                                <div class="row" style="width:100%;">
-                                                    <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
-                                                </div>
-                                            }
-                                            @if(item.OrderStatus.ToLower().Equals("delivered")){
-                                                <div class="row" style="width:100%;">
-                                                    <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
-                                                </div>
-                                            }
-                                        }
-                                        @* PartialView _AdminUserOrderViewModel *@
-                                        <div id="userorders-@item.CustOrderId">
-                                        
-                                        </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
-                    }
-                    else
-                    {
-                        <div class="accordion-item">
-                            <div class="accordion-item-header" id="@item.CustOrderId">
-                                <div class="row" style="padding:1rem 1rem; width: 100%;">
-                                    <div class="col-2">
-                                        <a style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></a>
-                                    </div>
-                                    <div class="col-2">
-                                        <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
-                                    </div>
-                                    <div class="col-2">
-                                        @*<a  style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>*@
-                                        @if (item.OrderStatus.ToLower().Contains("cancelled") || item.OrderStatus.ToLower().Contains("delivered"))
-                                        {
-                                            <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
-                                        }
-                                        else
-                                        {
-                                            <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituserorderstatus"
-                                                data-url="@Url.Action("EditUserOrderStatusGet", "Admin", new{orderid = @item.CustOrderId})" style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
-                                                <b>@item.OrderStatus.ToUpper()</b>
-                                            </button>
-                                        }
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="~/UserAccount/UserAccount?search=@item.User.Fullname" target="_blank" style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>@item.User.Fullname</b></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item-body">
-                                <div class="accordion-item-body-content">
-                                    <div class="container" style="margin:1rem">
-                                        @* Insert Img here *@
-                                        @if(item.OrderStatus.ToLower().Equals("order placed")){
-                                            <div class="row" style="width:100%;">
-                                                <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
-                                            </div>
-                                        }
-                                        @if(item.OrderStatus.ToLower().Equals("order packaging")){
-                                            <div class="row" style="width:100%;">
-                                                <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
-                                            </div>
-                                        }
-                                        @if(item.OrderStatus.ToLower().Equals("order dispatched")){
-                                            <div class="row" style="width:100%;">
-                                                <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
-                                            </div>
-                                        }
-                                        @if(item.OrderStatus.ToLower().Equals("delivered")){
-                                            <div class="row" style="width:100%;">
-                                                <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
-                                            </div>
-                                        }
-                                        @* PartialView _AdminUserOrderViewModel *@
-                                        <div id="userorders-@item.CustOrderId">
-                                        
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+    
 </div>
 
 @section Scripts {

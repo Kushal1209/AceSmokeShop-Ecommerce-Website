@@ -24,7 +24,7 @@
     </div>
 </div>
 <div style="padding: 1rem 8rem;">
-    <span>Showing <b>@Model.CurrentPage</b> of @Model.TotalPages Pages</span>
+    <h7>Showing <b>@Model.CurrentPage</b> of @Model.TotalPages Pages</h7>
 </div>
 <hr style=" margin-top: 0rem; margin-bottom: 0rem;">
 
@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col-3" style="margin-right:45px;">
             <div>
-                <span class="font-weight-bolder"><h3 style="font-size: 2.1rem; font-weight: 700; font-family: emoji; letter-spacing: -2px;">Filters</h3></span>
+                <div class="font-weight-bolder"><h3 style="font-size: 2.1rem; font-weight: 700; font-family: emoji; letter-spacing: -2px;">Filters</h3></div>
                 <div class="mt-0" style="border-bottom: 2px solid #96672d; width: 21rem;"></div>
             </div>
         </div>
@@ -59,14 +59,14 @@
         <div class="col-3">
             <div class="row">
                 <div class="col">
-                    <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-control"
+                    <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-select"
                             asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
                     </select>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col">
-                    <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-control"
+                    <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-select"
                             asp-items="@(new SelectList(@Model.SubCategoryList, "SubCategoryID", "SubCategoryName"))">
                     </select>
                 </div>
@@ -110,40 +110,42 @@
             </div>
         </div>
         <div class="col-9">
-            <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 3rem;">
-                @foreach(var item in Model.ProdctList)
-                {
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-                        <div class="product-card" style="width: 245px">
-		                    <div class="product-tumb" style="height: 260px;">
-                                <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
-                                    <img  src="@item.PrimaryImage" alt="">
-                                </a>
-		                    </div>
-		                    <div class="product-details" style="padding:0px;">
-                                <div style="padding: 5px; min-height: 87px;">
-                                    @if(user != null && user.UserRole.ToLower().Contains("vendor"))
-                                    {
-                                        <div class="product-price">$@item.VendorPrice</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="product-price">$@item.SalePrice</div>
-                                    }
-			                        <h7>
-                                        <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
-                                    </h7>
-                                </div>
-			                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
-                                    <div class="col" style="padding: 0px;height: -webkit-fill-available;">
-                                        <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
-                                        onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
+            <div class="visible-scrollbar">
+                <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 3rem;">
+                    @foreach(var item in Model.ProdctList)
+                    {
+                        <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
+                            <div class="product-card" style="width: 245px">
+		                        <div class="product-tumb" style="height: 260px;">
+                                    <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                        <img  src="@item.PrimaryImage" alt="">
+                                    </a>
+		                        </div>
+		                        <div class="product-details" style="padding:0px;">
+                                    <div style="padding: 5px; min-height: 87px;">
+                                        @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                                        {
+                                            <div class="product-price">$@item.VendorPrice</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="product-price">$@item.SalePrice</div>
+                                        }
+			                            <h7>
+                                            <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
+                                        </h7>
                                     </div>
-			                    </div>
-		                    </div>
-	                    </div>
-                    </div>
-                }
+			                        <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                        <div class="col" style="padding: 0px;height: -webkit-fill-available;">
+                                            <button class="btn" type="button" style="background-color: gray;border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available;" 
+                                            onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
+                                        </div>
+			                        </div>
+		                        </div>
+	                        </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>

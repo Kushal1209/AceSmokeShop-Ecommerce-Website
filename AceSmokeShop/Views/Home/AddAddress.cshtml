@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="Address.newAddress.StateID"></label>
-                                <select asp-for="Address.newAddress.StateID" id="state" onchange="GetState()" class="form-control"
+                                <select asp-for="Address.newAddress.StateID" id="state" onchange="GetState()" class="form-select"
                                         asp-items="@(new SelectList(@Model.Address.StateList, "StateID", "StateName"))">
                                 </select>
                             </div>

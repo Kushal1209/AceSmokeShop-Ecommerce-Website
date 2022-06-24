@@ -5,6 +5,7 @@
     ViewData["Title"] = "Edit User";
     Layout = null;
 }
+
 <div class="modal fade" tabindex="-1" role="dialog" id="editUser">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -22,13 +23,43 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="@Model.UserRole"></label>
-                                <select asp-for=@Model.UserRole id="userRoles" class="form-control"
+                                <label>User Role</label>
+                                <select asp-for=@Model.UserRole id="userRoles" class="form-select"
                                         asp-items="@(new SelectList(@Model.UserRoleList))">
                                 </select>
                             </div>
-                            <div class="col-md-6" style="text-align: center; top: 30px;">
-                                
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <label>Accounting</label>
+                                <div class="toggleWrapper">
+                                    <input type="hidden" asp-for="@Model.IsAccounting" value=@Model.IsAccounting id="AccountToggle"/>
+                                    @if (@Model.IsAccounting)
+                                    {
+                                        <input type="checkbox" onchange="AccountingChange(false)" name="toggle1" class="mobileToggle" id="Accounting" checked>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox"  onchange="AccountingChange(true)" name="toggle1" class="mobileToggle" id="Accounting">
+                                    }
+                                    <label for="Accounting"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Block User</label>
+                                <div class="toggleWrapper">
+                                     <input type="hidden" asp-for=@Model.IsActive value=@Model.IsActive id="ActiveToggle"/>
+                                    @if (@Model.IsActive)
+                                    {
+                                        <input type="checkbox" onchange="ActiveChange(false)" name="toggle1" class="mobileToggle" id="Active" checked>
+                                        <label for="Active"></label>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" onchange="ActiveChange(true)" name="toggle1" class="mobileToggle" id="Active">
+                                        <label for="Active"></label>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -44,3 +75,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

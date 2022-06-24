@@ -32,7 +32,7 @@ namespace AceSmokeShop.Services
         private int ProductCount = 0;
         private int UserCount = 0;
         private int UserOrderCount = 0;
-
+        public AdminUserOrderViewModel model = new AdminUserOrderViewModel();
         public AdminServices(ProductRepository productRepository, CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
                 StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, AddressRepository addressRepository,
                 PaymentServices paymentServices, UserOrdersRepository userOrdersRepository, OrderItemRepository orderItemRepository, TransactionRepository transactionRepository)
@@ -351,7 +351,7 @@ namespace AceSmokeShop.Services
                         img1 = response.data.display_url;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
                 
@@ -370,7 +370,7 @@ namespace AceSmokeShop.Services
                         img2 = response.data.display_url;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
                 
@@ -389,7 +389,7 @@ namespace AceSmokeShop.Services
                         img3 = response.data.display_url;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
 
@@ -498,7 +498,6 @@ namespace AceSmokeShop.Services
         public AdminUserOrderViewModel GetAdminUserOrderViewModel(AppUser user, string orderstatus, string paymentstatus, string searchuser, int sortbyorder, 
                         int sortbyid, string search, int pageFrom, int pageTotal, DateTime datefrom, DateTime dateto)
         {
-            var model = new AdminUserOrderViewModel();
             if (user.UserRole != "ADMIN" || user.LockoutEnabled)
             {
                 return model;
@@ -511,8 +510,6 @@ namespace AceSmokeShop.Services
                 model.VendorOrder = _userOrdersRepository._dbSet.Where(x => x.IsVendor).Count();
                 model.UserOrder = _userOrdersRepository._dbSet.Where(x => x.IsVendor == false).Count();
                 model.CancelledOrders = _userOrdersRepository._dbSet.Where(x => x.OrderStatus.ToLower().Contains("cancelled")).Count();
-                model.UnPaidAmount = model.userOrdersList.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Select(x => x.TotalAmount).Sum();
-                model.UnPaidOrders = model.userOrdersList.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Count();
                 model.CurrentPage = pageFrom;
                 model.NewOrders = _userOrdersRepository._dbSet.Where(x => x.OrderStatus.ToLower().Contains("place")).Count();
                 model.ItemsPerPage = pageTotal;
@@ -555,8 +552,7 @@ namespace AceSmokeShop.Services
                             paymentstatus.Contains("card payment") ? (x.PaymentId != "" && !x.OrderStatus.ToLower().Contains("cancel")) : 
                             paymentstatus.Contains("in-store") ? (x.IsPaid && x.PaymentId == "" && !x.OrderStatus.ToLower().Contains("cancel")) : false)
                        && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
-                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).Include(x => x.User).OrderByDescending(x => x.CreateDate)
-                           .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).Include(x => x.User).OrderByDescending(x => x.CreateDate).ToList();
                 }
                 else
                 {
@@ -570,24 +566,14 @@ namespace AceSmokeShop.Services
                             paymentstatus.Contains("card payment") ? (x.PaymentId != "" && !x.OrderStatus.ToLower().Contains("cancel")) :
                             paymentstatus.Contains("in-store") ? (x.IsPaid && x.PaymentId == "" && !x.OrderStatus.ToLower().Contains("cancel")) : false)
                        && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
-                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).Include(x => x.User)
-                        .Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
+                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).Include(x => x.User).ToList();
                 }
-               
 
-                UserOrderCount = _userOrdersRepository._dbSet.Where(x => (x.CustOrderId.Contains(search) ||
-                       x.User.Fullname.Contains(search) || (x.User.Email.Contains(search.Trim())))
-                       && (searchuser.ToLower().Equals("") ? true : searchuser.ToLower().Contains("vendor") ? x.IsVendor == true : x.IsVendor == false)
-                        && (paymentstatus.Equals("") ? true :
-                            paymentstatus.Equals("paid") ? (x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")) :
-                            paymentstatus.Equals("unpaid") ? (x.IsPaid == false && !x.OrderStatus.ToLower().Contains("cancel")) :
-                            paymentstatus.Equals("refunded") ? (x.IsPaid && x.OrderStatus.ToLower().Contains("cancel")) :
-                            paymentstatus.Contains("card payment") ? (x.PaymentId != "" && !x.OrderStatus.ToLower().Contains("cancel")) :
-                            paymentstatus.Contains("in-store") ? (x.IsPaid && x.PaymentId == "" && !x.OrderStatus.ToLower().Contains("cancel")) : false)
-                       && x.OrderStatus.ToLower().Contains(orderstatus.ToLower().Trim())
-                       && x.CreateDate >= datefrom && x.CreateDate <= dateto).Count();
-                
-                return orderlist;
+                UserOrderCount = orderlist.Count();
+                model.UnPaidAmount = orderlist.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Select(x => x.TotalAmount).Sum();
+                model.UnPaidOrders = orderlist.Where(x => !x.IsPaid && !x.OrderStatus.ToLower().Contains("cancel")).Count();
+
+                return orderlist.Skip(pageTotal * pageFrom).Take(pageTotal).ToList();
             }
         }
 
@@ -1272,12 +1258,13 @@ namespace AceSmokeShop.Services
                 {
                     var thisuser = await _userManager.Users.Where(x => x.Email == editUser.UserEmail)
                                                                     .FirstOrDefaultAsync();
-
+                    //Admin cannot change his own user data
                     if (user.Email != editUser.UserEmail && thisuser!= null)
                     {
                         thisuser.UserRole = editUser.UserRole;
 
-                        //thisuser.LockoutEnabled = editUser.IsActive;
+                        thisuser.LockoutEnabled = editUser.IsActive;
+                        thisuser.IsAccounting = editUser.IsAccounting;
                         //TODO: Toggle isActive Set in user like above.
 
                         var metaData = new Dictionary<string, string>();

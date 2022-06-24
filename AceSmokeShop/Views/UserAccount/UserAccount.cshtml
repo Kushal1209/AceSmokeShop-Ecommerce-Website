@@ -12,12 +12,12 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-3">
-                    <select asp-for=@Model.StateSelect.StateID id="stateList" class="form-control"
+                    <select asp-for=@Model.StateSelect.StateID id="stateList" class="form-select"
                             asp-items="@(new SelectList(@Model.StateList, "StateID", "StateName"))">
                     </select>
                 </div>
                 <div class="col-3">
-                    <select asp-for=@Model.UserRole id="userRoles" class="form-control"
+                    <select asp-for=@Model.UserRole id="userRoles" class="form-select"
                             asp-items="@(new SelectList(@Model.UserRoleList))">
                     </select>
                 </div>
@@ -157,7 +157,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="visible-scrollbar">
             <table class="table">
                 <thead>
                     <tr>
@@ -166,7 +166,7 @@
                                 Name
                             </a>
                         </th>
-                        <th class="col-2">
+                        <th class="col-3">
                             <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Username
                             </a>
@@ -181,12 +181,17 @@
                                 Contact
                             </a>
                         </th>
-                        <th class="col-2">
+                        <th class="col-1">
                             <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Roles
                             </a>
                         </th>
-                        <th class="col-2">
+                        <th class="col-1">
+                            <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
+                                Accounting
+                            </a>
+                        </th>
+                        <th class="col-1">
                             <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                                 Status
                             </a>
@@ -200,29 +205,39 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model.UserList)
-                   {
-                       <tr>
-                           <td class="col-2">
-                               <div>
-                                   @item.Fullname
-                               </div>
-                           </td>
-                           <td class="col-2">
-                               <div>
-                                   @item.UserName
-                               </div>
-                           </td>
-                           <td class="col-2">
-                               <div>@Model.StateList.Where(x => x.StateID == item.StateID).FirstOrDefault().StateName</div>
-                           </td>
-                           <td class="col-2">
-                               <div>@item.Contact</div>
-                           </td>
-                           <td class="col-2">
-                               <div>@item.UserRole</div>
-                           </td>
-                           <td class="col-2">
-                               @if(item.LockoutEnabled == false){
+                    {
+                        <tr>
+                            <td class="col-2">
+                                <div>
+                                    @item.Fullname
+                                </div>
+                            </td>
+                            <td class="col-3">
+                                <div>
+                                    @item.UserName
+                                </div>
+                            </td>
+                            <td class="col-2">
+                                <div>@Model.StateList.Where(x => x.StateID == item.StateID).FirstOrDefault().StateName</div>
+                            </td>
+                            <td class="col-2">
+                                <div>@item.Contact</div>
+                            </td>
+                            <td class="col-1">
+                                <div>@item.UserRole</div>
+                            </td>
+                            <td class="col-1">
+                                @if(item.IsAccounting == false)
+                                {
+                                <a style="color: red"><b>False</b></a>
+                                }
+                                else
+                                {
+                                    <a style="color: green"><b>True</b></a>
+                                }
+                            </td>
+                            <td class="col-1">
+                                @if(item.LockoutEnabled == false){
                                     <a style="color: green"><b>Active</b></a>
                                 }
                                 else
@@ -230,16 +245,16 @@
                                     <a style="color: red"><b>Blocked</b></a>
                                 }
                             </td>
-                           <td class="col-1">
-                               <div>
-                                   <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#editUser"
+                            <td class="col-1">
+                                <div>
+                                    <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#editUser"
                                         data-url="@Url.Action("EditUserAccount","UserAccount", new { Email = @item.Email } )" style="border:none; outline:none; background:none;">
                                         <i class="bi bi-pencil"></i>
-                                   </button>
-                               </div>
-                           </td>
-                       </tr>
-                   }
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>

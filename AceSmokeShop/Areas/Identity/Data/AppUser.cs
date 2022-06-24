@@ -41,5 +41,14 @@ namespace AceSmokeShop.Areas.Identity.Data
         [PersonalData]
         [Column(TypeName = "nvarchar(256)")]
         public DateTime CreateDate { get; set; }
+
+        [PersonalData]
+        [Column(TypeName = "bit")]
+        public bool IsAccounting { get; set; }
+
+        public static explicit operator AppUser(Task<object> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

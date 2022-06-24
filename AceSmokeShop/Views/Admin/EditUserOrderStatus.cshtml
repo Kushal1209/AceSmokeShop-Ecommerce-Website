@@ -36,7 +36,7 @@
                                 <div class="col-8">
                                     <label>Change Status</label>
                                     <input type="hidden" asp-for="@orderid"/>
-                                    <select asp-for=@orderstatus id="orderstatus" onchange="OrderStatusAlert()" class="form-control"
+                                    <select asp-for=@orderstatus id="orderstatus" onchange="OrderStatusAlert()" class="form-select"
                                         asp-items="@(new SelectList(@Statuses2))">
                                     </select>
                                 </div>

@@ -74,7 +74,7 @@ namespace AceSmokeShop.Controllers
             var CurrUser = _userManager.Users.Where(x => x.Email == Email).FirstOrDefault();
             editUserViewModel.UserRole = CurrUser.UserRole;
             editUserViewModel.IsActive = CurrUser.LockoutEnabled;
-
+            editUserViewModel.IsAccounting = CurrUser.IsAccounting;
             return View("EditUserAccount", editUserViewModel);
         }
 

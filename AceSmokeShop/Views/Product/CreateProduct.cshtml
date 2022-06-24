@@ -34,13 +34,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label asp-for="newProduct.CategoryID"></label>
-                                <select asp-for="newProduct.CategoryID" id="acategory" onchange="GetSubCat()" class="form-control"
+                                <select asp-for="newProduct.CategoryID" id="acategory" onchange="GetSubCat()" class="form-select"
                                         asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="newProduct.SubCategoryID"></label>
-                                <select asp-for="newProduct.SubCategoryID" id="asubcategory" class="form-control"
+                                <select asp-for="newProduct.SubCategoryID" id="asubcategory" class="form-select"
                                         asp-items="@(new SelectList(string.Empty, "SubCategoryID", "SubCategoryName"))">
                                 </select>
                             </div>
@@ -74,25 +74,6 @@
                                 <input asp-for="newProduct.Description" class="form-control" />
                             </div>
                         </div>
-                        <br/>
-                       @* <div class="row">
-                            <div class="col-md-12">
-                                <h5>Add Images</h5>
-                                <hr/>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Primary Img</label>
-                                 <input asp-for="Primaryimg" class="form-control" />
-                            </div>
-                            <div class="col-md-6">
-                                <label>Secondary Img</label>
-                                <input type="file" asp-for="Secondimg" class="form-control"/>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Secondary Img2</label>
-                                <input type="file" asp-for="Thirdimg" class="form-control"/>
-                            </div>
-                        </div>*@
                     </div>
                 </form>
             </div>

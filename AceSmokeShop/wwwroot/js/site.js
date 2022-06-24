@@ -74,6 +74,16 @@ function RedirectToProdDetails(productid) {
     window.location.href = url;
 }
 
+function AccountingChange(state) {
+    $('#AccountToggle').val(state);
+    $('#AccountToggle').change();
+}
+
+function ActiveChange(state) {
+    $('#ActiveToggle').val(state);
+    $('#ActiveToggle').change();
+}
+
 function MinusClickCart(id) {
     var str = "#ProductQty" + id;
     var count = $(str).val() - 1;

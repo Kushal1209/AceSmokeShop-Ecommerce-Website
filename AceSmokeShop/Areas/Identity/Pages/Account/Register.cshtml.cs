@@ -17,6 +17,14 @@ using Microsoft.Extensions.Logging;
 using AceSmokeShop.Models;
 using AceSmokeShop.Data;
 using Stripe;
+using AceSmokeShop.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AceSmokeShop.Areas.Identity.Pages.Account
 {
@@ -26,21 +34,27 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly MyEmailSender _emailSender;
         private readonly DBContext _context;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
-            DBContext context)
+            DBContext context,
+            IConfiguration configuration,
+            IServiceProvider serviceProvider,
+            ITempDataProvider tempDataProvider,
+            IRazorViewEngine razorViewEngine)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
             _context = context;
+            _emailSender = new MyEmailSender(configuration, serviceProvider, tempDataProvider, razorViewEngine);
+            States = (from addre in _context.tbl_state
+                      select addre).ToList();
+            States.Insert(0, new State { StateID = 0, StateName = "Select State" });
         }
 
         [BindProperty]
@@ -93,13 +107,6 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            //----- Bind State List ----- //
-            List<State> state = new List<State>();
-            States = new List<State>();
-            state = (from addre in _context.tbl_state
-                     select addre).ToList();
-            state.Insert(0, new State { StateID = 0, StateName = "Select State" });
-            States = state;
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -161,8 +168,12 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //_emailSender.SendEmail(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    var body = await _emailSender.GetHtmlBody("ConfirmYourAccount", callbackUrl);
+
+                        _emailSender.SendEmail(Input.Email, "Confirm your email", body);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

@@ -13,7 +13,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-3">
-                    <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-control"
+                    <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-select"
                             asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
                     </select>
                     <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#addcategory"
@@ -22,7 +22,7 @@
                     </button>
                 </div>
                 <div class="col-3">
-                    <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-control"
+                    <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-select"
                             asp-items="@(new SelectList(@Model.SubCategoryList, "SubCategoryID", "SubCategoryName"))">
                     </select>
                     <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#addsubcategory"
@@ -150,48 +150,46 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-         const imgs = document.querySelectorAll('.img-select a');
-         const ids = document.querySelectorAll('.img-showcase');
-         const idList = [];
-            var i = 0;
-            ids.forEach((item) => {
-                idList[i] = item.id;
-                i++;
-            });
-            const imgBtns = [...imgs];
-            let imgId = 1;
+        const imgs = document.querySelectorAll('.img-select a');
+        const ids = document.querySelectorAll('.img-showcase');
+        const idList = [];
+        var i = 0;
+        ids.forEach((item) => {
+            idList[i] = item.id;
+            i++;
+        });
+        const imgBtns = [...imgs];
+        let imgId = 1;
 
-            imgBtns.forEach((imgItem) => {
-                imgItem.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    imgId = imgItem.dataset.id;
-                    slideImage();
-                });
+        imgBtns.forEach((imgItem) => {
+            imgItem.addEventListener('click', (event) => {
+                event.preventDefault();
+                imgId = imgItem.dataset.id;
+                slideImage();
             });
+        });
 
-            function slideImage(){
+        function slideImage(){
                
-                var x = imgId
-                var barcodeIndex = Math.floor(imgId/3);
-                if (imgId % 3 == 0) {
-                    barcodeIndex -= 1;
-                }
-                 const displayWidth = document.getElementById(idList[barcodeIndex]).clientWidth;
-                if (imgId > 3) {
-                    if (imgId % 3 == 1) {
-                        x = 1;
-                    }
-                    else if (imgId % 3 == 2) {
-                        x = 2;
-                    }
-                    else {
-                        x = 3;
-                    }
-
-                }
-                document.getElementById(idList[barcodeIndex]).style.transform = `translateX(${- (x - 1) * displayWidth}px)`;
+            var x = imgId
+            var barcodeIndex = Math.floor(imgId/3);
+            if (imgId % 3 == 0) {
+                barcodeIndex -= 1;
             }
-
-            window.addEventListener('resize', slideImage);
+                const displayWidth = document.getElementById(idList[barcodeIndex]).clientWidth;
+            if (imgId > 3) {
+                if (imgId % 3 == 1) {
+                    x = 1;
+                }
+                else if (imgId % 3 == 2) {
+                    x = 2;
+                }
+                else {
+                    x = 3;
+                }
+            }
+            document.getElementById(idList[barcodeIndex]).style.transform = `translateX(${- (x - 1) * displayWidth}px)`;
+        }
+        window.addEventListener('resize', slideImage);
     </script>
 }

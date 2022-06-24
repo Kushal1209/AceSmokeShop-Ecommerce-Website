@@ -11,6 +11,7 @@ namespace AceSmokeShop.ViewModel
             UserEmail = "";
             UserRole = "USER";
             IsActive = true;
+            IsAccounting = true;
             UserRoleList = new List<string> { "USER", "ADMIN", "VENDOR"};
         }
 
@@ -21,5 +22,7 @@ namespace AceSmokeShop.ViewModel
         public string UserRole { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool IsAccounting { get; set; }
     }
 }
