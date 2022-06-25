@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AceSmokeShop.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220611112826_removeclm")]
-    partial class removeclm
+    [Migration("20220625071255_Initial-Create")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,6 +56,9 @@ namespace AceSmokeShop.Migrations
 
                     b.Property<string>("Fullname")
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsAccounting")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -239,14 +242,11 @@ namespace AceSmokeShop.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserOrderId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("OrderId");
 
-                    b.HasIndex("UserOrderId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("tbl_orderitem");
                 });
@@ -666,19 +666,21 @@ namespace AceSmokeShop.Migrations
 
             modelBuilder.Entity("AceSmokeShop.Models.OrderItem", b =>
                 {
+                    b.HasOne("AceSmokeShop.Models.UserOrders", "UserOrders")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AceSmokeShop.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AceSmokeShop.Models.UserOrders", "UserOrder")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("UserOrderId");
-
                     b.Navigation("Product");
 
-                    b.Navigation("UserOrder");
+                    b.Navigation("UserOrders");
                 });
 
             modelBuilder.Entity("AceSmokeShop.Models.OrderShipStatus", b =>
@@ -731,7 +733,6 @@ namespace AceSmokeShop.Migrations
 
             modelBuilder.Entity("AceSmokeShop.Models.UserOrders", b =>
                 {
-
                     b.HasOne("AceSmokeShop.Models.Addresses", "ShippingAddress")
                         .WithMany()
                         .HasForeignKey("ShippingAddressId")

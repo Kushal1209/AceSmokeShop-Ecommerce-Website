@@ -36,7 +36,7 @@
                 <tr>
                     <th class="col-5">
                         <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
-                            Products
+                            <b>Products</b>
                         </a>
                     </th>
                     <th class="col-1">
@@ -44,7 +44,7 @@
                         {
                             <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
                             <a class="h6 text-uppercase font-weight-bold" id="QtyPriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
-                                Quantity 
+                                <b>Quantity</b> 
                             </a>
                             if (@Model.SortByOrder == 1)
                             {
@@ -59,17 +59,16 @@
                         {
                             <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
                             <a id="QtyPriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
-                                Quantity <b><i class="bi bi-arrow-down-up"></i></b>
+                                 <b>Quantity</b><i class="bi bi-arrow-down-up"></i>
                             </a>
                         }
-
                     </th>
                     <th class="col-1">
                     @if(Model.SortByID == 2)
                         {
                             <input type="hidden" id="sortbyBaseOrder" value="@Model.SortByOrder" />
                             <a class="h6 text-uppercase font-weight-bold" id="BasePriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
-                                Base Price
+                                <b>Base Price</b>
                             </a>
                             if (@Model.SortByOrder == 1)
                             {
@@ -84,7 +83,7 @@
                         {
                             <input type="hidden" id="sortbyBaseOrder" value="@Model.SortByOrder" />
                             <a id="BasePriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
-                                Base Price <b><i class="bi bi-arrow-down-up"></i></b>
+                                <b>Base Price</b> <i class="bi bi-arrow-down-up"></i>
                             </a>
                         }
                     </th>
@@ -94,7 +93,7 @@
                         {
                             <input type="hidden" id="sortbySaleOrder" value="@Model.SortByOrder" />
                             <a class="h6 text-uppercase font-weight-bold" id="salePriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
-                                Sale Price
+                                <b>Sale Price</b>
                             </a>
                             if (@Model.SortByOrder == 1)
                             {
@@ -109,18 +108,16 @@
                         {
                             <input type="hidden" id="sortbySaleOrder" value="@Model.SortByOrder" />
                             <a id="salePriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
-                                Sale Price <b><i class="bi bi-arrow-down-up"></i></b>
+                                <b>Sale Price</b> <i class="bi bi-arrow-down-up"></i>
                             </a>
                         }
                     </th>
                     <th class="col-2">
-                        <a  class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px;
-">
-                            Tag
+                        <a  class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px;">
+                            <b>Tag</b>
                         </a>
                     </th>
                 </tr>
-
             </thead>
             <tbody>
                @foreach (var item in Model.ProductList)

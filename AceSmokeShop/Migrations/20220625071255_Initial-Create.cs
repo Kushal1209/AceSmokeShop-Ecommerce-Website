@@ -33,6 +33,7 @@ namespace AceSmokeShop.Migrations
                     UserRole = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     StateID = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    IsAccounting = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -201,6 +202,33 @@ namespace AceSmokeShop.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tbl_transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    OrderId = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TransactionType = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    UserRole = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    CreateDate = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(35,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tbl_transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tbl_transactions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "tbl_subcategory",
                 columns: table => new
                 {
@@ -233,9 +261,7 @@ namespace AceSmokeShop.Migrations
                     StateID = table.Column<int>(type: "int", nullable: false),
                     Zipcode = table.Column<int>(type: "int", nullable: false),
                     IsRemoved = table.Column<bool>(type: "bit", nullable: false),
-                    IsShipping = table.Column<bool>(type: "bit", nullable: false),
-                    Is
-                    = table.Column<bool>(type: "bit", nullable: false)
+                    IsShipping = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -309,10 +335,10 @@ namespace AceSmokeShop.Migrations
                     ShippingCharge = table.Column<decimal>(type: "decimal(35,2)", nullable: false),
                     OrderStatus = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     PaymentId = table.Column<string>(type: "nvarchar(256)", nullable: true),
-                    PaymentStatus = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     CreateDate = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     DeliveryDate = table.Column<string>(type: "nvarchar(256)", nullable: false),
-                    IsVendor = table.Column<bool>(type: "bit", nullable: false)
+                    IsVendor = table.Column<bool>(type: "bit", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -328,7 +354,7 @@ namespace AceSmokeShop.Migrations
                         column: x => x.ShippingAddressId,
                         principalTable: "tbl_addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -369,8 +395,7 @@ namespace AceSmokeShop.Migrations
                     CustOrderId = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(35,2)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    UserOrderId = table.Column<int>(type: "int", nullable: true)
+                    Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -382,11 +407,11 @@ namespace AceSmokeShop.Migrations
                         principalColumn: "ProductID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tbl_orderitem_tbl_userorders_UserOrderId",
-                        column: x => x.UserOrderId,
+                        name: "FK_tbl_orderitem_tbl_userorders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "tbl_userorders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -472,14 +497,14 @@ namespace AceSmokeShop.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tbl_orderitem_OrderId",
+                table: "tbl_orderitem",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tbl_orderitem_ProductId",
                 table: "tbl_orderitem",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_tbl_orderitem_UserOrderId",
-                table: "tbl_orderitem",
-                column: "UserOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tbl_ordershipstatus_UserOrdersId",
@@ -500,6 +525,11 @@ namespace AceSmokeShop.Migrations
                 name: "IX_tbl_subcategory_CategoryID",
                 table: "tbl_subcategory",
                 column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tbl_transactions_UserId",
+                table: "tbl_transactions",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tbl_userorders_ShippingAddressId",
@@ -540,6 +570,9 @@ namespace AceSmokeShop.Migrations
 
             migrationBuilder.DropTable(
                 name: "tbl_ordershipstatus");
+
+            migrationBuilder.DropTable(
+                name: "tbl_transactions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

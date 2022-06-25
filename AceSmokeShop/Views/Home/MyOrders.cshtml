@@ -22,7 +22,7 @@
     @if (Model.userOrdersList.Count() == 0)
     {
         <div class="container mt-4" style="padding-bottom: 7rem;">
-            <div style="text-align: -webkit-center;">
+            <div style="text-align:center;">
                 <img src="~/Images/EmptyOrder.png" style="width:750px;" />
             </div>
             <div>
@@ -120,409 +120,407 @@
             }
             
             <div class="mt-3">
-                <div class="visible-scrollbar">
-                    <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="margin:0rem;">
-                        <div class="accordion">
-                            @foreach (var item in Model.userOrdersList)
+                <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="margin:0rem;">
+                    <div class="accordion">
+                        @foreach (var item in Model.userOrdersList)
+                        {
+                            @if(item.IsVendor == true)
                             {
-                                @if(item.IsVendor == true)
-                                {
-                                    <div class="accordion-item" style="background-color:#AFE1AF">
-                                        <div class="accordion-item-header">
-                                            <div class="row" style="padding:1rem 1rem; width: 100%;">
-                                                <div class="col-2">
-                                                    <a style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></a>
-                                                </div>
-                                                <div class="col-2">
-                                                    <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
-                                                </div>
-                                                <div class="col-2">
-                                                    <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
-                                                </div>
-                                                <div class="col-2">
-                                                    @if(item.OrderStatus.Equals("Order Placed"))
-                                                    {
-                                                        <button type="button" class="d-inline"  data-toggle="ajax-modal" data-target="#cancelorder"
-                                                            data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" 
-                                                            style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
-                                                            <b>Cancel Order</b>
-                                                        </button>
-                                                    }
-                                                </div>
-                                                @if(item.IsPaid && item.OrderStatus.ToLower().Contains("cancel"))
+                                <div class="accordion-item" style="background-color:#AFE1AF">
+                                    <div class="accordion-item-header">
+                                        <div class="row" style="padding:1rem 1rem; width: 100%;">
+                                            <div class="col-2">
+                                                <a style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></a>
+                                            </div>
+                                            <div class="col-2">
+                                                <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
+                                            </div>
+                                            <div class="col-2">
+                                                <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
+                                            </div>
+                                            <div class="col-2">
+                                                @if(item.OrderStatus.Equals("Order Placed"))
                                                 {
+                                                    <button type="button" class="d-inline"  data-toggle="ajax-modal" data-target="#cancelorder"
+                                                        data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" 
+                                                        style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
+                                                        <b>Cancel Order</b>
+                                                    </button>
+                                                }
+                                            </div>
+                                            @if(item.IsPaid && item.OrderStatus.ToLower().Contains("cancel"))
+                                            {
+                                                <div class="col-2">
+                                                    <a style="color:green; font-size: 13px;font-weight: 500;"><b>REFUNDED</b></a>
+                                                </div>
+                                            }
+                                            else if (item.IsPaid && !item.OrderStatus.ToLower().Contains("cancel"))
+                                            {
                                                     <div class="col-2">
-                                                        <a style="color:green; font-size: 13px;font-weight: 500;"><b>REFUNDED</b></a>
-                                                    </div>
-                                                }
-                                                else if (item.IsPaid && !item.OrderStatus.ToLower().Contains("cancel"))
-                                                {
-                                                     <div class="col-2">
-                                                        <a style="color:green; font-size: 13px;font-weight: 500;"><b>PAID</b></a>
-                                                    </div>
-                                                }
-                                                else if(!item.IsPaid && !item.OrderStatus.ToLower().Contains("cancel"))
-                                                {
+                                                    <a style="color:green; font-size: 13px;font-weight: 500;"><b>PAID</b></a>
+                                                </div>
+                                            }
+                                            else if(!item.IsPaid && !item.OrderStatus.ToLower().Contains("cancel"))
+                                            {
+                                                <div class="col-2">
+                                                    <a style="color:red; font-size: 13px;font-weight: 500;"><b>UNPAID</b></a>
+                                                </div>
+                                            }
+                                            else if(!item.IsPaid && item.OrderStatus.ToLower().Contains("cancel"))
+                                            {
                                                     <div class="col-2">
-                                                        <a style="color:red; font-size: 13px;font-weight: 500;"><b>UNPAID</b></a>
-                                                    </div>
-                                                }
-                                                else if(!item.IsPaid && item.OrderStatus.ToLower().Contains("cancel"))
-                                                {
-                                                     <div class="col-2">
                                                   
-                                                    </div>
-                                                }
-                                                @if(item.IsPaid == false && !item.OrderStatus.ToLower().Contains("cancel"))
-                                                {
-                                                    <div class="col-2">
-                                                        <a class="d-inline" href="@Url.Action("PayNowGet", "Home", new { CustOrderId = @item.CustOrderId})" 
-                                                            style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
-                                                            <b>Pay Now</b>
-                                                        </a>
-                                                    </div>
-                                                }
-                                            </div>
+                                                </div>
+                                            }
+                                            @if(item.IsPaid == false && !item.OrderStatus.ToLower().Contains("cancel"))
+                                            {
+                                                <div class="col-2">
+                                                    <a class="d-inline" href="@Url.Action("PayNowGet", "Home", new { CustOrderId = @item.CustOrderId})" 
+                                                        style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
+                                                        <b>Pay Now</b>
+                                                    </a>
+                                                </div>
+                                            }
                                         </div>
-                                        <div class="accordion-item-body">
-                                            <div class="accordion-item-body-content">
-                                                <div class="container" style="margin:1rem">
-                                                    @* Insert Img here *@
-                                                    @if(item.ShippingAddress != null)
-                                                    {
-                                                        @if(item.OrderStatus.ToLower().Equals("order placed")){
-                                                            <div class="row" style="width:100%;">
-                                                                <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
-                                                            </div>
-                                                        }
-                                                        @if(item.OrderStatus.ToLower().Equals("order packaging")){
-                                                            <div class="row" style="width:100%;">
-                                                                <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
-                                                            </div>
-                                                        }
-                                                        @if(item.OrderStatus.ToLower().Equals("order dispatched")){
-                                                            <div class="row" style="width:100%;">
-                                                                <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
-                                                            </div>
-                                                        }
-                                                        @if(item.OrderStatus.ToLower().Equals("delivered")){
-                                                            <div class="row" style="width:100%;">
-                                                                <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
-                                                            </div>
-                                                        }
+                                    </div>
+                                    <div class="accordion-item-body">
+                                        <div class="accordion-item-body-content">
+                                            <div class="container" style="margin:1rem">
+                                                @* Insert Img here *@
+                                                @if(item.ShippingAddress != null)
+                                                {
+                                                    @if(item.OrderStatus.ToLower().Equals("order placed")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
+                                                        </div>
                                                     }
+                                                    @if(item.OrderStatus.ToLower().Equals("order packaging")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                    @if(item.OrderStatus.ToLower().Equals("order dispatched")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                    @if(item.OrderStatus.ToLower().Equals("delivered")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                }
 
-                                                    @* Insert Shipping Address here *@
-                                                    <div class="row mt-5"  style="width:90%; margin:0;">
-                                                        <div class="col-4" style="padding:0px;">
-                                                            @if(item.ShippingAddress == null){
-                                                                <div class="product-card" style="width: 330px">
-		                                                            <div class="product-details"  style="padding: 1rem 2rem;">
-                                                                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                                                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
-			                                                            </div>
-                                                                        <br/>
-                                                                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                                                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
-			                                                            </div>
-                                                                        <br/>
-                                                                    </div>
-	                                                            </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="product-card" style="width: 330px">
-		                                                            <div class="product-details"  style="padding: 1rem 2rem;">
-                                                                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                                                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
-			                                                            </div>
-                                                                        <h7>
-                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineA</a>
-                                                                        </h7>
-                                                                        <br/>
-                                                                        @if (item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length > 0)
-                                                                        {
-                                                                            <h7>
-                                                                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineB</a>
-                                                                            </h7>
-                                                                            <br/>
-                                                                        }
-                                                                        <h7>
-                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.City</a>
-                                                                        </h7>
-                                                                        <br/>
-                                                                        <h7>
-                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.ShippingAddress.StateID - 1].StateName @item.ShippingAddress.Zipcode</a>
-                                                                        </h7>
-                                                                        <br/>
-                                                                        @if(item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length <= 0)
-                                                                        {
-                                                                            <br/>
-                                                                        }
-                                                                    </div>
-	                                                            </div>
-                                                            }
-                                                        </div>
-                                                        @*Insert Calc Section here*@
-                                                        <div class="col-4" style="padding:0px;">
-                                                            <hr/>
-                                                            <div class="row" style="margin:0;">
-                                                                <div class="col-6">
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a>Subtotal</a>
-                                                                    </div>
-                                                                    <div class="row" style="margin:0;">
-                                                                            <a>Tax</a>
-                                                                    </div>
+                                                @* Insert Shipping Address here *@
+                                                <div class="row mt-5"  style="width:90%; margin:0;">
+                                                    <div class="col-4" style="padding:0px;">
+                                                        @if(item.ShippingAddress == null){
+                                                            <div class="product-card" style="width: 330px">
+		                                                        <div class="product-details"  style="padding: 1rem 2rem;">
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
+			                                                        </div>
+                                                                    <br/>
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
+			                                                        </div>
+                                                                    <br/>
                                                                 </div>
-                                                                <div class="col-6">
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a id="Subtotal">$@item.SubTotal</a>
-                                                                    </div>
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a>@item.Tax%</a>
-                                                                    </div>
+	                                                        </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="product-card" style="width: 330px">
+		                                                        <div class="product-details"  style="padding: 1rem 2rem;">
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
+			                                                        </div>
+                                                                    <h7>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineA</a>
+                                                                    </h7>
+                                                                    <br/>
+                                                                    @if (item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length > 0)
+                                                                    {
+                                                                        <h7>
+                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineB</a>
+                                                                        </h7>
+                                                                        <br/>
+                                                                    }
+                                                                    <h7>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.City</a>
+                                                                    </h7>
+                                                                    <br/>
+                                                                    <h7>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.ShippingAddress.StateID - 1].StateName @item.ShippingAddress.Zipcode</a>
+                                                                    </h7>
+                                                                    <br/>
+                                                                    @if(item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length <= 0)
+                                                                    {
+                                                                        <br/>
+                                                                    }
+                                                                </div>
+	                                                        </div>
+                                                        }
+                                                    </div>
+                                                    @*Insert Calc Section here*@
+                                                    <div class="col-4" style="padding:0px;">
+                                                        <hr/>
+                                                        <div class="row" style="margin:0;">
+                                                            <div class="col-6">
+                                                                <div class="row" style="margin:0;">
+                                                                    <a>Subtotal</a>
+                                                                </div>
+                                                                <div class="row" style="margin:0;">
+                                                                        <a>Tax</a>
                                                                 </div>
                                                             </div>
-                                                            <hr/>
-                                                            <div class="row" style="margin:0;">
-                                                                <div class="col-6">
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a><b>Grand Total</b></a>
-                                                                    </div>
+                                                            <div class="col-6">
+                                                                <div class="row" style="margin:0;">
+                                                                    <a id="Subtotal">$@item.SubTotal</a>
                                                                 </div>
-                                                                <div class="col-6">
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a><b>$@item.TotalAmount</b></a>
-                                                                    </div>
+                                                                <div class="row" style="margin:0;">
+                                                                    <a>@item.Tax%</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr/>
+                                                        <div class="row" style="margin:0;">
+                                                            <div class="col-6">
+                                                                <div class="row" style="margin:0;">
+                                                                    <a><b>Grand Total</b></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="row" style="margin:0;">
+                                                                    <a><b>$@item.TotalAmount</b></a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @* List of Order Items *@
-                                                    <table class="table mt-5" style="width:85%;">
-                                                        <tbody>
-                                                            @foreach (var i in item.OrderItems)
-                                                            {
-                                                                <tr>
-                                                                    <td class="col-2">
-                                                                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
-                                                                    </td>
-                                                                    <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
-                                                                        <div class="row d-flex justify-content-center">
-                                                                            <div class="col-md-12">
-                                                                                <div class="row p-2">
-                                                                                    <div class="col mt-1">
-                                                                                        <h6>@i.Product.ProductName</h6>
-                                                                                        <div class="mt-1 mb-1 spec-1">
-                                                                                            <span>@i.Product.Category.CategoryName</span> - <span>@i.Product.SubCategory.SubCategoryName</span><br/>
-                                                                                        </div>
+                                                </div>
+                                                @* List of Order Items *@
+                                                <table class="table mt-5" style="width:85%;">
+                                                    <tbody>
+                                                        @foreach (var i in item.OrderItems)
+                                                        {
+                                                            <tr>
+                                                                <td class="col-2">
+                                                                    <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
+                                                                </td>
+                                                                <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
+                                                                    <div class="row d-flex justify-content-center">
+                                                                        <div class="col-md-12">
+                                                                            <div class="row p-2">
+                                                                                <div class="col mt-1">
+                                                                                    <h6>@i.Product.ProductName</h6>
+                                                                                    <div class="mt-1 mb-1 spec-1">
+                                                                                        <span>@i.Product.Category.CategoryName</span> - <span>@i.Product.SubCategory.SubCategoryName</span><br/>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </td>
-                                                                    <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                                                                        <label>@i.Quantity</label>
-                                                                    </td>
-                                                                    <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                                                                        <label>$@i.Price</label>
-                                                                    </td>
-                                                                </tr>
-                                                            }
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                                                    <label>@i.Quantity</label>
+                                                                </td>
+                                                                <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                                                    <label>$@i.Price</label>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
-                                }
-                                else
-                                {
-                                    <div class="accordion-item">
-                                        <div class="accordion-item-header">
-                                            <div class="row" style="padding:1rem 1rem; width: 100%;">
-                                                <div class="col-2">
-                                                    <a style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></a>
-                                                </div>
-                                                <div class="col-2">
-                                                    <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
-                                                </div>
-                                                <div class="col-2">
-                                                    <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
-                                                </div>
-                                                <div class="col-2">
-                                                    <a style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>Repeat Order</b></a>
-                                                </div>
-                                                <div class="col-2">
-                                                    @if(item.OrderStatus.Equals("Order Placed")){
-                                                        <button type="button" class="btn"  data-toggle="ajax-modal" data-target="#cancelorder"
-                                                        data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" style="color:#cdb36c;font-size: 13px;font-weight: 500;"><b>Cancel Order</b></button>
-                                                    }
-                                                </div> 
-                                                @if(item.DeliveryDate.Year <= 2000)
-                                                {
-                                                    <div class="col-1">
-                                                        <a style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>Track</b></a>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                        <div class="accordion-item-body">
-                                            <div class="accordion-item-body-content">
-                                                <div class="container" style="margin:1rem">
-                                                    @* Insert Img here *@
-                                                    @if(item.ShippingAddress != null)
-                                                    {
-                                                        @if(item.OrderStatus.ToLower().Equals("order placed")){
-                                                            <div class="row" style="width:100%;">
-                                                                <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
-                                                            </div>
-                                                        }
-                                                        @if(item.OrderStatus.ToLower().Equals("order packaging")){
-                                                            <div class="row" style="width:100%;">
-                                                                <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
-                                                            </div>
-                                                        }
-                                                        @if(item.OrderStatus.ToLower().Equals("order dispatched")){
-                                                            <div class="row" style="width:100%;">
-                                                                <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
-                                                            </div>
-                                                        }
-                                                        @if(item.OrderStatus.ToLower().Equals("delivered")){
-                                                            <div class="row" style="width:100%;">
-                                                                <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
-                                                            </div>
-                                                        }
-                                                    }
-                                                    @* Insert Shipping Address here *@
-                                                    <div class="row mt-5"  style="width:90%; margin:0;">
-                                                        <div class="col-4" style="padding:0px;">
-                                                            @if(item.ShippingAddress == null)
-                                                            {
-                                                                <div class="product-card" style="width: 330px">
-		                                                            <div class="product-details"  style="padding: 1rem 2rem;">
-                                                                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                                                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
-			                                                            </div>
-                                                                        <br/>
-                                                                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                                                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
-			                                                            </div>
-                                                                        <br/>
-                                                                    </div>
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="product-card" style="width: 330px">
-		                                                            <div class="product-details"  style="padding: 1rem 2rem;">
-                                                                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                                                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
-			                                                            </div>
-                                                                        <h7>
-                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineA</a>
-                                                                        </h7>
-                                                                        <br/>
-                                                                        @if (item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length > 0)
-                                                                        {
-                                                                            <h7>
-                                                                                <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineB</a>
-                                                                            </h7>
-                                                                            <br/>
-                                                                        }
-                                                                        <h7>
-                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.City</a>
-                                                                        </h7>
-                                                                        <br/>
-                                                                        <h7>
-                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.ShippingAddress.StateID - 1].StateName @item.ShippingAddress.Zipcode</a>
-                                                                        </h7>
-                                                                        <br/>
-                                                                        @if(item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length <= 0)
-                                                                        {
-                                                                            <br/>
-                                                                        }
-                                                                    </div>
-	                                                            </div>
-                                                            }
-                                                        </div>
-                                                        @*Insert Calc Section here*@
-                                                        <div class="col-4" style="padding:0px;">
-                                                            <hr/>
-                                                            <div class="row" style="margin:0;">
-                                                                <div class="col-6">
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a>Subtotal</a>
-                                                                    </div>
-                                                                    <div class="row" style="margin:0;">
-                                                                            <a>Tax</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-6">
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a id="Subtotal">$@item.SubTotal</a>
-                                                                    </div>
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a>@item.Tax%</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr/>
-                                                            <div class="row" style="margin:0;">
-                                                                <div class="col-6">
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a><b>Grand Total</b></a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-6">
-                                                                    <div class="row" style="margin:0;">
-                                                                        <a><b>$@item.TotalAmount</b></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    @* List of Order Items *@
-                                                    <table class="table mt-5" style="width:85%;">
-                                                        <tbody>
-                                                            @foreach (var i in item.OrderItems)
-                                                            {
-                                                                <tr>
-                                                                    <td class="col-2">
-                                                                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
-                                                                    </td>
-                                                                    <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
-                                                                        <div class="row d-flex justify-content-center">
-                                                                            <div class="col-md-12">
-                                                                                <div class="row p-2">
-                                                                                    <div class="col mt-1">
-                                                                                        <h6>@i.Product.ProductName</h6>
-                                                                                        <div class="mt-1 mb-1 spec-1">
-                                                                                            <span>@i.Product.Category.CategoryName</span> - <span>@i.Product.SubCategory.SubCategoryName</span><br/>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                                                                        <label>@i.Quantity</label>
-                                                                    </td>
-                                                                    <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                                                                        <label>$@i.Price</label>
-                                                                    </td>
-                                                                </tr>
-                                                            }
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                                </div>
                             }
-                        </div>
+                            else
+                            {
+                                <div class="accordion-item">
+                                    <div class="accordion-item-header">
+                                        <div class="row" style="padding:1rem 1rem; width: 100%;">
+                                            <div class="col-2">
+                                                <a style="font-size: 13px;font-weight: 500;"><b>Order #@item.CustOrderId</b></a>
+                                            </div>
+                                            <div class="col-2">
+                                                <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
+                                            </div>
+                                            <div class="col-2">
+                                                <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
+                                            </div>
+                                            <div class="col-2">
+                                                <a style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>Repeat Order</b></a>
+                                            </div>
+                                            <div class="col-2">
+                                                @if(item.OrderStatus.Equals("Order Placed")){
+                                                    <button type="button" class="btn"  data-toggle="ajax-modal" data-target="#cancelorder"
+                                                    data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" style="color:#cdb36c;font-size: 13px;font-weight: 500;"><b>Cancel Order</b></button>
+                                                }
+                                            </div> 
+                                            @if(item.DeliveryDate.Year <= 2000)
+                                            {
+                                                <div class="col-1">
+                                                    <a style="color:#cdb36c; font-size: 13px;font-weight: 500;"><b>Track</b></a>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item-body">
+                                        <div class="accordion-item-body-content">
+                                            <div class="container" style="margin:1rem">
+                                                @* Insert Img here *@
+                                                @if(item.ShippingAddress != null)
+                                                {
+                                                    @if(item.OrderStatus.ToLower().Equals("order placed")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status1.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                    @if(item.OrderStatus.ToLower().Equals("order packaging")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status2.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                    @if(item.OrderStatus.ToLower().Equals("order dispatched")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status3.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                    @if(item.OrderStatus.ToLower().Equals("delivered")){
+                                                        <div class="row" style="width:100%;">
+                                                            <img src="~/Images/Status4.png" class="d-block w-100" alt="Img">
+                                                        </div>
+                                                    }
+                                                }
+                                                @* Insert Shipping Address here *@
+                                                <div class="row mt-5"  style="width:90%; margin:0;">
+                                                    <div class="col-4" style="padding:0px;">
+                                                        @if(item.ShippingAddress == null)
+                                                        {
+                                                            <div class="product-card" style="width: 330px">
+		                                                        <div class="product-details"  style="padding: 1rem 2rem;">
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
+			                                                        </div>
+                                                                    <br/>
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
+			                                                        </div>
+                                                                    <br/>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="product-card" style="width: 330px">
+		                                                        <div class="product-details"  style="padding: 1rem 2rem;">
+                                                                    <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                                                                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
+			                                                        </div>
+                                                                    <h7>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineA</a>
+                                                                    </h7>
+                                                                    <br/>
+                                                                    @if (item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length > 0)
+                                                                    {
+                                                                        <h7>
+                                                                            <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.AddressLineB</a>
+                                                                        </h7>
+                                                                        <br/>
+                                                                    }
+                                                                    <h7>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@item.ShippingAddress.City</a>
+                                                                    </h7>
+                                                                    <br/>
+                                                                    <h7>
+                                                                        <a style="font-size: 1rem;font-weight: 400;letter-spacing: -0.5px;">@Model.States[@item.ShippingAddress.StateID - 1].StateName @item.ShippingAddress.Zipcode</a>
+                                                                    </h7>
+                                                                    <br/>
+                                                                    @if(item.ShippingAddress.AddressLineB != null && item.ShippingAddress.AddressLineB.Length <= 0)
+                                                                    {
+                                                                        <br/>
+                                                                    }
+                                                                </div>
+	                                                        </div>
+                                                        }
+                                                    </div>
+                                                    @*Insert Calc Section here*@
+                                                    <div class="col-4" style="padding:0px;">
+                                                        <hr/>
+                                                        <div class="row" style="margin:0;">
+                                                            <div class="col-6">
+                                                                <div class="row" style="margin:0;">
+                                                                    <a>Subtotal</a>
+                                                                </div>
+                                                                <div class="row" style="margin:0;">
+                                                                        <a>Tax</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="row" style="margin:0;">
+                                                                    <a id="Subtotal">$@item.SubTotal</a>
+                                                                </div>
+                                                                <div class="row" style="margin:0;">
+                                                                    <a>@item.Tax%</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr/>
+                                                        <div class="row" style="margin:0;">
+                                                            <div class="col-6">
+                                                                <div class="row" style="margin:0;">
+                                                                    <a><b>Grand Total</b></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="row" style="margin:0;">
+                                                                    <a><b>$@item.TotalAmount</b></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @* List of Order Items *@
+                                                <table class="table mt-5" style="width:85%;">
+                                                    <tbody>
+                                                        @foreach (var i in item.OrderItems)
+                                                        {
+                                                            <tr>
+                                                                <td class="col-2">
+                                                                    <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
+                                                                </td>
+                                                                <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
+                                                                    <div class="row d-flex justify-content-center">
+                                                                        <div class="col-md-12">
+                                                                            <div class="row p-2">
+                                                                                <div class="col mt-1">
+                                                                                    <h6>@i.Product.ProductName</h6>
+                                                                                    <div class="mt-1 mb-1 spec-1">
+                                                                                        <span>@i.Product.Category.CategoryName</span> - <span>@i.Product.SubCategory.SubCategoryName</span><br/>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                                                    <label>@i.Quantity</label>
+                                                                </td>
+                                                                <td class="col-2" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                                                    <label>$@i.Price</label>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
             </div>

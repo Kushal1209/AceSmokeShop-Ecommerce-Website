@@ -896,9 +896,16 @@ namespace AceSmokeShop.Services
             }
 
             var cartcount = _cartRepository._dbSet.Count();
-           
-            _cartRepository._dbSet.Add(cart);
-            _cartRepository._context.SaveChanges();
+            try
+            {
+                _cartRepository._dbSet.Add(cart);
+                _cartRepository._context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
             if(cartcount + 1 == _cartRepository._dbSet.Count())
             {
                 return "Success";
