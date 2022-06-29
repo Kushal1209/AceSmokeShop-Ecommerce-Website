@@ -119,7 +119,7 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new AppUser { Fullname = Input.Fullname, UserName = Input.Email, Contact = Input.Contact,
-                    Dob = Input.Dob, Email = Input.Email, StateID = Input.State.StateID, UserRole = "USER", LockoutEnabled = false, CreateDate= DateTime.Now};
+                    Dob = Input.Dob, Email = Input.Email, StateID = Input.State.StateID, UserRole = "USER", LockoutEnabled = false, CreateDate= DateTime.Now, Stores = "None"};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

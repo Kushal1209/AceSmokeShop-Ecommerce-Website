@@ -46,6 +46,10 @@ namespace AceSmokeShop.Areas.Identity.Data
         [Column(TypeName = "bit")]
         public bool IsAccounting { get; set; }
 
+        [PersonalData]
+        [Column(TypeName = "nvarchar(256)")]
+        public string Stores { get; set; }
+
         public static explicit operator AppUser(Task<object> v)
         {
             throw new NotImplementedException();

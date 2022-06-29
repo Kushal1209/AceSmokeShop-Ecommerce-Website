@@ -25,68 +25,66 @@
     </div>
 </div>
 
-<div class="mt-4" style="padding: 2rem 8rem;">
-    <div class="row">
-        <div class="col-3">
-            <div>
+<div class="IndexDivPadding mt-4">
+    <div class="row row-cols row-cols-lg g-5 g-lg-3 productlistRow">
+        <div class="col productCol">
+            <div class="ProductCols">
                 <div>
-                    <h1 class="font-weight-bolder"><span style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Featured Items</span></h1>
+                    <h1 class="IndexText font-weight-bolder"><span>Featured Items</span></h1>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
-                    <span class="font-weight-normal">Shop from out most premium <br/> brands and products.</span>
+                    <span class="font-weight-normal">Shop from out most premium brands and products.</span>
                 </div>
                 <div class="mt-2 mb-0">
                     <a href="@Url.Action("Products", "Home", new{type = "featured"})" class="font-weight-bold" style="color:#96672d;"><b>See All Featured Items</b></a>
                 </div>
             </div>
         </div>
-        <div class="col-9">
-            <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 3rem;">
-                @foreach(var item in Model.FeaturedList)
-                {
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-                        <div class="product-card" style="width: 245px">
-		                    <div class="product-tumb" style="height: 260px;">
-                                <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
-                                    <img  src="@item.PrimaryImage" alt="">
-                                </a>
-		                    </div>
-		                    <div class="product-details" style="padding:0px;">
-                                <div style="padding: 5px; min-height: 87px;">
-                                    @if(user != null && user.UserRole.ToLower().Contains("vendor"))
-                                    {
-                                        <div class="product-price">$@item.VendorPrice</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="product-price">$@item.SalePrice</div>
-                                    }
-			                        <h7>
-                                        <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
-                                    </h7>
+        @foreach(var item in Model.FeaturedList)
+        {
+            <div class="col productlistCol">
+                <div class="col products">
+                    <div class="product-card">
+		                <div class="product-tumb">
+                            <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                <img  src="@item.PrimaryImage" alt="">
+                            </a>
+		                </div>
+		                <div class="product-details" style="padding:0px;">
+                            <div style="padding: 5px; min-height: 87px;">
+                                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                                {
+                                    <div class="product-price">$@item.VendorPrice</div>
+                                }
+                                else
+                                {
+                                    <div class="product-price">$@item.SalePrice</div>
+                                }
+			                    <h7>
+                                    <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
+                                </h7>
+                            </div>
+			                <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                <div class="col d-grid gap-1" style="padding: 0px;">
+                                    <button class="btn" type="button" style="background-color: gray;border-radius: 0px;" 
+                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
                                 </div>
-			                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
-                                    <div class="col d-grid gap-1" style="padding: 0px;">
-                                        <button class="btn" type="button" style="background-color: gray;border-radius: 0px;" 
-                                        onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
-                                    </div>
-			                    </div>
-		                    </div>
-	                    </div>
-                    </div>
-                }
+			                </div>
+		                </div>
+	                </div>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 
-<div class="mt-1" style="padding: 2rem 8rem; background-color: #D3D3D3">
-    <div class="row">
-        <div class="col-3">
-            <div>
+<div class="IndexDivPadding mt-1" style="background-color: #D3D3D3">
+    <div class="row row-cols row-cols-lg g-5 g-lg-3 productlistRow">
+        <div class="col productCol">
+            <div class="ProductCols">
                 <div>
-                    <h1 class="font-weight-bolder"><span style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Popular Products</span></h1>
+                    <h1 class="IndexText font-weight-bolder"><span>Popular Products</span></h1>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
@@ -97,52 +95,50 @@
                 </div>
             </div>
         </div>
-        <div class="col-9">
-            <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 3rem;">
-                @foreach(var item in Model.PromotedList)
-                {
-                    <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-                        <div class="product-card" style="width: 245px">
-		                    <div class="product-tumb" style="height: 260px;">
-                                <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
-                                    <img  src="@item.PrimaryImage" alt="">
-                                </a>
-		                    </div>
-		                    <div class="product-details" style="padding:0px;">
-                                <div style="padding: 5px; min-height: 87px;">
-                                    @if(user != null && user.UserRole.ToLower().Contains("vendor"))
-                                    {
-                                        <div class="product-price">$@item.VendorPrice</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="product-price">$@item.SalePrice</div>
-                                    }
-			                        <h7>
-                                        <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
-                                    </h7>
+        @foreach(var item in Model.FeaturedList)
+        {
+            <div class="col productlistCol">
+                <div class="col products">
+                    <div class="product-card">
+		                <div class="product-tumb">
+                            <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                <img  src="@item.PrimaryImage" alt="">
+                            </a>
+		                </div>
+		                <div class="product-details" style="padding:0px;">
+                            <div style="padding: 5px; min-height: 87px;">
+                                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                                {
+                                    <div class="product-price">$@item.VendorPrice</div>
+                                }
+                                else
+                                {
+                                    <div class="product-price">$@item.SalePrice</div>
+                                }
+			                    <h7>
+                                    <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
+                                </h7>
+                            </div>
+			                <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                <div class="col d-grid gap-1" style="padding: 0px;">
+                                    <button class="btn" type="button" style="background-color: gray;border-radius: 0px;" 
+                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
                                 </div>
-			                    <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
-                                    <div class="col d-grid gap-1" style="padding: 0px;">
-                                        <button class="btn" type="button" style="background-color: gray;border-radius: 0px;" 
-                                        onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
-                                    </div>
-			                    </div>
-		                    </div>
-	                    </div>
-                    </div>
-                }
+			                </div>
+		                </div>
+	                </div>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 
-<div class="mt-1" style="padding: 2rem 8rem;">
-    <div class="row">
-        <div class="col-3">
-            <div>
+<div class="IndexDivPadding mt-4">
+    <div class="row row-cols row-cols-lg g-5 g-lg-3 productlistRow">
+        <div class="col CategoryCol">
+            <div class="ProductCols">
                 <div>
-                    <h1 class="font-weight-bolder"><span style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">Top Categories</span></h1>
+                    <h1 class="IndexText font-weight-bolder"><span>Top Categories</span></h1>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
@@ -150,77 +146,70 @@
                 </div>
             </div>
         </div>
-        <div class="col-9">
-			<div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-3" style="padding: 0rem 3rem;">
-                @for(var i = 0; i<6; i++){
-					<div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-					    <div class="product-card">
-						    <div class="product-tumb">
-							    <img src="@Model.CategoryList[i].Image" alt="">
-						    </div>
-						    <div class="product-details">
-							    <h7><a>@Model.CategoryList[i].CategoryName</a></h7>
-						    </div>
-					    </div>
-				    </div>
-				}
+        <div class="col">
+            <div class="row row-cols row-cols-lg g-5 g-lg-3">
+                @for(var i = 0; i<6; i++)
+                {
+                    <div class="col CategorylistCol">
+                        <div class="col products">
+				            <div class="product-card">
+					            <div class="product-tumb">
+						            <img src="@Model.CategoryList[i].Image" alt="">
+					            </div>
+					            <div class="product-details">
+						            <h7><a>@Model.CategoryList[i].CategoryName</a></h7>
+					            </div>
+				            </div>
+			            </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
-<div class="mt-3" style="padding: 4rem 8rem;background-color: #CDB36C;">
-    <div class="row">
-        <div class="col-3">
-            <div>
+<div class="IndexDivPaddingYellow mt-4">
+    <div class="row row-cols row-cols-lg g-5 g-lg-3">
+        <div class="col">
+            <div class="ProductCols">
                 <div>
-                    <h1 class="font-weight-bolder"><span style="font-size: 3rem; font-weight: 700; color: #FFF; font-family: emoji; letter-spacing: -4px;">Our Promise</span></h1>
+                    <h1 class="IndexTextWhite font-weight-bolder"><span>Our Promise</span></h1>
                     <div class="mt-0" style="border-bottom: 5px solid #FFF; width: 50px;"></div>
                 </div>
             </div>
         </div>
-        <div class="col-9" style="padding: 2.5rem 4rem;">
-			<div class="row">
-                <div class="col-4">
-                    <div class="row" style="margin:0rem; vertical-align: middle;">
-                        <div class="col-3">
-                            <i style="font-size:2.5rem; color: #FFF;" class="fa-solid fa-truck"></i>
-                        </div>
-                        <div class="col-9">
-                            <a style="color: #FFF; font-size: 1rem; font-weight: 400;">Free shipping within $50 within the US</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="row" style="margin:0rem; vertical-align: middle;">
-                        <div class="col-3">
-                            <i style="font-size:2.5rem; color: #FFF;" class="fa-solid fa-hand-holding-dollar"></i>
-                        </div>
-                        <div class="col-9">
-                            <a style="color: #FFF; font-size: 1rem; font-weight: 400;">Guarantee for best price match</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="row" style="margin:0rem; vertical-align: middle;">
-                        <div class="col-3">
-                            <i style="font-size:2.5rem; color: #FFF;" class="fa-solid fa-boxes-packing"></i>
-                        </div>
-                        <div class="col-9">
-                            <a style="color: #FFF; font-size: 1rem; font-weight: 400;">Easy returns policy for all customers</a>
-                        </div>
-                    </div>
-                </div>
+        <div class="col promises">
+            <div class="col-3">
+                <i style="font-size:2.5rem; color: #FFF;" class="fa-solid fa-truck"></i>
+            </div>
+            <div class="col-9">
+                <a style="color: #FFF; font-size: 1rem; font-weight: 400;">Free shipping within $50 within the US</a>
+            </div>
+        </div>
+        <div class="col promises">
+            <div class="col-3">
+                <i style="font-size:2.5rem; color: #FFF;" class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <div class="col-9">
+                <a style="color: #FFF; font-size: 1rem; font-weight: 400;">Guarantee for best price match</a>
+            </div>
+        </div>
+        <div class="col promises">
+            <div class="col-3">
+                <i style="font-size:2.5rem; color: #FFF;" class="fa-solid fa-boxes-packing"></i>
+            </div>
+            <div class="col-9">
+                <a style="color: #FFF; font-size: 1rem; font-weight: 400;">Easy returns policy for all customers</a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="mt-5" style="padding: 2rem 8rem;">
-    <div class="row">
-        <div class="col-3">
-            <div>
+<div class="IndexDivPadding mt-5">
+    <div class="row row-cols row-cols-lg g-5 g-lg-3">
+        <div class="col">
+            <div class="ProductCols">
                 <div>
-                    <h1 class="font-weight-bolder"><span style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">'High' Praise</span></h1>
+                    <h1 class="IndexText font-weight-bolder"><span>'High' Praise</span></h1>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
@@ -231,98 +220,94 @@
                 </div>
             </div>
         </div>
-        <div class="col-9">
-			<div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="padding: 0rem 0rem;">
-                <div class="col-4">
-                    <div class="product-card" style="width: 300px;flex-direction: row;height: 150px;">
-		                <div class="product-tumb" style="height: 80px;width: 200px; margin: 10px;">
-                            <a>
-                                <img src="https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png" alt="">
-                            </a> 
-		                </div>
-		                <div class="product-details" style="padding:0px;">
-                            <div style="padding: 0.7rem 0rem;">
-			                    <h7>
-                                    <a style="font-size: 1rem; font-style:italic;font-weight: 600;letter-spacing: 1px;">
-                                        "This has been the best combination of products and service ever!"
-                                    </a>
-                                </h7>
-                            </div>
-                            <div style="padding: 1rem 0rem;">
-                                <h7>
-                                    <a style="font-size: 1rem;font-weight: 300;letter-spacing: 1px;">
-                                        John Doe
-                                    </a>
-                                </h7>
-                            </div>
-		                </div>
-	                </div>
-                </div>
-                <div class="col-4">
-                    <div class="product-card" style="width: 300px;flex-direction: row;height: 150px;">
-		                <div class="product-tumb" style="height: 80px;width: 200px; margin: 10px;">
-                            <a>
-                                <img src="https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png" alt="">
-                            </a> 
-		                </div>
-		                <div class="product-details" style="padding:0px;">
-                            <div style="padding: 0.7rem 0rem;">
-			                    <h7>
-                                    <a style="font-size: 1rem; font-style:italic;font-weight: 600;letter-spacing: 1px;">
-                                        "This has been the best combination of products and service ever!"
-                                    </a>
-                                </h7>
-                            </div>
-                            <div style="padding: 1rem 0rem;">
-                                <h7>
-                                    <a style="font-size: 1rem;font-weight: 300;letter-spacing: 1px;">
-                                        John Doe
-                                    </a>
-                                </h7>
-                            </div>
-		                </div>
-	                </div>
-                </div>
-                <div class="col-4">
-                    <div class="product-card" style="width: 300px;flex-direction: row;height: 150px;">
-		                <div class="product-tumb" style="height: 80px;width: 200px; margin: 10px;">
-                            <a>
-                                <img src="https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png" alt="">
-                            </a> 
-		                </div>
-		                <div class="product-details" style="padding:0px;">
-                            <div style="padding: 0.7rem 0rem;">
-			                    <h7>
-                                    <a style="font-size: 1rem; font-style:italic;font-weight: 600;letter-spacing: 1px;">
-                                        "This has been the best combination of products and service ever!"
-                                    </a>
-                                </h7>
-                            </div>
-                            <div style="padding: 1rem 0rem;">
-                                <h7>
-                                    <a style="font-size: 1rem;font-weight: 300;letter-spacing: 1px;">
-                                        John Doe
-                                    </a>
-                                </h7>
-                            </div>
-		                </div>
-	                </div>
-                </div>
-            </div>
+        <div class="col HignPraise">
+            <div class="product-card HignPraise-Card" style="width: 300px;flex-direction: row;height: 150px;">
+		        <div class="product-tumb HignPraise-tumb" style="height: 80px;width: 200px; margin: 10px;">
+                    <a>
+                        <img src="https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png" alt="">
+                    </a> 
+		        </div>
+		        <div class="product-details" style="padding:0px;">
+                    <div style="padding: 0.7rem 0rem;">
+			            <h7>
+                            <a style="font-size: 1rem; font-style:italic;font-weight: 600;letter-spacing: 1px;">
+                                "This has been the best combination of products and service ever!"
+                            </a>
+                        </h7>
+                    </div>
+                    <div style="padding: 1rem 0rem;">
+                        <h7>
+                            <a style="font-size: 1rem;font-weight: 300;letter-spacing: 1px;">
+                                John Doe
+                            </a>
+                        </h7>
+                    </div>
+		        </div>
+	        </div>
+        </div>
+        <div class="col HignPraise">
+            <div class="product-card HignPraise-Card" style="width: 300px;flex-direction: row;height: 150px;">
+		        <div class="product-tumb HignPraise-tumb" style="height: 80px;width: 200px; margin: 10px;">
+                    <a>
+                        <img src="https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png" alt="">
+                    </a> 
+		        </div>
+		        <div class="product-details" style="padding:0px;">
+                    <div style="padding: 0.7rem 0rem;">
+			            <h7>
+                            <a style="font-size: 1rem; font-style:italic;font-weight: 600;letter-spacing: 1px;">
+                                "This has been the best combination of products and service ever!"
+                            </a>
+                        </h7>
+                    </div>
+                    <div style="padding: 1rem 0rem;">
+                        <h7>
+                            <a style="font-size: 1rem;font-weight: 300;letter-spacing: 1px;">
+                                John Doe
+                            </a>
+                        </h7>
+                    </div>
+		        </div>
+	        </div>
+        </div>
+        <div class="col HignPraise">
+            <div class="product-card HignPraise-Card" style="width: 300px;flex-direction: row;height: 150px;">
+		        <div class="product-tumb HignPraise-tumb" style="height: 80px;width: 200px; margin: 10px;">
+                    <a>
+                        <img src="https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png" alt="">
+                    </a> 
+		        </div>
+		        <div class="product-details" style="padding:0px;">
+                    <div style="padding: 0.7rem 0rem;">
+			            <h7>
+                            <a style="font-size: 1rem; font-style:italic;font-weight: 600;letter-spacing: 1px;">
+                                "This has been the best combination of products and service ever!"
+                            </a>
+                        </h7>
+                    </div>
+                    <div style="padding: 1rem 0rem;">
+                        <h7>
+                            <a style="font-size: 1rem;font-weight: 300;letter-spacing: 1px;">
+                                John Doe
+                            </a>
+                        </h7>
+                    </div>
+		        </div>
+	        </div>
         </div>
     </div>
 </div>
 
-<div style="padding:2rem 8rem;">
+<div class="IndexDivPadding">
     <hr/>
 </div>
 
-<div class="mt-1" style="padding: 2rem 8rem;">
-    <div class="row">
-        <div class="col-3">
-            <div>
+<div class="IndexDivPadding mt-1">
+    <div class="row row-cols row-cols-lg g-5 g-lg-3">
+        <div class="col AboutUs">
+            <div class="ProductCols">
                 <div>
-                    <h1 class="font-weight-bolder"><span style="font-size: 3rem; font-weight: 700; font-family: emoji; letter-spacing: -4px;">About Us</span></h1>
+                    <h1 class="IndexText font-weight-bolder"><span>About Us</span></h1>
                     <div class="mt-0" style="border-bottom: 5px solid #96672d; width: 50px;"></div>
                 </div>
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
@@ -330,28 +315,24 @@
                 </div>
             </div>
         </div>
-        <div class="col-9">
-			<div class="row" style="padding: 0rem 0rem;">
-                <div class="col-8">
-                    <p style="font-size: 1rem; font-weight: 400; font-style: italic; letter-spacing: 1px;">
-                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+        <div class="col AboutUs-Text">
+            <p style="font-size: 1rem; font-weight: 400; font-style: italic; letter-spacing: 1px;">
+                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
 
-                        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-                    </p>
-                </div>
-                <div class="col-4">
-                    <a>
-                        <img style="height: 400px;width: 300px;" src="~/Images/loginimg.png" />
-                    </a>
-                </div>
-            </div>
+                The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+            </p>
+        </div>
+        <div class="col AboutUsImg">
+            <a>
+                <img class="AboutUs-Img" src="~/Images/loginimg.png" />
+            </a>
         </div>
     </div>
 </div>
 
-<div class="mt-5" style="padding: 0rem 5rem;">
+@*<div class="mt-5" style="padding: 0rem 5rem;">
     <div>
-        <h1 class="font-weight-bolder text-uppercase" style="text-align:center;"><span style="font-size: 2.2rem; font-weight: 600; font-family: emoji; letter-spacing: 0px;">Our Brands</span></h1>
+        <h1 class="IndexText font-weight-bolder" style="text-align:center;"><span>Our Brands</span></h1>
     </div>
     <div class="mt-3">
 
@@ -394,10 +375,11 @@
             </div>
         </div>
     </div>
-</div>
-<div class="mt-5" style="padding-bottom: 5rem; background-color: #F7F7F7;">
-    <div class="row" style="margin:0rem; padding:2rem 8rem;">
-        <div class="col-3">
+</div>*@
+
+<div class="IndexDivPadding mt-5" style="padding-bottom: 5rem; background-color: #F7F7F7;">
+    <div class="row">
+        <div class="col">
             <div class="row" style="margin:0rem;">
                 <h6>
                     <a><b>Menu 1</b></a>
@@ -419,29 +401,7 @@
                 </h7>
             </div>
         </div>
-        <div class="col-3">
-            <div class="row" style="margin:0rem;">
-                <h6>
-                    <a><b>Menu 2</b></a>
-                </h6>
-            </div>
-            <div class="row" style="margin:0rem;">
-                <h7>
-                    <a>Title 1</a>
-                </h7>
-            </div>
-            <div class="row" style="margin:0rem;">
-                <h7>
-                    <a>Title 2</a>
-                </h7>
-            </div>
-            <div class="row" style="margin:0rem;">
-                <h7>
-                    <a>Title 3</a>
-                </h7>
-            </div>
-        </div>
-        <div class="col-3">
+        <div class="col">
             <div class="row" style="margin:0rem;">
                 <h6>
                     <a><b>Menu 3</b></a>
@@ -463,26 +423,26 @@
                 </h7>
             </div>
         </div>
-        <div class="col-3">
+        <div class="col">
             <div class="row" style="margin:0rem;">
                 <h6>
                     <a><b>Follow Us</b></a>
                 </h6>
             </div>
             <div class="row">
-                <div class="col-2">
+                <div class="col brandIcon">
                     <i style="font-size: 2rem;" class="fa-brands fa-facebook"></i>
                 </div>
-                <div class="col-2">
+                <div class="col brandIcon">
                     <i style="font-size: 2rem;" class="fa-brands fa-pinterest-square"></i>
                 </div>
-                <div class="col-2">
+                <div class="col brandIcon">
                     <i style="font-size: 2rem;" class="fa-brands fa-twitter-square"></i>
                 </div>
-                <div class="col-2">
+                <div class="col brandIcon">
                     <i style="font-size: 2rem;" class="fa-brands fa-instagram-square"></i>
                 </div>
-                <div class="col-2">
+                <div class="col brandIcon">
                     <i style="font-size: 2rem;" class="fa-brands fa-linkedin"></i>
                 </div>
             </div>

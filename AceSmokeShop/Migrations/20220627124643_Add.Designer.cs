@@ -4,14 +4,16 @@ using AceSmokeShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AceSmokeShop.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20220627124643_Add")]
+    partial class Add
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,9 +88,6 @@ namespace AceSmokeShop.Migrations
 
                     b.Property<int>("StateID")
                         .HasColumnType("int");
-
-                    b.Property<string>("Stores")
-                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

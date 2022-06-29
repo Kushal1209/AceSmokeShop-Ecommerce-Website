@@ -1259,14 +1259,18 @@ namespace AceSmokeShop.Services
                     var thisuser = await _userManager.Users.Where(x => x.Email == editUser.UserEmail)
                                                                     .FirstOrDefaultAsync();
                     //Admin cannot change his own user data
+
                     if (user.Email != editUser.UserEmail && thisuser!= null)
                     {
-                        thisuser.UserRole = editUser.UserRole;
-
-                        thisuser.LockoutEnabled = editUser.IsActive;
                         thisuser.IsAccounting = editUser.IsAccounting;
-                        //TODO: Toggle isActive Set in user like above.
+                        thisuser.LockoutEnabled = editUser.IsActive;
 
+                        if (editUser.UserRole == "ADMIN")
+                        {
+                            thisuser.Stores = "ALL";
+                        }
+                        thisuser.UserRole = editUser.UserRole;
+                        
                         var metaData = new Dictionary<string, string>();
                         metaData.Add("UserRole", editUser.UserRole);
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AceSmokeShop.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class AddStoresColAppUsers : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,6 +34,7 @@ namespace AceSmokeShop.Migrations
                     StateID = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<string>(type: "nvarchar(256)", nullable: false),
                     IsAccounting = table.Column<bool>(type: "bit", nullable: false),
+                    Stores = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

@@ -487,6 +487,12 @@ namespace AceSmokeShop.Controllers
             return View("Index", _uHomeViewModel);
 
         }
+
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

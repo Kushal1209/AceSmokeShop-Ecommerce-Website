@@ -8,9 +8,149 @@ for details on configuring this project to bundle and minify static web assets. 
     padding: 0;
 }
 
+@media (max-width: 575px) {
+    .container {
+        max-width: 576px;
+    }
+
+    .IndexText {
+        font-size: 2rem;
+        font-weight: 700;
+        font-family: emoji;
+        letter-spacing: -2px;
+    }
+
+    .IndexTextWhite {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #FFF;
+        font-family: emoji;
+        letter-spacing: -2px;
+    }
+
+    .IndexDivPadding {
+        padding: 2rem 1rem;
+    }
+
+    .ProductCols {
+        width: 255px;
+    }
+
+    .products {
+        padding-bottom: 1rem;
+        max-width: 200px;
+    }
+
+    .product-card {
+        display: flex !important;
+        flex-direction: column;
+        width: 200px;
+        position: relative;
+        box-shadow: 0 20px 20px #dfdfdf;
+        background: #fafafa;
+        transition: all .1s linear;
+    }
+
+    .product-tumb {
+        display: flex;
+        height: 160px;
+        padding: 0px 0px;
+        background: #f0f0f0;
+    }
+
+    .IndexDivPaddingYellow {
+        padding: 2rem 2rem;
+        background-color: #CDB36C;
+    }
+
+    .promises {
+        padding: 0rem 7rem
+    }
+
+    .HignPraise {
+        padding: 0rem 1rem;
+    }
+
+    .AboutUs-Img {
+        height: 400px;
+        width: 300px;
+    }
+
+    .brandIcon {
+        max-width: 50px;
+    }
+}
+
 @media (min-width: 576px) {
     .container {
-        max-width: 768px;
+        max-width: 778px;
+    }
+
+    .IndexText {
+        font-size: 2rem;
+        font-weight: 700;
+        font-family: emoji;
+        letter-spacing: -2px;
+    }
+
+    .IndexTextWhite {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #FFF;
+        font-family: emoji;
+        letter-spacing: -2px;
+    }
+
+    .IndexDivPadding {
+        padding: 2rem 2rem;
+    }
+
+    .ProductCols {
+        width: 600px;
+    }
+
+    .products {
+        padding-bottom: 1rem;
+        max-width: 150px;
+    }
+
+    .product-card {
+        display: flex !important;
+        flex-direction: column;
+        width: 200px;
+        position: relative;
+        box-shadow: 0 20px 20px #dfdfdf;
+        background: #fafafa;
+        transition: all .1s linear;
+    }
+
+    .product-tumb {
+        display: flex;
+        height: 160px;
+        padding: 0px 0px;
+        background: #f0f0f0;
+    }
+
+    .IndexDivPaddingYellow {
+        padding: 2rem 2rem;
+        background-color: #CDB36C;
+    }
+
+    .promises {
+        padding: 0rem 7rem
+    }
+
+    .HignPraise {
+        padding: 0rem 5rem;
+        flex-direction: column;
+    }
+
+    .AboutUs-Img {
+        height: 400px;
+        width: 300px;
+    }
+    .brandIcon {
+        max-width: 50px;
     }
 }
 
@@ -21,6 +161,73 @@ for details on configuring this project to bundle and minify static web assets. 
     li.nav-item{
         margin: 0;
     }
+    .IndexText {
+        font-size: 3rem;
+        font-weight: 700;
+        font-family: emoji;
+        letter-spacing: -4px;
+    }
+
+    .IndexTextWhite {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #FFF;
+        font-family: emoji;
+        letter-spacing: -4px;
+    }
+    .IndexDivPadding {
+        padding: 2rem 8rem;
+    }
+    .ProductCols {
+        width: 680px;
+    }
+    .products {
+        padding-bottom: 1rem;
+        max-width: 150px;
+    }
+    .product-card {
+        display: flex !important;
+        flex-direction: column;
+        width: 200px;
+        position: relative;
+        box-shadow: 0 20px 20px #dfdfdf;
+        background: #fafafa;
+        transition: all .1s linear;
+    }
+
+    .product-tumb {
+        display: flex;
+        height: 160px;
+        padding: 0px 0px;
+        background: #f0f0f0;
+    }
+    .IndexDivPaddingYellow {
+        padding: 3rem 5rem;
+        background-color: #CDB36C;
+    }
+    .promises {
+        max-width: 700px;
+        padding: 0rem 2rem;
+    }
+    .HignPraise {
+        padding: 0rem 5rem;
+        flex-direction: column;
+    }
+    .AboutUs-Img {
+        height: 400px;
+        width: 300px;
+    }
+    .AboutUs-Text {
+        max-width: 500px
+    }
+
+    .AboutUs {
+        max-width: 555px
+    }
+
+    .AboutUsImg {
+        max-width: 300px;
+    }
 }
 
 @media (min-width: 992px) {
@@ -29,6 +236,69 @@ for details on configuring this project to bundle and minify static web assets. 
     }
     li.nav-item {
         margin: 0rem 0.5rem;
+    }
+    .IndexText {
+        font-size: 3rem;
+        font-weight: 700;
+        font-family: emoji;
+        letter-spacing: -4px;
+    }
+
+    .IndexTextWhite {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #FFF;
+        font-family: emoji;
+        letter-spacing: -4px;
+    }
+    .IndexDivPadding {
+        padding: 2rem 8rem;
+    }
+    .ProductCols {
+        width: 800px;
+    }
+    .products {
+        padding-bottom: 1rem;
+        max-width: 200px;
+    }
+
+    .product-card {
+        display: flex !important;
+        flex-direction: column;
+        width: 230px;
+        position: relative;
+        box-shadow: 0 20px 20px #dfdfdf;
+        background: #fafafa;
+        transition: all .1s linear;
+    }
+    .product-tumb {
+        display: flex;
+        height: 190px;
+        padding: 0px 0px;
+        background: #f0f0f0;
+    }
+    .IndexDivPaddingYellow {
+        padding: 7rem 8rem;
+        background-color: #CDB36C;
+    }
+    .HignPraise {
+        padding: 0rem 0rem;
+        flex-direction: row;
+    }
+    .AboutUs-Img {
+        height: 400px;
+        width: 300px;
+    }
+    .AboutUs-Text {
+        max-width: 500px
+    }
+
+    .AboutUs {
+        max-width: 700px
+    }
+
+    .AboutUsImg {
+        max-width: 300px;
     }
 }
 
@@ -40,6 +310,80 @@ for details on configuring this project to bundle and minify static web assets. 
     li.nav-item {
         margin: 0rem 1.2rem;
     }
+    .IndexText {
+        font-size: 3rem;
+        font-weight: 700;
+        font-family: emoji;
+        letter-spacing: -4px;
+    }
+    .IndexTextWhite {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #FFF;
+        font-family: emoji;
+        letter-spacing: -4px;
+    }
+    .IndexDivPadding {
+        padding: 2rem 8rem;
+    }
+    .productlistRow{
+        max-width: 95%;
+    }
+    .productCol{
+        max-width: 500px;
+    }
+    .CategoryCol{
+        max-width: 380px;
+    }
+    .productlistCol {
+        max-width: 275px;
+    }
+    .CategorylistCol{
+        max-width: 275px;
+    }
+    .ProductCols {
+        width: 200px;
+    }
+    .products {
+        padding-bottom: 1rem;
+        max-width: 200px;
+    }
+
+    .product-card {
+        display: flex !important;
+        flex-direction: column;
+        width: 230px;
+        position: relative;
+        box-shadow: 0 20px 20px #dfdfdf;
+        background: #fafafa;
+        transition: all .1s linear;
+    }
+    .product-tumb {
+        display: flex;
+        height: 190px;
+        padding: 0px 0px;
+        background: #f0f0f0;
+    }
+    .promises {
+        max-width: 350px;
+    }
+    .HignPraise {
+        padding: 0rem 0rem;
+        flex-direction: row;
+    }
+    .AboutUs-Img {
+        height: 400px;
+        width: 300px;
+    }
+    .AboutUs-Text{
+        max-width: 500px
+    }
+    .AboutUs {
+        max-width: 330px
+    }
+    .AboutUsImg{
+        max-width: 300px;
+    }
 }
 
 nav, footer{
@@ -47,7 +391,7 @@ nav, footer{
 }
 
 .logo-img{
-    height: 60px;
+    height: 45px;
 }
 
 /******** Product Page Details CSS *******/
@@ -124,27 +468,6 @@ span {
 
 
 /* Featured Product Items Card Carousel Slide */
-.product-card {
-    display: flex !important;
-    flex-direction: column;
-    width: 240px;
-    position: relative;
-    box-shadow: 0 20px 20px #dfdfdf;
-    background: #fafafa;
-    transition: all .1s linear;
-
-    @media screen and (max-width: 600px) {
-        height: auto;
-    }
-}
-
-.product-tumb {
-    display: flex;
-    height: 250px;
-    padding: 0px 0px;
-    background: #f0f0f0;
-}
-
 .product-tumb img {
     max-width: 100%;
     max-height: 100%;

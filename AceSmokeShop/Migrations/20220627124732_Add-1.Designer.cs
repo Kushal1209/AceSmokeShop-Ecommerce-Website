@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AceSmokeShop.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220625071255_Initial-Create")]
-    partial class InitialCreate
+    [Migration("20220627124732_Add-1")]
+    partial class Add1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,9 @@ namespace AceSmokeShop.Migrations
 
                     b.Property<int>("StateID")
                         .HasColumnType("int");
+
+                    b.Property<string>("Stores")
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
