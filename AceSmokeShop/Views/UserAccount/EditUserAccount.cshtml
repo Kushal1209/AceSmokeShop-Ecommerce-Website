@@ -21,16 +21,14 @@
                     </div>
                     <input type="hidden" asp-for=@Model.UserEmail />
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="row row-cols row-cols-lg g-3 g-lg-3">
+                            <div class="col-md-12">
                                 <label>User Role</label>
                                 <select asp-for=@Model.UserRole id="userRoles" class="form-select"
                                         asp-items="@(new SelectList(@Model.UserRoleList))">
                                 </select>
                             </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label>Accounting</label>
                                 <div class="toggleWrapper">
                                     <input type="hidden" asp-for="@Model.IsAccounting" value=@Model.IsAccounting id="AccountToggle"/>
@@ -45,7 +43,7 @@
                                     <label for="Accounting"></label>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label>Block User</label>
                                 <div class="toggleWrapper">
                                      <input type="hidden" asp-for=@Model.IsActive value=@Model.IsActive id="ActiveToggle"/>
@@ -66,7 +64,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-block" data-save="modal">Save</button>
+                <button type="submit" class="btn btn-primary" data-save="modal">Save</button>
             </div>
         </div>
     </div>

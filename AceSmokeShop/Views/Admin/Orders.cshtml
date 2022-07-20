@@ -12,43 +12,43 @@
     <form asp-action="Orders" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <div class="row">
-                <div class="col-2">
-                    <select asp-for=@Model.OrderStatus id="orderstatus" class="form-select"
+             <div class="row row-cols row-cols-lg g-3 g-lg-3">
+                <div class="col">
+                    <select asp-for=@Model.OrderStatus id="orderstatus" class="form-select myorderstext"
                             asp-items="@(new SelectList(@Model.OrderStatusList))">
                     </select>
                 </div>
-                <div class="col-2">
-                    <select asp-for=@Model.SearchByUser id="searchuser" class="form-select"
+                <div class="col">
+                    <select asp-for=@Model.SearchByUser id="searchuser" class="form-select myorderstext"
                             asp-items="@(new SelectList(@Model.SearchByUserList))">
                     </select>
                 </div>
-                 <div class="col-2">
-                    <select asp-for=@Model.PaymentStatus id="paymentstatus" class="form-select"
+                 <div class="col">
+                    <select asp-for=@Model.PaymentStatus id="paymentstatus" class="form-select myorderstext"
                             asp-items="@(new SelectList(@Model.PaymentStatusList))">
                     </select>
                 </div>
-                <div class="col-2">
-                    <input type="text" value=@Model.search asp-for=@Model.search id="search" class="form-control form-input SearchIcon" placeholder="Search" />
+                <div class="col">
+                    <input type="text" value=@Model.search asp-for=@Model.search id="search" class="form-control form-input myorderstext" placeholder="Search" />
                 </div>
-                <div class="col-2">
-                    <input asp-for="@Model.DateFrom" id="datefrom" class="form-control" />
+                <div class="col">
+                    <input asp-for="@Model.DateFrom" id="datefrom" class="form-control myorderstext" />
                 </div>
-                <div class="col-2">
-                    <input asp-for="@Model.DateTo" id="dateto" class="form-control" />
+                <div class="col">
+                    <input asp-for="@Model.DateTo" id="dateto" class="form-control myorderstext" />
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-2">
-                    <button type="button" class="btn btn-block" id="fliterUserOrderbtnsearch">Search</button>
+            <div class="row row-cols row-cols-lg g-1 g-lg-3 mt-0">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary" id="fliterUserOrderbtnsearch">Search</button>
                 </div>
             </div>
         </div>
     </form>
 
     <div class="mt-3">
-        <div class="row">
-            <div class="col-xl-2 col-lg-3">
+        <div class="row row-cols row-cols-lg g-3 g-lg-3">
+            <div class="col myorder-cards">
                 <div class="card l-bg-cherry">
                     <div class="card-statistic-3 p-2">
                         <div class="mb-3">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-3">
+            <div class="col myorder-cards">
                 <div class="card l-bg-blue-dark">
                     <div class="card-statistic-3 p-2">
                         <div class="mb-3">
@@ -80,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-3">
+            <div class="col myorder-cards">
                 <div class="card l-bg-green-dark">
                     <div class="card-statistic-3 p-2">
                         <div class="mb-3">
@@ -96,7 +96,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-3">
+            <div class="col myorder-cards">
                 <div class="card l-bg-orange-dark">
                     <div class="card-statistic-3 p-2">
                         <div class="mb-3">
@@ -112,7 +112,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-1">
+            <div class="col myorder-cards">
                 <div class="card l-bg-orange-dark">
                     <div class="card-statistic-3 p-2">
                         <div class="mb-3">
@@ -131,9 +131,9 @@
         </div>
     </div>
 
-    <div class="mt-3">
-        <div class="row">
-            <div class="col-xl-2 col-lg-3">
+    <div class="mt-1">
+        <div class="row row-cols row-cols-lg g-3 g-lg-3">
+            <div class="col myorder-cards">
                 <div class="card l-bg-acesmokeshop">
                     <div class="card-statistic-3 p-2">
                         <div class="mb-3">
@@ -149,7 +149,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-3">
+            <div class="col myorder-cards">
                 <div class="card l-bg-acesmokeshop">
                     <div class="card-statistic-3 p-2">
                         <div class="mb-3">
@@ -158,7 +158,7 @@
                         <div class="row align-items-center mb-2 d-flex">
                             <div class="col-8">
                                 <h5 class="d-flex align-items-center mb-0">
-                                    $@(Math.Floor(Model.UnPaidAmount * 100) / 100)
+                                    $@Model.UnPaidAmount
                                 </h5>
                             </div>
                         </div>
@@ -168,10 +168,10 @@
         </div>
     </div>
 
-    <div class="mt-3">
+    <div class="mt-1">
         <div class="Paginationblock">
             <div class="row">
-                <div class="col-md-4" style="padding: 5px 25px;">
+                <div class="col-md" style="padding: 5px 25px;">
                     <div class="form-group">
                         <label style="color: #000;">Rows</label>
                         <select asp-for=@Model.ItemsPerPage id="rowselectId" class="RowSelect"
@@ -179,12 +179,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4" style="padding: 7px 15px;">
+                <div class="col-md" style="padding: 7px 15px;">
                     <div style="text-align: center;">
                         <label style="color: #000;">Showing @Model.CurrentPage / @Model.TotalPages (@Model.FilteredOrders)</label>
                     </div>
                 </div>
-                <div class="col-md-4" style="justify-content:end; padding: 5px 25px;">
+                <div class="col-md" style="justify-content:end; padding: 5px 25px;">
                     <input type="hidden" id="cuttentpageid" value="@Model.CurrentPage" />
                     <input type="hidden" id="totalpageid" value="@Model.TotalPages" />
                     <div style="text-align: end;">
