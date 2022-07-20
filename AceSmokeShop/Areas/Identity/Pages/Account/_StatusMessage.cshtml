@@ -1,6 +1,6 @@
 ﻿@model string
 
-<div class="container"  style="padding-bottom: 20rem;">
+<div class="container-fluid">
     @if (!String.IsNullOrEmpty(Model))
     {
         var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";

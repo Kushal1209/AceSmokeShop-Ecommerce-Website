@@ -5,7 +5,7 @@
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<div class="container">
+<div class="container-fluid">
     <partial name="_StatusMessage" for="StatusMessage" />
     <h4>@ViewData["Title"]</h4>
     <div>
@@ -32,7 +32,7 @@
                     Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
                     with a unique code. Enter the code in the confirmation box below.
                 </p>
-                <div class="row">
+                <div class="row row-cols row-cols-lg g-3 g-lg-3">
                     <div class="col-md-6">
                         <form id="send-code" method="post">
                             <div class="form-group">
