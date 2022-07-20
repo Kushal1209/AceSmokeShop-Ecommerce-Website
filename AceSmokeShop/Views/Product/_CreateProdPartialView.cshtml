@@ -7,7 +7,7 @@
 <div id="productpage" class="mt-3">
     <div class="Paginationblock">
         <div class="row">
-            <div class="col-md-4" style="padding: 5px 25px;">
+            <div class="col-md" style="padding: 5px 25px;">
                 <div class="form-group">
                     <label style="color: #000;">Rows</label>
                    <select asp-for=@Model.ItemsPerPage id="rowselectId" class="RowSelect"
@@ -15,12 +15,12 @@
                    </select>
                </div>
             </div>
-            <div class="col-md-4" style="padding: 7px 15px;">
+            <div class="col-md" style="padding: 7px 15px;">
                 <div style="text-align: center;">
                     <label style="color: #000;">Showing @Model.CurrentPage / @Model.TotalPages</label>
                 </div>
             </div>
-            <div class="col-md-4" style="justify-content:end; padding: 5px 25px;">
+            <div class="col-md" style="justify-content:end; padding: 5px 25px;">
                 <input type="hidden" id="cuttentpageid" value="@Model.CurrentPage" />
                 <input type="hidden" id="totalpageid" value="@Model.TotalPages" />
                 <div style="text-align: end;">
@@ -125,11 +125,10 @@
                    <tr>
                        <td class="col-5">
                            <div class="row d-flex justify-content-center">
-                               <div class="col-md-12">
-                                   <div class="row p-2 bg-white" >
-                                       <div class="col-md-3 mt-1">
-                                           @*<img class="img-fluid img-responsive rounded product-image d-block w-100" src="@item.PrimaryImage"/>*@
-                                           <div class="product-imgs">
+                                <div class="col">
+                                    <div class="row p-2 bg-white">
+                                        <div class="col mt-1" style="max-width: 11rem;">  
+                                            <div class="product-imgs" style="width: 9rem;">
                                                 <div class="img-display" style="border: 1px solid darkgrey;">
                                                     <div class="img-showcase" id=@item.Barcode>
                                                         <img src="@item.PrimaryImage" alt="shoe image">
@@ -248,8 +247,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-
-       
-
     </script>
 }
