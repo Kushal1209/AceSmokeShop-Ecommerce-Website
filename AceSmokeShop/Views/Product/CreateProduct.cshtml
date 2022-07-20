@@ -19,7 +19,7 @@
                 <form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <div class="row">
+                        <div class="row row-cols row-cols-lg g-3 g-lg-3">
                             <div class="col-md-6">
                                 <label asp-for="newProduct.Barcode"></label>
                                 <input asp-for="newProduct.Barcode" id="barcode" class="form-control" />
@@ -29,9 +29,6 @@
                                 <label asp-for="newProduct.ProductName"></label>
                                 <input asp-for="newProduct.ProductName" id="productname" class="form-control" />
                             </div>
-                        </div>
-                        <br/>
-                        <div class="row">
                             <div class="col-md-6">
                                 <label asp-for="newProduct.CategoryID"></label>
                                 <select asp-for="newProduct.CategoryID" id="acategory" onchange="GetSubCat()" class="form-select"
@@ -44,9 +41,6 @@
                                         asp-items="@(new SelectList(string.Empty, "SubCategoryID", "SubCategoryName"))">
                                 </select>
                             </div>
-                        </div>
-                        <br/>
-                        <div class="row">
                             <div class="col-md-6">
                                 <label asp-for="newProduct.Stock"></label>
                                 <input asp-for="newProduct.Stock" class="form-control" />
@@ -55,9 +49,6 @@
                                 <label asp-for="newProduct.VendorPrice"></label>
                                 <input type="number" asp-for="newProduct.VendorPrice" class="form-control" />
                             </div>
-                        </div>
-                        <br/>
-                        <div class="row">
                             <div class="col-md-6">
                                 <label asp-for="newProduct.BasePrice"></label>
                                 <input asp-for="newProduct.BasePrice" class="form-control" />
@@ -66,9 +57,6 @@
                                 <label asp-for="newProduct.SalePrice"></label>
                                 <input asp-for="newProduct.SalePrice" class="form-control" />
                             </div>
-                        </div>
-                        <br/>
-                        <div class="row">
                             <div class="col-md-12">
                                 <label asp-for="newProduct.Description"></label>
                                 <input asp-for="newProduct.Description" class="form-control" />
@@ -78,7 +66,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-block" data-save="modal">Next</button>
+                <button type="submit" class="btn btn-primary" data-save="modal">Next</button>
             </div>
         </div>
     </div>

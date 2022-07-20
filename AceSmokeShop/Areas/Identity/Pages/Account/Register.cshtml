@@ -4,73 +4,65 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="container-fluid" style="padding: 1rem 8rem; padding-bottom: 4rem;">
-    <div class="row" style="margin: 0; justify-content:center;">
-        <div class="col-8" style="padding: 100px;border: 2px solid;margin-left: 0px;background-color: #efefef;">
-            <div class="form-group">
-                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="row">
-                        <div class="col-6">
-                            <label>Name</label>
-                            <input asp-for="Input.Fullname" class="form-control" />
-                            <span asp-validation-for="Input.Fullname" class="text-danger"></span>
+<div class="container-fluid">
+    <div class="registerCont">
+        <div class="row row-cols row-cols-lg g-3 g-lg-3 registerrow">
+            <div class="col registercol">
+                <div class="form-group">
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="registerlogo">
+                            <img src="/Images/logo.png">
                         </div>
-                        <div class="col-6">
-                            <label asp-for="Input.Contact"></label>
-                            <input asp-for="Input.Contact" class="form-control" />
-                            <span asp-validation-for="Input.Contact" class="text-danger"></span>
+                       <div class="row row-cols row-cols-lg g-3 g-lg-3">
+                            <div class="col-md-6">
+                                <label>Name</label>
+                                <input asp-for="Input.Fullname" class="form-control" />
+                                <span asp-validation-for="Input.Fullname" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Input.Contact"></label>
+                                <input asp-for="Input.Contact" class="form-control" />
+                                <span asp-validation-for="Input.Contact" class="text-danger"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Input.Email"></label>
+                                <input asp-for="Input.Email" class="form-control" />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Input.Password"></label>
+                                <input asp-for="Input.Password" class="form-control" />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Input.ConfirmPassword"></label>
+                                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Input.Dob"></label>
+                                <input asp-for="Input.Dob" class="form-control" />
+                                <span asp-validation-for="Input.Dob" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Input.State.StateName" class="control-label"></label>
+                                <select asp-for="Input.State.StateID" class="form-control"
+                                        asp-items="@(new SelectList(@Model.States, "StateID", "StateName"))">
+                                </select>
+                                <span asp-validation-for="Input.State.StateName" class="text-danger"></span>
+                            </div>
+                            <div class="col d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </div>
                         </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-12">
-                            <label asp-for="Input.Email"></label>
-                            <input asp-for="Input.Email" class="form-control" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-6">
-                            <label asp-for="Input.Password"></label>
-                            <input asp-for="Input.Password" class="form-control" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        </div>
-                        <div class="col-6">
-                            <label asp-for="Input.ConfirmPassword"></label>
-                            <input asp-for="Input.ConfirmPassword" class="form-control" />
-                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-6">
-                            <label asp-for="Input.Dob"></label>
-                            <input asp-for="Input.Dob" class="form-control" />
-                            <span asp-validation-for="Input.Dob" class="text-danger"></span>
-                        </div>
-                        <div class="col-6">
-                            <label asp-for="Input.State.StateName" class="control-label"></label>
-                            <select asp-for="Input.State.StateID" class="form-control"
-                                    asp-items="@(new SelectList(@Model.States, "StateID", "StateName"))">
-                            </select>
-                            <span asp-validation-for="Input.State.StateName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-3">
-                            <button type="submit" class="btn btn-block">Register</button>
-                        </div>
-                        <div class="col-9"></div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="col-4" style="padding:0rem;">
-            <div style="width:450px;">
-                <img src="~/Images/loginimg.png" />
+            <div class="col registerimagecol">
+                <div class="registerimage">
+                    <img src="/Images/loginimg.png">
+                </div>
             </div>
         </div>
     </div>

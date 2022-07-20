@@ -9,7 +9,7 @@
 
 <div id="uploadProductImgs"></div>
 
-<div class="modal" tabindex="-1" role="dialog" id="uploadimgs">
+<div class="modal fade" tabindex="-1" role="dialog" id="uploadimgs">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,32 +19,29 @@
                 </button>
             </div>
             <div class="modal-body">
-               <div class="container">
-                    <form method="post" asp-controller="Product" asp-action="UploadProdImage" enctype="multipart/form-data">
-                        <input type="hidden" asp-for="@prodId" name="prodId"/>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Primary Img</label>
-                                    <input type="file" name="primary" class="custom-file" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Secondary Img1</label>
-                                    <input type="file" name="second" class="custom-file" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Secondary Img2</label>
-                                    <input type="file" name="third" class="custom-file" />
-                                </div>
+                <form method="post" asp-controller="Product" asp-action="UploadProdImage" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="@prodId" name="prodId"/>
+                    <div class="form-group">
+                        <div class="row row-cols row-cols-lg g-3 g-lg-3">
+                            <div class="col-md-12">
+                                <label>Primary Img</label>
+                                <input type="file" name="primary" class="custom-file" />
+                            </div>
+                            <div class="col-md-12">
+                                <label>Secondary Img1</label>
+                                <input type="file" name="second" class="custom-file" />
+                            </div>
+                            <div class="col-md-12">
+                                <label>Secondary Img2</label>
+                                <input type="file" name="third" class="custom-file" />
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md">
-                                <button type="submit" class="btn btn-block">Create</button>
-                            </div>
+                        <div class="col-md">
+                            <button type="submit" class="btn btn-primary">Create</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

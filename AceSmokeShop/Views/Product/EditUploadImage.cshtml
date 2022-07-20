@@ -17,28 +17,26 @@
                 </button>
             </div>
             <div class="modal-body">
-               <div class="container">
+                <div class="container">
                     <form method="post" asp-controller="Product" asp-action="EditUploadImage" enctype="multipart/form-data">
                         <input type="hidden" asp-for="@Model.ProductID" name="prodId"/>
                         <div class="form-group">
-                            <div class="row">
-                                 <div class="col-md-6">
+                            <div class="row row-cols row-cols-lg g-3 g-lg-3">
+                                <div class="col-md-12">
                                     <label>Primary Img</label>
                                     <input type="file" name="primary" class="custom-file" />
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label>Secondary Img1</label>
                                     <input type="file" name="second" class="custom-file" />
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label>Secondary Img2</label>
                                     <input type="file" name="third" class="custom-file" />
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md">
-                                <button type="submit" class="btn btn-block">Edit</button>
+                                <button type="submit" class="btn btn-primary">Edit</button>
                             </div>
                         </div>
                     </form>

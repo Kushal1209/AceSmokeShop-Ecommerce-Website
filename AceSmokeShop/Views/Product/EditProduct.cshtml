@@ -20,7 +20,7 @@
                     </div>
                     <input type="hidden" asp-for=@Model.ProductID />
                     <div class="form-group">
-                        <div class="row">
+                        <div class="row row-cols row-cols-lg g-3 g-lg-3">
                             <div class="col-md-6">
                                 <label asp-for="Stock"></label>
                                 <input type="text" value=@Model.Stock asp-for="Stock" class="form-control" />
@@ -29,9 +29,6 @@
                                 <label asp-for="BasePrice"></label>
                                 <input type="text" value=@Model.BasePrice asp-for="BasePrice" class="form-control" />
                             </div>
-                        </div>
-                        <br/>
-                        <div class="row">
                             <div class="col-md-6">
                                 <label asp-for="SalePrice"></label>
                                 <input type="text" value=@Model.SalePrice asp-for="SalePrice" class="form-control" />
@@ -45,7 +42,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-block" data-save="modal">Edit</button>
+                <button type="submit" class="btn btn-primary" data-save="modal">Edit</button>
             </div>
         </div>
     </div>

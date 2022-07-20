@@ -3,9 +3,9 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container">
+<div class="container-fluid">
     <form method="post" asp-controller="Product" asp-action="UploadData" enctype="multipart/form-data">
         <input type="file" name="file" />
-        <button type="submit" class="btn">Import</button>
+        <button type="submit" class="btn btn-primary">Import</button>
     </form>
 </div>

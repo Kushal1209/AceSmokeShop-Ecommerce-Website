@@ -20,17 +20,14 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger">
                     </div>
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-12">
+                        <div class="row row-cols row-cols-lg g-3 g-lg-3">
+                            <div class="col-md-6">
                                 <label asp-for=@Model.CategorySelect.CategoryName></label>
                                 <select asp-for=newsubcategory.CategoryID id="category" class="form-select"
                                         asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
                                 </select>
                             </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label asp-for="newsubcategory.SubCategoryName"></label>
                                 <input type="text" asp-for="newsubcategory.SubCategoryName" class="form-control" />
                             </div>
@@ -39,7 +36,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-block" data-save="modal">Save</button>
+                <button type="submit" class="btn btn-primary" data-save="modal">Save</button>
             </div>
         </div>
     </div>
