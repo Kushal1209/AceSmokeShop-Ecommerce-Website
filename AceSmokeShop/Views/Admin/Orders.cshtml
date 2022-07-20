@@ -246,7 +246,6 @@
                                                             <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
                                                         </div>
                                                         <div class="col-2">
-                                                            @*<a  style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>*@
                                                             @if (item.OrderStatus.ToLower().Contains("cancelled") || item.OrderStatus.ToLower().Contains("delivered"))
                                                             {
                                                                 <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>
@@ -340,7 +339,6 @@
                                                             <a style="font-size: 13px;font-weight: 500;"><b>Ordered @item.CreateDate.Day-@months[@item.CreateDate.Month -1]-@item.CreateDate.Year</b></a>
                                                         </div>
                                                         <div class="col-2">
-                                                            @*<a  style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>*@
                                                             @if (item.OrderStatus.ToLower().Contains("cancelled") || item.OrderStatus.ToLower().Contains("delivered"))
                                                             {
                                                                 <a style="font-size: 13px;font-weight: 500;"><b>@item.OrderStatus.ToUpper()</b></a>

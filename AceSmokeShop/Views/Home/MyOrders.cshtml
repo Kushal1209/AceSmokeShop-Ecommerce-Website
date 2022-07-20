@@ -113,8 +113,8 @@
                 </div>
             }
             
-            <div class="mt-3">
-                <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4" style="margin:0rem;">
+            <div class="mt-0">
+                <div class="row row-cols-3 row-cols-lg-3 g-5 g-lg-4">
                     <div class="visible-scrollbar">
                         <table class="table">
                             <tbody>
@@ -360,8 +360,9 @@
                                                                 </div>
                                                                 <div class="col-2">
                                                                     @if(item.OrderStatus.Equals("Order Placed")){
-                                                                        <button type="button" class="btn"  data-toggle="ajax-modal" data-target="#cancelorder"
-                                                                        data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" style="color:#cdb36c;font-size: 13px;font-weight: 500;"><b>Cancel Order</b></button>
+                                                                        <button type="button" class="d-inline"  data-toggle="ajax-modal" data-target="#cancelorder"
+                                                                        data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" 
+                                                                        style="color:#cdb36c;font-size: 13px;font-weight: 500; border:none; outline:none; background:none;"><b>Cancel Order</b></button>
                                                                     }
                                                                 </div> 
                                                                 @if(item.DeliveryDate.Year <= 2000)
