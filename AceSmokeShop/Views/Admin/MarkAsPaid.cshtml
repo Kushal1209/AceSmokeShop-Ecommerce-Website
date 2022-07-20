@@ -21,8 +21,8 @@
                     </div>
                     <input type="hidden" asp-for="@Model.CustOrderId" />
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col">
+                        <div class="row row-cols row-cols-lg g-3 g-lg-3">
+                            <div class="col-md">
                                 <div class="product-quantity">
                                     <div>
                                         <h5>Are you sure?</h5>
@@ -35,7 +35,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-block" data-save="modal">Yes</button>
+                <button type="submit" class="btn btn-primary" data-save="modal">Yes</button>
             </div>
         </div>
     </div>

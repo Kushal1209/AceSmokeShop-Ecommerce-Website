@@ -27,18 +27,18 @@
     }
 }
 
-<div class="container-fluid" style="padding: 0rem 7rem; padding-bottom: 5rem;">
+<div class="container-fluid">
     <div id="placeholder"></div>
-    <div class="mt-4" style="margin-bottom: 3rem;">
+    <div class="mt-4">
         <div>
             <h2 style="font-weight: 700; font-family: emoji; letter-spacing: -2px;">Select Address</h2>
             <hr/>
         </div>
         <div class="row mt-4">
-            <div class="col-4" id="HideShippingAdd">
-                <div class="product-card" style="width: 330px;border: 2px solid #96672d;height: 100%;box-shadow: -10px 10px 20px #96672d;border-radius: 25px;">
-                    <div class="product-details"  style="padding: 1rem 2rem;">
-                        <div class="row" style="padding:0px; margin: 0px;height: 45px;">
+            <div class="col" id="HideShippingAdd">
+                <div class="product-card shippAddress-card">
+                    <div class="shipping-details">
+                        <div class="row shippingrow">
                             <div class="col" style="padding: 0px;">
                                 <a style="color:#cdb36c;border-radius: 0px; font-weight:600;">Shipping Address</a>
                             </div>
@@ -97,11 +97,11 @@
         <div>
             <h4 style="font-weight: 600; font-family: inherit; letter-spacing: -1px;">Other Addresses</h4>
         </div>
-        <div class="row row-cols-3 row-cols-lg-3 gy-5 g-lg-4">
+        <div class="row row-cols row-cols-lg gy-5 g-lg-4">
             @foreach (var item in Model.Address.AddressList)
             {
-                <div class="col addresses" id="addresses" style="padding-bottom: 1rem;max-width: 283px;">
-                    <div class="product-card" style="width: 245px">
+                <div class="col addresses" id="addresses">
+                    <div class="product-card otheraddresses">
                         <div style="padding:0px 10px; text-align:right;">
                             <a onclick="RemoveAddress(@item.Id)" style="cursor:pointer;"><i class="bi bi-x-circle-fill" style="font-size: 20px;color: #000;"></i></a>
                         </div>
@@ -144,14 +144,14 @@
 
             <input type="hidden" value=0 id="SelectedField"/>
 
-            <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-                <div class="product-card" onclick="PickupAtStore()" id="PickupAddCard" style="width: 250px;border: 2px solid #96672d;height: 100%;box-shadow: -10px 10px 20px #96672d;border-radius: 25px;">
+            <div class="col addaddrresscol">
+                <div class="product-card addaddress" onclick="PickupAtStore()" id="PickupAddCard">
                     <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#cdb36c; height: inherit;">Pickup at store</button>
 	            </div>
             </div>
 
-            <div class="col" id="addaddresses" style="padding-bottom: 1rem;max-width: 283px;">
-                <div class="product-card" style="width: 250px;border: 2px solid #96672d;height: 100%;box-shadow: -10px 10px 20px #96672d;border-radius: 25px;">
+            <div class="col addaddrresscol" id="addaddresses">
+                <div class="product-card addaddress">
                     <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#cdb36c; height: inherit;" data-toggle="ajax-modal" data-target="#addAddress"
                     data-url="@Url.Action("AddAddressGet")" >Add New Address</button>
 	            </div>
@@ -166,20 +166,20 @@
         <div>
             <h4 style="font-weight: 600; font-family: inherit; letter-spacing: -1px;">Select Payment Options</h4>
         </div>
-        <div class="row mt-3 row-cols-3 row-cols-lg-3 gy-5 g-lg-4">
+        <div class="row mt-3 row-cols row-cols-lg gy-5 g-lg-4">
             <input type="hidden" asp-for=@SelectedCard value=@SelectedCard id="inputSelectCardNum"/>
             @foreach(var item in Model.PaymentMethods)
             {
                 {
                     cardNumber = cardNumber + 1;
                 }
-                <div class="col" style="padding-bottom: 1rem; max-width: 410px;">
-                    <div class="product-card" onclick="SelectCard(@cardNumber, @Model.PaymentMethods.Count())" id="@("cardSelect" + cardNumber)" style="width: 360px; height: 210px; color: #000000; background-color: #96672d; background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%); border-radius: 20px;">
+                <div class="col paymentcardcol">
+                    <div class="product-card paymentcard" onclick="SelectCard(@cardNumber, @Model.PaymentMethods.Count())" id="@("cardSelect" + cardNumber)">
                         <div class="product-details" style="padding:1rem 2rem; height:100%;">
                             <div style="text-align: right;">
                                 <button type="button" onclick="RemoveCard(@cardNumber)" style="cursor:pointer; border:none; background: none;"><i class="bi bi-x-circle-fill" style="font-size: 20px; color:#96672d;" ></i></button>
                             </div>
-                            <div style="height:80px; margin-top: 20px;">
+                            <div class="payment-details">
                                 <h6 style="letter-spacing: 5px;">
                                     xxxx-xxxx-xxxx-@item.Card.Last4
                                 </h6>
@@ -214,16 +214,16 @@
             }
             @if (user != null && user.UserRole.ToLower().Contains("vendor"))
             {
-                <div class="col" style="padding-bottom: 1rem; max-width: 410px;">
-                    <div class="product-card" onclick="SelectCard(-1, @Model.PaymentMethods.Count())" id="@("cardSelect" + -1)" style="width: 360px; height: 210px; color: #000000; background-color: #96672d; background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%); border-radius: 20px;">
+                <div class="col paymentcardcol">
+                    <div class="product-card paymentcard" onclick="SelectCard(-1, @Model.PaymentMethods.Count())" id="@("cardSelect" + -1)">
                         <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#000000; height: inherit;">Pay Later</button>
 	                </div>
                 </div>
             }
-            <div class="col" style="padding-bottom: 1rem; max-width: 410px;">
-                <div class="product-card" style="width: 360px; height: 210px; color: #000000; background-color: #96672d; background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%); border-radius: 20px;">
+            <div class="col paymentcardcol">
+                <div class="product-card paymentcard">
                     <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#000000; height: inherit;" data-toggle="ajax-modal" data-target="#addcardget"
-                data-url="@Url.Action("AddCardGet")">Add New Card</button>
+                        data-url="@Url.Action("AddCardGet")">Add New Card</button>
 	            </div>
             </div>
         </div>
@@ -232,146 +232,149 @@
     <div class="mt-4">
         <h2 style="font-weight: 700; font-family: emoji; letter-spacing: -2px;">My Cart</h2>
     </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="col-2">
-                    <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
-                        <b>Products Image</b>
-                    </a>
-                </th>
-                <th class="col-2">
-                    <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
-                        <b>Products Name</b>
-                    </a>
-                </th>
-                <th class="col-3">
-                    <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
-                        <b>Description</b>
-                    </a>
-                </th>
-                <th class="col-1">
-                    <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
-                        <b>Price</b>
-                    </a>
-                </th>
-                <th class="col-1">
-                    <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
-                        <b>Qty</b>
-                    </a>
-                </th>
-                <th class="col-1">
-                    <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
-                        <b>Total</b>
-                    </a>
-                </th>
-                <th class="col-1">
+    <div class="visible-scrollbar">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-2">
+                        <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
+                            <b>Products Image</b>
+                        </a>
+                    </th>
+                    <th class="col-2">
+                        <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
+                            <b>Products Name</b>
+                        </a>
+                    </th>
+                    <th class="col-3">
+                        <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
+                            <b>Description</b>
+                        </a>
+                    </th>
+                    <th class="col-1">
+                        <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
+                            <b>Price</b>
+                        </a>
+                    </th>
+                    <th class="col-1">
+                        <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
+                            <b>Qty</b>
+                        </a>
+                    </th>
+                    <th class="col-1">
+                        <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
+                            <b>Total</b>
+                        </a>
+                    </th>
+                    <th class="col-1">
 
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.CartList)
-            {
-                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartList)
                 {
-                    <tr>
-                        <td class="col-2">
-                            <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@item.Product.PrimaryImage"/>
-                        </td>
-                        <td class="col-3" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            @item.Product.ProductName
-                        </td>
-                        <td class="col-4" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            @item.Product.Description
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                            $@item.Product.VendorPrice
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            <label>@item.Quantity</label>
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;vertical-align: middle;">
-                            <a id="@("VendorPrice" + @item.Id.ToString())" style="font-size: 18px;font-weight: 500;">$@(item.Product.VendorPrice * item.Quantity)</a>
-                        </td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        <td class="col-2">
-                            <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@item.Product.PrimaryImage"/>
-                        </td>
-                        <td class="col-3" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            @item.Product.ProductName
-                        </td>
-                        <td class="col-4" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            @item.Product.Description
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                            $@item.Product.SalePrice
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            <label>@item.Quantity</label>
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;vertical-align: middle;">
-                            <a id="@("SalePrice" + @item.Id.ToString())" style="font-size: 18px;font-weight: 500;">$@(item.Product.SalePrice * item.Quantity)</a>
-                        </td>
-                    </tr>
-                }
+                    @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                    {
+                        <tr>
+                            <td class="col-2">
+                                <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@item.Product.PrimaryImage"/>
+                            </td>
+                            <td class="col-3" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                @item.Product.ProductName
+                            </td>
+                            <td class="col-4" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                @item.Product.Description
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                $@item.Product.VendorPrice
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                <label>@item.Quantity</label>
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;vertical-align: middle;">
+                                <a id="@("VendorPrice" + @item.Id.ToString())" style="font-size: 18px;font-weight: 500;">$@(item.Product.VendorPrice * item.Quantity)</a>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="col-2">
+                                <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@item.Product.PrimaryImage"/>
+                            </td>
+                            <td class="col-3" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                @item.Product.ProductName
+                            </td>
+                            <td class="col-4" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                @item.Product.Description
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                $@item.Product.SalePrice
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                <label>@item.Quantity</label>
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;vertical-align: middle;">
+                                <a id="@("SalePrice" + @item.Id.ToString())" style="font-size: 18px;font-weight: 500;">$@(item.Product.SalePrice * item.Quantity)</a>
+                            </td>
+                        </tr>
+                    }
 
-            }
-            @if (Model.CartList.Count == 0 && Model.BuyNowProduct != null)
-            {
-                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
-                {
-                    <tr>
-                        <td class="col-2">
-                            <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@Model.BuyNowProduct.PrimaryImage"/>
-                        </td>
-                        <td class="col-3" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            @Model.BuyNowProduct.ProductName
-                        </td>
-                        <td class="col-4" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            @Model.BuyNowProduct.Description
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                            $@Model.BuyNowProduct.VendorPrice
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            <label>@Model.Qty</label>
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;vertical-align: middle;">
-                            <a style="font-size: 18px;font-weight: 500;">$@(Model.BuyNowProduct.VendorPrice * Model.Qty)</a>
-                        </td>
-                    </tr>
                 }
-                else
+                @if (Model.CartList.Count == 0 && Model.BuyNowProduct != null)
                 {
-                    <tr>
-                        <td class="col-2">
-                            <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@Model.BuyNowProduct.PrimaryImage"/>
-                        </td>
-                        <td class="col-3" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            @Model.BuyNowProduct.ProductName
-                        </td>
-                        <td class="col-4" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            @Model.BuyNowProduct.Description
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
-                            $@Model.BuyNowProduct.SalePrice
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
-                            <label>@Model.Qty</label>
-                        </td>
-                        <td class="col-1" style="font-family: emoji;letter-spacing: 0px;vertical-align: middle;">
-                            <a style="font-size: 18px;font-weight: 500;">$@(Model.BuyNowProduct.SalePrice * Model.Qty)</a>
-                        </td>
-                    </tr>
+                    @if(user != null && user.UserRole.ToLower().Contains("vendor"))
+                    {
+                        <tr>
+                            <td class="col-2">
+                                <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@Model.BuyNowProduct.PrimaryImage"/>
+                            </td>
+                            <td class="col-3" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                @Model.BuyNowProduct.ProductName
+                            </td>
+                            <td class="col-4" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                @Model.BuyNowProduct.Description
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                $@Model.BuyNowProduct.VendorPrice
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                <label>@Model.Qty</label>
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;vertical-align: middle;">
+                                <a style="font-size: 18px;font-weight: 500;">$@(Model.BuyNowProduct.VendorPrice * Model.Qty)</a>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="col-2">
+                                <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@Model.BuyNowProduct.PrimaryImage"/>
+                            </td>
+                            <td class="col-3" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                @Model.BuyNowProduct.ProductName
+                            </td>
+                            <td class="col-4" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                @Model.BuyNowProduct.Description
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 18px;vertical-align: middle;font-weight: 500;">
+                                $@Model.BuyNowProduct.SalePrice
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;vertical-align: middle;">
+                                <label>@Model.Qty</label>
+                            </td>
+                            <td class="col-1" style="font-family: emoji;letter-spacing: 0px;vertical-align: middle;">
+                                <a style="font-size: 18px;font-weight: 500;">$@(Model.BuyNowProduct.SalePrice * Model.Qty)</a>
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+    
     <div class="row">
         <div class="col-8"></div>
         <div class="col-2">
@@ -403,34 +406,33 @@
     <div class="row">
         <div class="col-8"></div>
         <div class="col-2">
-            <div class="row mt-2">
+            <div class="row">
                 <div>
                     <a><b>Grand Total</b></a>
                 </div>
             </div>
         </div>
         <div class="col-2">
-            <div class="row mt-2">
+            <div class="row">
                 <div>
                     <a><b>$@Model.Grandtotal</b></a>
                 </div>
             </div>
         </div>
     </div>
+    <hr/>
 
-    <div class="row mt-5">
-        <div class="col-10"></div>
-        <div class="col-2">
+    <div class="row mt-3 checkoutbtn">
+        <div class="col">
             @if (Model.CartList.Count == 0 && Model.BuyNowProduct != null)
             {
-                <button type="button" id="placeorderbtn" onclick="PlaceOrder('@Model.BuyNowProduct.Barcode', @Model.Qty)" class="btn btn-block">Place Order</button>
+                <button type="button" id="placeorderbtn" onclick="PlaceOrder('@Model.BuyNowProduct.Barcode', @Model.Qty)" class="btn btn-primary">Place Order</button>
             }
             else
             {
-                <button type="button" id="placeorderbtn" onclick="PlaceOrder()" class="btn btn-block">Place Order</button>
+                <button type="button" id="placeorderbtn" onclick="PlaceOrder()" class="btn btn-primary">Place Order</button>
             }
-            
-            <button type="button" disabled hidden id="processorderbtn" class="btn btn-block">Processing...</button>
+            <button type="button" disabled hidden id="processorderbtn" class="btn btn-primary">Processing...</button>
         </div>
     </div>
 </div>
@@ -438,8 +440,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-
-       
-
     </script>
 }

@@ -5,6 +5,11 @@
 
 // Write your JavaScript code.
 
+$.get("/Home/CartCounter").done(function (data) {
+    document.getElementById('cartCounterLabel').textContent = data
+});
+
+
 const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
 
 accordionItemHeaders.forEach(accordionItemHeader => {
@@ -392,6 +397,9 @@ function AddtoCart(prodId, qty, page) {
     url = CreateURL(url, { 'ProductId': prodId, 'Quantity': qty })
     $.get(url).done(function (data) {
         $.notify(data, { globalPosition: 'bottom left', className: 'success' });
+        $.get("/Home/CartCounter").done(function (data) {
+            document.getElementById('cartCounterLabel').textContent = data
+        });
     }).fail(function (data) {
         if (data.status == 401) {
             window.location.href = "/Identity/Account/Login?ReturnUrl=%2F" + page;

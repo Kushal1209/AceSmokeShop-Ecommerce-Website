@@ -23,70 +23,48 @@
         </div>
     </div>
 </div>
-<div style="padding: 1rem 8rem;">
+<div class="productcount">
     <h7>Showing <b>@Model.CurrentPage</b> of @Model.TotalPages Pages</h7>
 </div>
 <hr style=" margin-top: 0rem; margin-bottom: 0rem;">
 
-<div class="container-fluid" style="padding:3rem 8rem;">
-    <div class="row">
-        <div class="col-3" style="margin-right:45px;">
-            <div>
-                <div class="font-weight-bolder"><h3 style="font-size: 2.1rem; font-weight: 700; font-family: emoji; letter-spacing: -2px;">Filters</h3></div>
-                <div class="mt-0" style="border-bottom: 2px solid #96672d; width: 21rem;"></div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div >
-                <input type="hidden" id="cuttentpageid" value="@Model.CurrentPage">
-                <input type="hidden" id="totalpageid" value="@Model.TotalPages">
-                <div >
-                    <button type="button" id="prebtnClick" class="btn" hidden=@(Model.CurrentPage == 1? true : false) style="height: 30px;padding: 0rem 0.7rem;border: 1px solid black;background: lightgrey;border-radius: 15px;width: 90px;">Previous</button>
-                    <button type="button" id="nextbtnClick" class="btn" hidden=@(Model.CurrentPage == Model.TotalPages? true : false) style="height: 30px;padding: 0rem 0.7rem;border: 1px solid black;background: lightgrey;border-radius: 15px;width: 90px;">Next</button>
+<div class="container-fluid">
+    <div class="row row-cols row-cols-lg mt-4 explorerow">
+        <div class="col filtercols">
+            <div class="row row-cols row-cols-lg g-5 g-lg-4">
+                <div class="col">
+                    <div>
+                        <div class="font-weight-bolder"><h3 style="font-size: 2.1rem; font-weight: 700; font-family: emoji; letter-spacing: -2px;">Filters</h3></div>
+                        <div class="mt-0 filterline"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-2" style="margin-left: 30px;">
-            <div style="justify-content:end">
-                <label>Items Per Page</label>
-                <select asp-for=@Model.ItemsPerPage id="rowselectId" class="RowSelect"
-                        asp-items="@(new SelectList(@Model.ProductsPerPages))">
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-3">
-            <div class="row">
+            <div class="row row-cols row-cols-lg g-3 g-lg-4 mt-1">
                 <div class="col">
-                    <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-select"
+                    <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-select filtersearch"
                             asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
                     </select>
                 </div>
-            </div>
-            <div class="row mt-3">
                 <div class="col">
-                    <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-select"
+                    <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-select filtersearch"
                             asp-items="@(new SelectList(@Model.SubCategoryList, "SubCategoryID", "SubCategoryName"))">
                     </select>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <input type="text" value=@Model.Search asp-for=@Model.Search id="search" class="form-control form-input SearchIcon" placeholder="Search" />
+                <div class="col">
+                    <input type="text" value=@Model.Search asp-for=@Model.Search id="search" class="form-control form-input filtersearch" placeholder="Search" />
                 </div>
-                <div class="col-4 mt-3">
-                    <button type="button" class="btn btn-block" id="fliterProductsSearch">Search</button>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary" id="fliterProductsSearch">Search</button>
                 </div>
             </div>
-            <div class="row mt-5">
+            <div class="row row-cols row-cols-lg g-3 g-lg-4 mt-1">
                 <div class="col-12">
-                    <label style="font-size: 1.2rem; font-weight: 700; font-family: emoji; letter-spacing: 0px;">Tags</label>
+                    <label style="font-size: 1.5rem; font-weight: 700; font-family: emoji; letter-spacing: 0px;">Tags</label>
                 </div>
-                    <div class="col mt-3">
-                    <div class="row">
-                        <div class="col-4" style="padding: 0px 5px;">
-                                <input type="hidden" id="type" value="@Model.Type" />
+                <div class="col mt-3">
+                    <div class="row row-cols row-cols-lg g-3 g-lg-4">
+                        <div class="col">
+                            <input type="hidden" id="type" value="@Model.Type" />
                             @if(Model.IsFeatured){
                                 <button type="button" id="featurebtn" value=@Model.IsFeatured class="btn btn-block">Featured</button>
                             }
@@ -96,7 +74,7 @@
                             }
                                 
                         </div>
-                        <div class="col-4" style="padding: 0px 5px;">
+                        <div class="col">
                             @if(Model.IsPromoted){
                                 <button type="button" id="popularbtn" value=@Model.IsPromoted  class="btn btn-block">Popular</button>
                             }
@@ -109,14 +87,34 @@
                 </div>
             </div>
         </div>
-        <div class="col-9">
-            <div class="visible-scrollbar">
-                <div class="row row-cols-1 row-cols-lg-1 gy-5 g-lg-4" style="padding: 0rem 3rem;">
-                    @foreach(var item in Model.ProdctList)
-                    {
-                        <div class="col" style="padding-bottom: 1rem;max-width: 283px;">
-                            <div class="product-card" style="width: 245px">
-		                        <div class="product-tumb" style="height: 260px;">
+        <div class="col exploreprodcols">
+            <div class="row row-cols row-cols-lg gy-5 g-lg-4 exploreprodcolsfilter">
+                <div class="col">
+                    <div>
+                        <input type="hidden" id="cuttentpageid" value="@Model.CurrentPage">
+                        <input type="hidden" id="totalpageid" value="@Model.TotalPages">
+                        <div >
+                            <button type="button" id="prebtnClick" class="btn" hidden=@(Model.CurrentPage == 1? true : false) style="height: 30px;padding: 0rem 0.7rem;border: 1px solid black;background: lightgrey;border-radius: 15px;width: 90px;">Previous</button>
+                            <button type="button" id="nextbtnClick" class="btn" hidden=@(Model.CurrentPage == Model.TotalPages? true : false) style="height: 30px;padding: 0rem 0.7rem;border: 1px solid black;background: lightgrey;border-radius: 15px;width: 90px;">Next</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="text-align:right;">
+                    <div>
+                        <label>Items Per Page</label>
+                        <select asp-for=@Model.ItemsPerPage id="rowselectId" class="RowSelect"
+                                asp-items="@(new SelectList(@Model.ProductsPerPages))">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols row-cols-lg gy-5 g-lg-4 mt-3 exploreprodcolsproducts">
+                @foreach(var item in Model.ProdctList)
+                {
+                    <div class="col productlistCol">
+                        <div class="col products">
+                            <div class="product-card">
+		                        <div class="product-tumb">
                                     <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
                                         <img  src="@item.PrimaryImage" alt="">
                                     </a>
@@ -137,20 +135,19 @@
                                     </div>
 			                        <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
                                         <div class="col d-grid gap-1" style="padding: 0px;">
-                                            <button class="btn" type="button" style="background-color: gray;border-radius: 0px;" 
-                                                onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
+                                            <button class="btn" type="button" style="background-color: gray;border-radius: 0px;" onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
                                         </div>
 			                        </div>
 		                        </div>
 	                        </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
-    
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">

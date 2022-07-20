@@ -22,8 +22,8 @@
                     <input type="hidden" asp-for=items />
                     <input type="hidden" asp-for=OrderId />
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col">
+                        <div class="row row-cols row-cols-lg g-3 g-lg-3">
+                            <div class="col-md">
                                 <h5>Are you sure you want to delete Order?</h5>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-block" data-save="modal">Yes</button>
+                <button type="submit" class="btn btn-primary" data-save="modal">Yes</button>
             </div>
         </div>
     </div>

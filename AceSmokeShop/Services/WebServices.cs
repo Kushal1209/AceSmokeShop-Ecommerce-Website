@@ -155,6 +155,13 @@ namespace AceSmokeShop.Services
             return model;
         }
 
+        public int GetCartCount(AppUser user)
+        {
+            var cartcount = _cartRepository._dbSet.Include(x => x.Product).Where(x => x.UserId == user.Id && !x.IsRemoved && !x.Product.IsRemoved && x.Product.Stock > 0 && x.Quantity <= x.Product.Stock).Count();
+
+            return cartcount;
+        }
+
         public string PlaceProductOrder(AppUser user, int cardId, string productId, int qty, bool pickatstore)
         {
             var product = _productRepository._dbSet.Where(x => x.Barcode == productId).FirstOrDefault();

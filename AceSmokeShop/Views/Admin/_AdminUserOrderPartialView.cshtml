@@ -3,17 +3,17 @@
 
 @if(Model.userOrder.IsVendor == true)
 {
-    <div class="row mt-5" style="width:90%; margin:0;" id="userorders">
+    <div class="row mt-5" id="userorders">
         @if(Model.ShippingAddress == null)
         {
-            <div class="product-card" style="width: 330px">
+            <div class="product-card" style="width: 300px">
 		        <div class="product-details"  style="padding: 1rem 2rem;">
                     <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
+                        <a style="border-radius: 0px;font-weight:600; color:#cdb36c;">Shipping</a>
 			        </div>
                     <br/>
                     <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                        <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
+                        <a style="border-radius: 0px;font-weight:600;">Store Pickup</a>
 			        </div>
                     <br/>
                 </div>
@@ -21,11 +21,11 @@
         }
         else
         {
-            <div class="col-4" style="padding:0px;">
-                <div class="product-card" style="width: 330px">
+            <div class="col-5">
+                <div class="product-card" style="width: 300px">
                     <div class="product-details"  style="padding: 1rem 2rem;">
                         <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
+                            <a style="border-radius: 0px;font-weight:600; color:#cdb36c;">Shipping Address</a>
                         </div>
                         @if(@Model.ShippingAddress != null && @Model.ShippingAddress.AddressLineA != null)
                         {
@@ -57,11 +57,8 @@
 	            </div>
             </div>
         }
-        
-        <div class="col-4" style="padding:0px;">
-        </div>
         @*Insert Calc Section here*@
-        <div class="col-4" style="padding:0px;">
+        <div class="col-4">
             <hr/>
             <div class="row" style="margin:0;">
                 <div class="col-6">
@@ -145,29 +142,29 @@
 }
 else
 {
-    <div class="row mt-5" style="width:90%; margin:0;" id="userorders">
-        <div class="col-4" style="padding:0px;">
-            <div class="product-card" style="width: 330px">
-                @if(Model.ShippingAddress == null)
-                {
-                    <div class="product-card" style="width: 330px">
-		                <div class="product-details"  style="padding: 1rem 2rem;">
-                            <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping</a>
-			                </div>
-                            <br/>
-                            <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                                <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600;">Store Pickup</a>
-			                </div>
-                            <br/>
-                        </div>
+    <div class="row mt-5" id="userorders">
+        <div class="col-5">
+            @if(Model.ShippingAddress == null)
+            {
+                <div class="product-card" style="width: 300px">
+		            <div class="product-details"  style="padding: 1rem 2rem;">
+                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                            <a style="border-radius: 0px;font-weight:600; color:#cdb36c;">Shipping</a>
+			            </div>
+                        <br/>
+                        <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
+                            <a style="border-radius: 0px;font-weight:600;">Store Pickup</a>
+			            </div>
+                        <br/>
                     </div>
-                }
-                else
-                {
+                </div>
+            }
+            else
+            {
+                <div class="product-card" style="width: 300px">
                     <div class="product-details"  style="padding: 1rem 2rem;">
                         <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
-                            <a style="border-radius: 0px;width: -webkit-fill-available;height: -webkit-fill-available; font-weight:600; color:#cdb36c;">Shipping Address</a>
+                            <a style="border-radius: 0px; font-weight:600; color:#cdb36c;">Shipping Address</a>
 			            </div>
                         @if(@Model.ShippingAddress != null && @Model.ShippingAddress.AddressLineA != null)
                         {
@@ -196,8 +193,8 @@ else
                             }
                         }
                     </div>
-                }
-	        </div>
+                </div>
+            }
         </div>
         @*Insert Calc Section here*@
         <div class="col-4" style="padding:0px;">

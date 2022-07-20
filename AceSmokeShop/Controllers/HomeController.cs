@@ -98,6 +98,14 @@ namespace AceSmokeShop.Controllers
             return View("ProductDetails", _productDescriptionViewModel);
         }
 
+        public async Task<int> CartCounter()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var cartcount = _webServices.GetCartCount(user);
+
+            return cartcount;
+        }
+
         [HttpGet]
         public async Task<IActionResult> MyCart()
         {
