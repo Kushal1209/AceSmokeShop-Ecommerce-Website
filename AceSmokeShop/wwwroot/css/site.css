@@ -8,6 +8,7 @@ for details on configuring this project to bundle and minify static web assets. 
     padding: 0;
 }
 
+
 @media (max-width: 575px) {
     .container {
         max-width: 576px;
@@ -29,22 +30,22 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .IndexDivPadding {
-        padding: 2rem 1rem;
+        padding: 2rem 2rem;
     }
 
     .ProductCols {
-        width: 255px;
+        width: 320px;
     }
 
     .products {
         padding-bottom: 1rem;
-        max-width: 200px;
+        max-width: 146px;
     }
 
     .product-card {
         display: flex !important;
         flex-direction: column;
-        width: 200px;
+        width: 180px;
         position: relative;
         box-shadow: 0 20px 20px #dfdfdf;
         background: #fafafa;
@@ -53,7 +54,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .product-tumb {
         display: flex;
-        height: 160px;
+        height: 120px;
         padding: 0px 0px;
         background: #f0f0f0;
     }
@@ -72,12 +73,262 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .AboutUs-Img {
-        height: 400px;
-        width: 300px;
+        height: 420px;
+        width: 320px;
     }
 
     .brandIcon {
         max-width: 50px;
+    }
+
+    .container-fluid {
+        padding: 0rem 2rem;
+        padding-bottom: 8rem;
+    }
+
+    .product-slider {
+        justify-content: center;
+    }
+
+    .product-imgs {
+        width: 20rem;
+    }
+
+    .img-display {
+        border: 1px solid darkgrey;
+    }
+
+    .img-item {
+        margin: 5px;
+        border: 1px solid darkgrey;
+    }
+
+    .product-content {
+        padding: 0rem 3rem;
+        max-width: 29rem;
+    }
+
+    .product-title {
+        font-family: emoji;
+        font-size: 1.7rem;
+        font-weight: 700;
+    }
+    /************ ScrollBar ***************/
+    .visible-scrollbar {
+        display: block;
+        overflow-y: hidden;
+        overflow-x: auto;
+        width: auto;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+    .table {
+        width: 850px
+    }
+
+    .checkoutbtn {
+        float: right;
+    }
+    /************ Register ***************/
+    .registerlogo {
+        width: 240px;
+    }
+
+    .registerCont {
+        padding: 2rem 0rem;
+    }
+
+    .registerrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .registercol {
+        max-width: 45rem;
+        padding: 20px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .registerimagecol {
+        padding: 0rem;
+        max-width: 375px;
+        display: none;
+    }
+
+    .registerimage {
+        width: 375px;
+    }
+    /************ Login ***************/
+    .loginlogo {
+        width: 240px;
+    }
+
+    .logincont {
+        padding: 2rem 0rem;
+    }
+
+    .loginrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .logincol {
+        max-width: 30rem;
+        padding: 30px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .loginimagecol {
+        padding: 0rem;
+        max-width: 375px;
+        display: none;
+    }
+
+    .loginimage {
+        width: 375px;
+    }
+
+    .shippAddress-card {
+        width: 245px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .shipping-details {
+        padding: 1rem 2rem;
+    }
+
+    .shippingrow {
+        margin: auto;
+        height: 30px;
+    }
+
+    .addresses {
+        max-width: 180px;
+    }
+
+    .otheraddresses {
+        width: 175px;
+    }
+
+    .addaddrresscol {
+        max-width: 180px;
+    }
+
+    .addaddress {
+        width: 175px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .paymentcardcol {
+        max-width: 300px;
+    }
+
+    .paymentcard {
+        width: 300px;
+        height: 180px;
+        color: #000000;
+        background-color: #96672d;
+        background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+        border-radius: 20px;
+    }
+
+    .payment-details {
+        height: 70px;
+        margin-top: 20px;
+    }
+
+    .myorderstext {
+        width: 140px;
+    }
+
+    .myorder-cards {
+        max-width: 200px;
+        padding-bottom: 1rem;
+    }
+
+    .explorerow {
+        flex-direction: column;
+    }
+
+    .filtercols {
+        max-width: 575px
+    }
+
+    .exploreprodcols {
+        padding: 2rem 0rem;
+    }
+
+    .exploreprodcolsfilter {
+        padding: 0rem 0rem;
+    }
+
+    .exploreprodcolsproducts {
+        padding: 0rem 1rem;
+    }
+
+    .filtersearch {
+        width: 140px;
+    }
+
+    .filterline {
+        border-bottom: 2px solid #96672d;
+        width: 8rem;
+    }
+
+    .productcount {
+        padding: 1rem 2rem;
+    }
+
+    .adminproductscol {
+        max-width: 160px
+    }
+
+    .adminproducts {
+        width: 140px;
+    }
+
+    .createprodbtn {
+        max-width: 200px;
+    }
+
+    .graph {
+        width: 100%;
+    }
+
+    .monthsgraphcol {
+        max-width: 240px;
+    }
+
+    .monthsgraph {
+        width: 240px;
     }
 }
 
@@ -102,11 +353,11 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .IndexDivPadding {
-        padding: 2rem 2rem;
+        padding: 2rem 4rem;
     }
 
     .ProductCols {
-        width: 600px;
+        width: 520px;
     }
 
     .products {
@@ -146,21 +397,270 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .AboutUs-Img {
-        height: 400px;
-        width: 300px;
+        height: 540px;
+        width: 500px;
     }
+
     .brandIcon {
         max-width: 50px;
     }
+
+    .container-fluid {
+        padding: 0rem 3rem;
+        padding-bottom: 8rem;
+    }
+
+    .product-imgs {
+        width: 15rem;
+    }
+
+    .img-display {
+        border: 1px solid darkgrey;
+    }
+
+    .img-item {
+        margin: 5px;
+        border: 1px solid darkgrey;
+    }
+
+    .product-content {
+        padding: 0rem 3rem;
+        max-width: 20rem;
+    }
+
+    .product-title {
+        font-family: emoji;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    /************ ScrollBar ***************/
+    .visible-scrollbar {
+        display: block;
+        overflow-y: hidden;
+        overflow-x: auto;
+        width: auto;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+    .table {
+        width: 850px
+    }
+
+    .checkoutbtn {
+        float: right;
+    }
+    /************ Register ***************/
+    .registerlogo {
+        width: 240px;
+    }
+
+    .registerCont {
+        padding: 2rem 0rem;
+    }
+
+    .registerrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .registercol {
+        max-width: 40rem;
+        padding: 20px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .registerimagecol {
+        padding: 0rem;
+        max-width: 375px;
+        display: none;
+    }
+
+    .registerimage {
+        width: 375px;
+    }
+    /************ Login ***************/
+    .loginlogo {
+        width: 240px;
+    }
+
+    .logincont {
+        padding: 2rem 0rem;
+    }
+
+    .loginrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .logincol {
+        max-width: 35rem;
+        padding: 30px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .loginimagecol {
+        padding: 0rem;
+        max-width: 375px;
+        display: none;
+    }
+
+    .loginimage {
+        width: 375px;
+    }
+
+    .shippAddress-card {
+        width: 245px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .shipping-details {
+        padding: 1rem 2rem;
+    }
+
+    .shippingrow {
+        margin: auto;
+        height: 30px;
+    }
+
+    .addresses {
+        max-width: 230px;
+    }
+
+    .otheraddresses {
+        width: 200px;
+    }
+
+    .addaddrresscol {
+        max-width: 230px;
+    }
+
+    .addaddress {
+        width: 200px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .paymentcardcol {
+        max-width: 330px;
+    }
+
+    .paymentcard {
+        width: 300px;
+        height: 180px;
+        color: #000000;
+        background-color: #96672d;
+        background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+        border-radius: 20px;
+    }
+
+    .payment-details {
+        height: 70px;
+        margin-top: 20px;
+    }
+
+    .myorderstext {
+        width: 160px;
+    }
+
+    .myorder-cards {
+        max-width: 200px;
+        padding-bottom: 1rem;
+    }
+
+    .explorerow {
+        flex-direction: column;
+    }
+
+    .filtercols {
+        max-width: 778px
+    }
+
+    .exploreprodcols {
+        padding: 2rem 0rem;
+    }
+
+    .exploreprodcolsfilter {
+        padding: 0rem 0rem;
+    }
+
+    .exploreprodcolsproducts {
+        padding: 0rem 1rem;
+    }
+
+    .filtersearch {
+        width: 200px;
+    }
+
+    .filterline {
+        border-bottom: 2px solid #96672d;
+        width: 8rem;
+    }
+
+    .productcount {
+        padding: 1rem 3rem;
+    }
+
+    .adminproductscol {
+        max-width: 170px
+    }
+
+    .adminproducts {
+        width: 160px
+    }
+
+    .createprodbtn {
+        max-width: 200px;
+    }
+
+    .graph {
+        width: 100%;
+    }
+
+    .monthsgraphcol {
+        max-width: 240px;
+    }
+
+    .monthsgraph {
+        width: 240px;
+    }
 }
 
-@media (min-width: 778px) {
+@media (min-width: 768px) {
     .container {
         max-width: 992px;
     }
-    li.nav-item{
+
+    li.nav-item {
         margin: 0;
     }
+
     .IndexText {
         font-size: 3rem;
         font-weight: 700;
@@ -175,20 +675,24 @@ for details on configuring this project to bundle and minify static web assets. 
         font-family: emoji;
         letter-spacing: -4px;
     }
+
     .IndexDivPadding {
-        padding: 2rem 8rem;
+        padding: 2rem 4rem;
     }
+
     .ProductCols {
-        width: 680px;
+        width: 660px;
     }
+
     .products {
         padding-bottom: 1rem;
-        max-width: 150px;
+        max-width: 200px;
     }
+
     .product-card {
         display: flex !important;
         flex-direction: column;
-        width: 200px;
+        width: 210px;
         position: relative;
         box-shadow: 0 20px 20px #dfdfdf;
         background: #fafafa;
@@ -201,32 +705,283 @@ for details on configuring this project to bundle and minify static web assets. 
         padding: 0px 0px;
         background: #f0f0f0;
     }
+
     .IndexDivPaddingYellow {
         padding: 3rem 5rem;
         background-color: #CDB36C;
     }
+
     .promises {
         max-width: 700px;
         padding: 0rem 2rem;
     }
+
     .HignPraise {
         padding: 0rem 5rem;
         flex-direction: column;
     }
+
     .AboutUs-Img {
         height: 400px;
         width: 300px;
     }
+
     .AboutUs-Text {
         max-width: 500px
     }
 
     .AboutUs {
-        max-width: 555px
+        max-width: 690px
     }
 
     .AboutUsImg {
         max-width: 300px;
+    }
+
+    .container-fluid {
+        padding: 0rem 5rem;
+        padding-bottom: 8rem;
+    }
+
+    .product-imgs {
+        width: 15rem;
+    }
+
+    .img-display {
+        border: 1px solid darkgrey;
+    }
+
+    .img-item {
+        margin: 5px;
+        border: 1px solid darkgrey;
+    }
+
+    .product-content {
+        padding: 0rem 3rem;
+        max-width: 25rem;
+    }
+
+    .product-title {
+        font-family: emoji;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    /************ ScrollBar ***************/
+    .visible-scrollbar {
+        display: block;
+        overflow-y: hidden;
+        overflow-x: auto;
+        width: auto;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+    .table {
+        width: 850px
+    }
+
+    .checkoutbtn {
+        float: right;
+    }
+    /************ Register ***************/
+    .registerlogo {
+        width: 300px;
+    }
+
+    .registerCont {
+        padding: 2rem 0rem;
+    }
+
+    .registerrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .registercol {
+        max-width: 45rem;
+        padding: 50px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .registerimagecol {
+        padding: 0rem;
+        max-width: 375px;
+    }
+
+    .registerimage {
+        width: 375px;
+    }
+    /************ Login ***************/
+    .loginlogo {
+        width: 300px;
+    }
+
+    .logincont {
+        padding: 2rem 0rem;
+    }
+
+    .loginrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .logincol {
+        max-width: 30rem;
+        padding: 40px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .loginimagecol {
+        padding: 0rem;
+        max-width: 375px;
+        display: none;
+    }
+
+    .loginimage {
+        width: 375px;
+    }
+
+    .shippAddress-card {
+        width: 250px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .shipping-details {
+        padding: 1rem 2rem;
+    }
+
+    .shippingrow {
+        margin: auto;
+        height: 45px;
+    }
+
+    .addresses {
+        padding-bottom: 1rem;
+        max-width: 250px;
+    }
+
+    .otheraddresses {
+        width: 220px;
+    }
+
+    .addaddrresscol {
+        padding-bottom: 1rem;
+        max-width: 240px;
+    }
+
+    .addaddress {
+        width: 220px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .paymentcardcol {
+        max-width: 410px;
+    }
+
+    .paymentcard {
+        width: 360px;
+        height: 210px;
+        color: #000000;
+        background-color: #96672d;
+        background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+        border-radius: 20px;
+    }
+
+    .payment-details {
+        height: 80px;
+        margin-top: 20px;
+    }
+
+    .myorderstext {
+        width: 190px;
+    }
+
+    .myorder-cards {
+        max-width: 200px;
+    }
+
+    .explorerow {
+        flex-direction: column;
+    }
+
+    .filtercols {
+        max-width: 992px
+    }
+
+    .exploreprodcols {
+        padding: 2rem 0rem;
+    }
+
+    .exploreprodcolsfilter {
+        padding: 0rem 0rem;
+    }
+
+    .exploreprodcolsproducts {
+        padding: 0rem 2rem;
+    }
+
+    .filtersearch {
+        width: 240px;
+    }
+
+    .filterline {
+        border-bottom: 2px solid #96672d;
+        width: 8rem;
+    }
+
+    .productcount {
+        padding: 1rem 5rem;
+    }
+
+    .adminproductscol {
+        max-width: 200px;
+    }
+
+    .adminproducts {
+        width: 180px;
+    }
+
+    .createprodbtn {
+        max-width: 200px;
+    }
+
+    .graph {
+        width: 100%;
+    }
+
+    .monthsgraphcol {
+        max-width: 280px;
+    }
+
+    .monthsgraph {
+        width: 270px;
     }
 }
 
@@ -234,9 +989,11 @@ for details on configuring this project to bundle and minify static web assets. 
     .container {
         max-width: 1200px;
     }
+
     li.nav-item {
         margin: 0rem 0.5rem;
     }
+
     .IndexText {
         font-size: 3rem;
         font-weight: 700;
@@ -251,54 +1008,308 @@ for details on configuring this project to bundle and minify static web assets. 
         font-family: emoji;
         letter-spacing: -4px;
     }
+
     .IndexDivPadding {
         padding: 2rem 8rem;
     }
+
     .ProductCols {
         width: 800px;
     }
+
     .products {
         padding-bottom: 1rem;
-        max-width: 200px;
+        max-width: 190px;
     }
 
     .product-card {
         display: flex !important;
         flex-direction: column;
-        width: 230px;
+        width: 210px;
         position: relative;
         box-shadow: 0 20px 20px #dfdfdf;
         background: #fafafa;
         transition: all .1s linear;
     }
+
     .product-tumb {
         display: flex;
         height: 190px;
         padding: 0px 0px;
         background: #f0f0f0;
     }
+
     .IndexDivPaddingYellow {
         padding: 7rem 8rem;
         background-color: #CDB36C;
     }
+
     .HignPraise {
         padding: 0rem 0rem;
         flex-direction: row;
     }
+
     .AboutUs-Img {
         height: 400px;
         width: 300px;
     }
+
     .AboutUs-Text {
         max-width: 500px
     }
 
     .AboutUs {
-        max-width: 700px
+        max-width: 740px
     }
 
     .AboutUsImg {
         max-width: 300px;
+    }
+
+    .container-fluid {
+        padding: 0rem 7rem;
+        padding-bottom: 8rem;
+    }
+
+    .product-imgs {
+        width: 15rem;
+    }
+
+    .img-display {
+        border: 1px solid darkgrey;
+    }
+
+    .img-item {
+        margin: 5px;
+        border: 1px solid darkgrey;
+    }
+
+    .product-content {
+        padding: 0rem 3rem;
+        max-width: 35rem;
+    }
+
+    .product-title {
+        font-family: emoji;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    /************ ScrollBar ***************/
+    .visible-scrollbar {
+        display: block;
+        overflow-y: hidden;
+        overflow-x: auto;
+        width: auto;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+    .table {
+        width: 850px
+    }
+
+    .checkoutbtn {
+        float: right;
+    }
+    /************ Register ***************/
+    .registerlogo {
+        width: 300px;
+    }
+
+    .registerCont {
+        padding: 2rem 0rem;
+    }
+
+    .registerrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .registercol {
+        max-width: 45rem;
+        padding: 50px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .registerimagecol {
+        padding: 0rem;
+        max-width: 375px;
+        display: block;
+    }
+
+    .registerimage {
+        width: 375px;
+    }
+    /************ Login ***************/
+    .loginlogo {
+        width: 240px;
+    }
+
+    .logincont {
+        padding: 2rem 0rem;
+    }
+
+    .loginrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .logincol {
+        padding: 80px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .loginimagecol {
+        padding: 0rem;
+        max-width: 375px;
+        display: block;
+    }
+
+    .loginimage {
+        width: 375px;
+    }
+
+    .shippAddress-card {
+        width: 300px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .shipping-details {
+        padding: 1rem 2rem;
+    }
+
+    .shippingrow {
+        margin: auto;
+        height: 45px;
+    }
+
+    .addresses {
+        padding-bottom: 1rem;
+        max-width: 270px;
+    }
+
+    .otheraddresses {
+        width: 240px;
+    }
+
+    .addaddrresscol {
+        padding-bottom: 1rem;
+        max-width: 270px;
+    }
+
+    .addaddress {
+        width: 240px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .paymentcardcol {
+        max-width: 410px;
+    }
+
+    .paymentcard {
+        width: 360px;
+        height: 210px;
+        color: #000000;
+        background-color: #96672d;
+        background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+        border-radius: 20px;
+    }
+
+    .payment-details {
+        height: 80px;
+        margin-top: 20px;
+    }
+
+    .myorderstext {
+        width: 230px;
+    }
+
+    .myorder-cards {
+        max-width: 200px;
+    }
+
+    .explorerow {
+        flex-direction: row;
+    }
+
+    .filtercols {
+        max-width: 260px;
+    }
+
+    .exploreprodcols {
+        padding: 0;
+    }
+
+    .exploreprodcolsfilter {
+        padding: 0rem 3rem;
+    }
+
+    .exploreprodcolsproducts {
+        padding: 0rem 4rem;
+    }
+
+    .filtersearch {
+        width: 230px;
+    }
+
+    .filterline {
+        border-bottom: 2px solid #96672d;
+        width: 15rem;
+    }
+
+    .productcount {
+        padding: 1rem 7rem;
+    }
+
+    .adminproductscol {
+        max-width: 240px;
+    }
+
+    .adminproducts {
+        width: 220px;
+    }
+
+    .createprodbtn {
+        max-width: 200px;
+    }
+
+    .graph {
+        width: 100%;
+    }
+
+    .monthsgraphcol {
+        max-width: 280px;
+    }
+
+    .monthsgraph {
+        width: 270px;
     }
 }
 
@@ -307,15 +1318,18 @@ for details on configuring this project to bundle and minify static web assets. 
         max-width: 2800px;
         padding: 0px;
     }
+
     li.nav-item {
         margin: 0rem 1.2rem;
     }
+
     .IndexText {
         font-size: 3rem;
         font-weight: 700;
         font-family: emoji;
         letter-spacing: -4px;
     }
+
     .IndexTextWhite {
         font-size: 3rem;
         font-weight: 700;
@@ -323,27 +1337,35 @@ for details on configuring this project to bundle and minify static web assets. 
         font-family: emoji;
         letter-spacing: -4px;
     }
+
     .IndexDivPadding {
         padding: 2rem 8rem;
     }
-    .productlistRow{
+
+    .productlistRow {
         max-width: 95%;
     }
-    .productCol{
+
+    .productCol {
         max-width: 500px;
     }
-    .CategoryCol{
-        max-width: 380px;
+
+    .CategoryCol {
+        max-width: 390px;
     }
+
     .productlistCol {
         max-width: 275px;
     }
-    .CategorylistCol{
+
+    .CategorylistCol {
         max-width: 275px;
     }
+
     .ProductCols {
         width: 200px;
     }
+
     .products {
         padding-bottom: 1rem;
         max-width: 200px;
@@ -352,46 +1374,266 @@ for details on configuring this project to bundle and minify static web assets. 
     .product-card {
         display: flex !important;
         flex-direction: column;
-        width: 230px;
+        width: 250px;
         position: relative;
         box-shadow: 0 20px 20px #dfdfdf;
         background: #fafafa;
         transition: all .1s linear;
     }
+
     .product-tumb {
         display: flex;
         height: 190px;
         padding: 0px 0px;
         background: #f0f0f0;
     }
+
     .promises {
         max-width: 350px;
     }
+
     .HignPraise {
         padding: 0rem 0rem;
         flex-direction: row;
     }
+
     .AboutUs-Img {
         height: 400px;
         width: 300px;
     }
-    .AboutUs-Text{
-        max-width: 500px
+
+    .AboutUs-Text {
+        max-width: 1200px
     }
+
     .AboutUs {
         max-width: 330px
     }
-    .AboutUsImg{
+
+    .AboutUsImg {
         max-width: 300px;
+    }
+
+    .container-fluid {
+        padding: 0rem 8rem;
+        padding-bottom: 8rem;
+    }
+
+    .product-imgs {
+        width: 15rem;
+    }
+
+    .img-display {
+        border: 1px solid darkgrey;
+    }
+
+    .img-item {
+        margin: 5px;
+        border: 1px solid darkgrey;
+    }
+
+    .product-content {
+        padding: 0rem 3rem;
+        max-width: 40rem;
+    }
+
+    .product-title {
+        font-family: emoji;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .table {
+        width: 100%;
+    }
+
+    .checkoutbtn {
+        float: right;
+    }
+    /************ Register ***************/
+    .registerlogo {
+        width: 300px;
+    }
+
+    .registerCont {
+        padding: 2rem 0rem;
+    }
+
+    .registerrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .registercol {
+        max-width: 45rem;
+        padding: 50px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .registerimagecol {
+        padding: 0rem;
+        max-width: 375px;
+        display: block;
+    }
+
+    .registerimage {
+        width: 375px;
+    }
+    /************ Login ***************/
+    .loginlogo {
+        width: 240px;
+    }
+
+    .logincont {
+        padding: 2rem 0rem;
+    }
+
+    .loginrow {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .logincol {
+        max-width: 30rem;
+        padding: 80px;
+        border: 2px solid;
+        margin-left: 0px;
+        background-color: #efefef;
+    }
+
+    .loginimagecol {
+        padding: 0rem;
+        display: block;
+    }
+
+    .shippAddress-card {
+        width: 300px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .shipping-details {
+        padding: 1rem 2rem;
+    }
+
+    .shippingrow {
+        padding: 0px;
+        margin: 0px;
+        height: 45px;
+    }
+
+    .addresses {
+        padding-bottom: 1rem;
+        max-width: 280px;
+    }
+
+    .otheraddresses {
+        width: 240px;
+    }
+
+    .addaddrresscol {
+        padding-bottom: 1rem;
+        max-width: 280px;
+    }
+
+    .addaddress {
+        width: 240px;
+        border: 2px solid #96672d;
+        height: 100%;
+        box-shadow: -10px 10px 20px #96672d;
+        border-radius: 25px;
+    }
+
+    .paymentcardcol {
+        max-width: 410px;
+    }
+
+    .paymentcard {
+        width: 360px;
+        height: 210px;
+        color: #000000;
+        background-color: #96672d;
+        background-image: linear-gradient(75deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+        border-radius: 20px;
+    }
+
+    .payment-details {
+        height: 80px;
+        margin-top: 20px;
+    }
+
+    .myorderstext {
+        width: 100%;
+    }
+
+    .myorder-cards {
+        max-width: 200px;
+    }
+
+    .filtercols {
+        max-width: 300px;
+    }
+
+    .exploreprodcols {
+        padding: 0;
+    }
+
+    .exploreprodcolsfilter {
+        padding: 0rem 3rem;
+    }
+
+    .exploreprodcolsproducts {
+        padding: 0rem 5rem;
+    }
+
+    .filtersearch {
+        width: 280px;
+    }
+
+    .filterline {
+        border-bottom: 2px solid #96672d;
+        width: 18rem;
+    }
+
+    .productcount {
+        padding: 1rem 8rem;
+    }
+
+    .adminproductscol {
+        max-width: 300px
+    }
+
+    .adminproducts {
+        width: 280px;
+    }
+
+    .createprodbtn {
+        max-width: 200px;
+    }
+
+    .graph {
+        width: 50%;
+    }
+
+    .monthsgraphcol {
+        max-width: 280px;
+    }
+
+    .monthsgraph {
+        width: 270px;
     }
 }
 
-nav, footer{
+nav, footer {
     background-color: #000;
 }
 
-.logo-img{
-    height: 45px;
+.logo-img {
+    max-height: 45px;
 }
 
 /******** Product Page Details CSS *******/
@@ -416,9 +1658,9 @@ img {
     transition: all 0.5s ease;
 }
 
-.img-showcase img {
-    min-width: 100%;
-}
+    .img-showcase img {
+        min-width: 100%;
+    }
 
 .img-select {
     display: flex;
@@ -428,20 +1670,19 @@ img {
     margin: 0.3rem;
 }
 
-.img-item:nth-child(1),
-.img-item:nth-child(2),
-.img-item:nth-child(3) {
-    margin: 5px;
-    border: 1px solid darkgrey;
-}
+    .img-item:nth-child(1),
+    .img-item:nth-child(2),
+    .img-item:nth-child(3) {
+        margin: 5px;
+        border: 1px solid darkgrey;
+    }
 
-.img-item:hover {
-    opacity: 0.8;
-}
+    .img-item:hover {
+        opacity: 0.8;
+    }
 
 span {
     cursor: pointer;
-
 }
 
 .minus, .plus {
@@ -498,9 +1739,9 @@ span {
     transition: 0.3s;
 }
 
-.product-details h4 a:hover {
-    color: #fbb72c;
-}
+    .product-details h4 a:hover {
+        color: #fbb72c;
+    }
 
 product-details p {
     font-size: 12px;
@@ -515,10 +1756,10 @@ product-details p {
     padding-top: 10px;
 }
 
-.product-bottom-details div {
-    float: left;
-    width: 50%;
-}
+    .product-bottom-details div {
+        float: left;
+        width: 50%;
+    }
 
 .product-price {
     font-size: 20px;
@@ -535,8 +1776,9 @@ a {
     color: #000000;
     background-color: #96672d;
     background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
-    height: 45px;
-    border-radius: 8px;
+    height: 36px;
+    border: none;
+    border-radius: 1px;
 }
 
 .Paginationbtn {
@@ -579,113 +1821,77 @@ a {
     position: absolute;
 }
 
-.toggleWrapper input.mobileToggle + label {
-    position: relative;
-    display: inline-block;
-    user-select: none;
-    -moz-transition: .4s ease;
-    -o-transition: .4s ease;
-    -webkit-transition: .4s ease;
-    transition: .4s ease;
-    -webkit-tap-highlight-color: transparent;
-    height: 30px;
-    width: 50px;
-    border: 1px solid #e4e4e4;
-    border-radius: 60px;
-}
+    .toggleWrapper input.mobileToggle + label {
+        position: relative;
+        display: inline-block;
+        user-select: none;
+        -moz-transition: .4s ease;
+        -o-transition: .4s ease;
+        -webkit-transition: .4s ease;
+        transition: .4s ease;
+        -webkit-tap-highlight-color: transparent;
+        height: 30px;
+        width: 50px;
+        border: 1px solid #e4e4e4;
+        border-radius: 60px;
+    }
 
-.toggleWrapper input.mobileToggle + label:before {
-    content: "";
-    position: absolute;
-    display: block;
-    -moz-transition: .2s cubic-bezier(.24,0,.5,1);
-    -o-transition: .2s cubic-bezier(.24,0,.5,1);
-    -webkit-transition: .2s cubic-bezier(.24,0,.5,1);
-    transition: .2s cubic-bezier(.24,0,.5,1);
-    height: 30px;
-    width: 51px;
-    top: 0;
-    left: 0;
-    border-radius: 30px;
-}
+        .toggleWrapper input.mobileToggle + label:before {
+            content: "";
+            position: absolute;
+            display: block;
+            -moz-transition: .2s cubic-bezier(.24,0,.5,1);
+            -o-transition: .2s cubic-bezier(.24,0,.5,1);
+            -webkit-transition: .2s cubic-bezier(.24,0,.5,1);
+            transition: .2s cubic-bezier(.24,0,.5,1);
+            height: 30px;
+            width: 51px;
+            top: 0;
+            left: 0;
+            border-radius: 30px;
+        }
 
-.toggleWrapper input.mobileToggle + label:after {
-    content: "";
-    position: absolute;
-    display: block;
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 4px 0px 0 rgba(0,0,0,0.04), 0 4px 9px rgba(0,0,0,0.13), 0 3px 3px rgba(0,0,0,0.05);
-    -moz-transition: .35s cubic-bezier(.54,1.60,.5,1);
-    -o-transition: .35s cubic-bezier(.54,1.60,.5,1);
-    -webkit-transition: .35s cubic-bezier(.54,1.60,.5,1);
-    transition: .35s cubic-bezier(.54,1.60,.5,1);
-    background: whitesmoke;
-    height: 28px;
-    width: 28px;
-    top: 1px;
-    left: 0px;
-    border-radius: 60px;
-}
+        .toggleWrapper input.mobileToggle + label:after {
+            content: "";
+            position: absolute;
+            display: block;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 4px 0px 0 rgba(0,0,0,0.04), 0 4px 9px rgba(0,0,0,0.13), 0 3px 3px rgba(0,0,0,0.05);
+            -moz-transition: .35s cubic-bezier(.54,1.60,.5,1);
+            -o-transition: .35s cubic-bezier(.54,1.60,.5,1);
+            -webkit-transition: .35s cubic-bezier(.54,1.60,.5,1);
+            transition: .35s cubic-bezier(.54,1.60,.5,1);
+            background: whitesmoke;
+            height: 28px;
+            width: 28px;
+            top: 1px;
+            left: 0px;
+            border-radius: 60px;
+        }
 
-.toggleWrapper input.mobileToggle:checked + label:before {
-    background: #2ecc71;
-    -moz-transition: width .2s cubic-bezier(0,0,0,.1);
-    -o-transition: width .2s cubic-bezier(0,0,0,.1);
-    -webkit-transition: width .2s cubic-bezier(0,0,0,.1);
-    transition: width .2s cubic-bezier(0,0,0,.1);
-}
+    .toggleWrapper input.mobileToggle:checked + label:before {
+        background: #2ecc71;
+        -moz-transition: width .2s cubic-bezier(0,0,0,.1);
+        -o-transition: width .2s cubic-bezier(0,0,0,.1);
+        -webkit-transition: width .2s cubic-bezier(0,0,0,.1);
+        transition: width .2s cubic-bezier(0,0,0,.1);
+    }
 
-.toggleWrapper input.mobileToggle:checked + label:after {
-    left: 24px;
-}
- 
-
-/************ ScrollBar ***************/
-.visible-scrollbar {
-    display: block;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 33.5rem;
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-.btn-block {
-    color: #000000;
-    background-color: #96672d;
-    background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
-    height: 40px;
-    border-radius: 8px;
-}
+    .toggleWrapper input.mobileToggle:checked + label:after {
+        left: 24px;
+    }
 
 .Paginationblock {
     color: #000000;
     background-color: #96672d;
     background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
-    height: 40px;
-    border-radius: 8px;
+    height: 100%;
+    border-radius: 0px;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Toggle btn styles
@@ -727,44 +1933,44 @@ a {
     transition-property: opacity background;
 }
 
-.switch-label:before, .switch-label:after {
-    position: absolute;
-    top: 50%;
-    margin-top: -.5em;
-    line-height: 1;
-    -webkit-transition: inherit;
-    -moz-transition: inherit;
-    -o-transition: inherit;
-    transition: inherit;
-}
+    .switch-label:before, .switch-label:after {
+        position: absolute;
+        top: 50%;
+        margin-top: -.5em;
+        line-height: 1;
+        -webkit-transition: inherit;
+        -moz-transition: inherit;
+        -o-transition: inherit;
+        transition: inherit;
+    }
 
-.switch-label:before {
-    content: attr(data-off);
-    right: 9px;
-    color: #aaa;
-    text-shadow: 0 1px rgba(255, 255, 255, 0.5);
-}
+    .switch-label:before {
+        content: attr(data-off);
+        right: 9px;
+        color: #aaa;
+        text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    }
 
-.switch-label:after {
-    content: attr(data-on);
-    left: 11px;
-    color: white;
-    text-shadow: 0 1px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-}
+    .switch-label:after {
+        content: attr(data-on);
+        left: 11px;
+        color: white;
+        text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+    }
 
 .switch-input:checked ~ .switch-label {
     background: #4fb845;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
-.switch-input:checked ~ .switch-label:before {
-    opacity: 0;
-}
+    .switch-input:checked ~ .switch-label:before {
+        opacity: 0;
+    }
 
-.switch-input:checked ~ .switch-label:after {
-    opacity: 1;
-}
+    .switch-input:checked ~ .switch-label:after {
+        opacity: 1;
+    }
 
 .switch-handle {
     position: absolute;
@@ -785,22 +1991,22 @@ a {
     transition: left 0.15s ease-out;
 }
 
-.switch-handle:before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -6px 0 0 -6px;
-    width: 12px;
-    height: 12px;
-    background: #f9f9f9;
-    border-radius: 6px;
-    box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
-    background-image: -webkit-linear-gradient(top, #eeeeee, white);
-    background-image: -moz-linear-gradient(top, #eeeeee, white);
-    background-image: -o-linear-gradient(top, #eeeeee, white);
-    background-image: linear-gradient(to bottom, #eeeeee, white);
-}
+    .switch-handle:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -6px 0 0 -6px;
+        width: 12px;
+        height: 12px;
+        background: #f9f9f9;
+        border-radius: 6px;
+        box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+        background-image: -webkit-linear-gradient(top, #eeeeee, white);
+        background-image: -moz-linear-gradient(top, #eeeeee, white);
+        background-image: -o-linear-gradient(top, #eeeeee, white);
+        background-image: linear-gradient(to bottom, #eeeeee, white);
+    }
 
 .switch-input:checked ~ .switch-handle {
     left: 70px;
@@ -812,7 +2018,7 @@ a {
 }
 
 
-    /* Slider styles
+/* Slider styles
 -------------------------------------------------- */
 .price-input {
     width: 100%;
@@ -820,12 +2026,12 @@ a {
     margin: 0px 0 5px;
 }
 
-.price-input .field {
-    display: flex;
-    width: 100%;
-    height: 35px;
-    align-items: center;
-}
+    .price-input .field {
+        display: flex;
+        width: 100%;
+        height: 35px;
+        align-items: center;
+    }
 
 .field input {
     width: 100%;
@@ -860,30 +2066,30 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: 5px;
 }
 
-.slider .progress {
-    height: 100%;
-    left: 0%;
-    right: 0%;
-    position: absolute;
-    border-radius: 5px;
-    background-color: #96672d;
-    background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
-}
+    .slider .progress {
+        height: 100%;
+        left: 0%;
+        right: 0%;
+        position: absolute;
+        border-radius: 5px;
+        background-color: #96672d;
+        background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+    }
 
 .range-input {
     position: relative;
 }
 
-.range-input input {
-    position: absolute;
-    width: 100%;
-    height: 5px;
-    top: 3px;
-    background: none;
-    pointer-events: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
+    .range-input input {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        top: 3px;
+        background: none;
+        pointer-events: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
 
 input[type="range"]::-webkit-slider-thumb {
     height: 17px;
@@ -906,7 +2112,7 @@ input[type="range"]::-moz-range-thumb {
     box-shadow: 0 0 6px rgba(0,0,0,0.05);
 }
 
-.bg{
+.bg {
     display: block;
     width: 450px;
 }
