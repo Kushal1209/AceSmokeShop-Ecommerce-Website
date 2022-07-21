@@ -63,7 +63,7 @@
                             </a>
                         }
                     </th>
-                    <th class="col-1">
+                    <th class="col-2">
                     @if(Model.SortByID == 2)
                         {
                             <input type="hidden" id="sortbyBaseOrder" value="@Model.SortByOrder" />
@@ -87,7 +87,7 @@
                             </a>
                         }
                     </th>
-                    <th  class="col-1">
+                    <th  class="col-2">
                    
                         @if(Model.SortByID == 3)
                         {
@@ -168,7 +168,6 @@
                                            <h6>@item.ProductName - @item.Barcode</h6>
                                            <div class="mt-1 mb-1 spec-1">
                                                <span>@item.Category.CategoryName</span> - <span>@item.SubCategory.SubCategoryName</span><br/>
-                                               <span>Unit: @item.UnitOfMeasure</span><br/>
                                                <span>@item.Description</span>
                                            </div>
                                            <div class="mt-1 mb-1">
@@ -197,14 +196,14 @@
                                </div>
                            </div>
                        </td>
-                       <td class="col-1">
+                       <td class="col-2">
                            <div class="row p-2 d-flex justify-content-center">
                                <div class="h6 text-uppercase font-weight-light">
                                    @item.BasePrice
                                </div>
                            </div>
                        </td>
-                       <td class="col-1">
+                       <td class="col-2">
                            <div class="row p-2 d-flex justify-content-center">
                                <div class="h6 text-uppercase font-weight-light">
                                    @item.SalePrice
