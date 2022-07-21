@@ -87,6 +87,14 @@ namespace AceSmokeShop.Controllers
             return StatusCode(500, result);
         }
 
+        public async Task<int> GetShipping()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var shipping = _webServices.GetShipping(user);
+
+            return shipping;
+        }
+
         public async Task<IActionResult> ProductDetails(string productid = "")
         {
             var user = await _userManager.GetUserAsync(User);

@@ -9,6 +9,10 @@ $.get("/Home/CartCounter").done(function (data) {
     document.getElementById('cartCounterLabel').textContent = data
 });
 
+$.get("/Home/GetShipping").done(function (data) {
+    document.getElementById('calcShipping').textContent = data
+});
+
 
 const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
 

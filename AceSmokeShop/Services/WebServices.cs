@@ -96,6 +96,13 @@ namespace AceSmokeShop.Services
             return model;
         }
 
+        public int GetShipping(AppUser user)
+        {
+            var shipping = 25;
+
+            return shipping;
+        }
+
         public UProductViewModel GetUserProductsViewModel(AppUser user, int CategoryID = 0, int SubCategoryID = 0, int pageFrom = 1, int ItemsPerPage = 10,
                                                 string search = "", string type = "")
         {

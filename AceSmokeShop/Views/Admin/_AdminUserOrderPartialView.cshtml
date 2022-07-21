@@ -21,7 +21,7 @@
         }
         else
         {
-            <div class="col-5">
+            <div class="col-md">
                 <div class="product-card" style="width: 300px">
                     <div class="product-details"  style="padding: 1rem 2rem;">
                         <div class="row" style="padding:0px; margin: 0px;height: 2rem;">
@@ -58,7 +58,7 @@
             </div>
         }
         @*Insert Calc Section here*@
-        <div class="col-4">
+        <div class="col-md">
             <hr/>
             <div class="row" style="margin:0;">
                 <div class="col-6">
@@ -91,6 +91,7 @@
                     </div>
                 </div>
             </div>
+            <hr/>
         </div>
     </div>
     <table class="table mt-5" style="width:85%;">
@@ -99,7 +100,7 @@
             {
                 <tr>
                     <td class="col-2">
-                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
+                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@i.Product.PrimaryImage"/>
                     </td>
                     <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
                         <div class="row d-flex justify-content-center">
@@ -143,7 +144,7 @@
 else
 {
     <div class="row mt-5" id="userorders">
-        <div class="col-5">
+        <div class="col-md">
             @if(Model.ShippingAddress == null)
             {
                 <div class="product-card" style="width: 300px">
@@ -197,7 +198,7 @@ else
             }
         </div>
         @*Insert Calc Section here*@
-        <div class="col-4" style="padding:0px;">
+        <div class="col-md">
             <hr/>
             <div class="row" style="margin:0;">
                 <div class="col-6">
@@ -230,6 +231,7 @@ else
                     </div>
                 </div>
             </div>
+            <hr/>
         </div>
     </div>
     <table class="table mt-5" style="width:85%;">
@@ -238,7 +240,7 @@ else
             {
                 <tr>
                     <td class="col-2">
-                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:45%!important;" src="@i.Product.PrimaryImage"/>
+                        <img class="img-fluid img-responsive rounded product-image d-block" style="width:70%!important;" src="@i.Product.PrimaryImage"/>
                     </td>
                     <td class="col-6" style="font-family: emoji;letter-spacing: 0px;font-size: 15px;">
                         <div class="row d-flex justify-content-center">
