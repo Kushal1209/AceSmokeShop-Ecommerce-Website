@@ -21,6 +21,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label asp-for="EmailAddress"></label>
+                            <input asp-for="EmailAddress" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label asp-for="Input.PhoneNumber"></label>
                             <input asp-for="Input.PhoneNumber" class="form-control" />
                             <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>

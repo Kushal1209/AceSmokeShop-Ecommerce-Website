@@ -8,11 +8,32 @@
 $.get("/Home/CartCounter").done(function (data) {
     document.getElementById('cartCounterLabel').textContent = data
 });
+if (window.location.href.toLowerCase().includes('mycart')) {
+    GetShipping();
+}
 
-$.get("/Home/GetShipping").done(function (data) {
-    document.getElementById('calcShipping').textContent = data
-});
+function GetShipping() {
+   
+    document.getElementById('calcShipping').hidden = true;
 
+    //Show Loader
+    document.getElementById('loader').hidden = false;
+
+    $.get("/Home/GetShipping").done(function (data) {
+        //Disable loader
+        document.getElementById('loader').hidden = true;
+        document.getElementById('calcShipping').textContent = '$' + data;
+        document.getElementById('calcShipping').hidden = false;
+        return;
+    }).fail(function (data) {
+        //Disable loader
+        document.getElementById('loader').hidden = true;
+        document.getElementById('calcShipping').hidden = false;
+        document.getElementById('calcShipping').textContent = "Err: Try Again"
+        return;
+    });
+     //Disable loader
+}
 
 const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
 
@@ -99,6 +120,9 @@ function MinusClickCart(id) {
     count = count < 1 ? 1 : count;
     $(str).val(count);
     $(str).change();
+    if (window.location.href.toLowerCase().includes('mycart')) {
+        GetShipping();
+    }
     return false;
 }
 function PlusClickCart(id) {
@@ -107,6 +131,9 @@ function PlusClickCart(id) {
     count = count + 1;
     $(str).val(count);
     $(str).change();
+    if (window.location.href.toLowerCase().includes('mycart')) {
+        GetShipping();
+    }
     return false;
 }
 
@@ -114,7 +141,7 @@ function EditCartQty(cartid, price) {
     var prdstr = "#ProductQty" + cartid;
     salestr = "#Price" + cartid;
     var qty = parseInt($(prdstr).val());  
-    
+
     var txt = $('#Subtotal').text();
 
     txt = txt.substring(1);
@@ -255,7 +282,7 @@ function SelectCard(cardId, count) {
         }
        
     } catch (Exception) {
-        
+
     }
 }
 
@@ -271,12 +298,6 @@ function PlaceOrder(productId, qty) {
     
     var url = "/Home/PlaceOrder";
     var cardId = $('#inputSelectCardNum').val();
-    //if (cardId < 0) {
-    //    document.getElementById('placeorderbtn').hidden = false;
-    //    document.getElementById('processorderbtn').hidden = true;
-    //    $.notify("Please Select a Card", { globalPosition: 'bottom left', className: 'danger' });
-    //    return;
-    //}
     url = CreateURL(url, { 'cardId': cardId })
     if (productId != null && productId != undefined && qty != null && qty != undefined && qty >= 1) {
         url = CreateURL(url, { 'productId': productId, 'qty': qty })
@@ -418,12 +439,10 @@ function OrderStatusAlert() {
     var status = $('#orderstatus').val();
     if (status == 'Cancelled') {
         document.getElementById('cancelRefundAlert').hidden = false;
-       
     }
     else {
         document.getElementById('cancelRefundAlert').hidden = true;
         document.getElementById('orderStatusNId').value = document.getElementById('orderId').text + ":" + status;
-        
     }
 }
 
@@ -442,10 +461,8 @@ function CreateURL(url, list) {
         var property = list[key];
         SearchUrl.set(key, property);
     }
-
     return url + SearchUrl.toString();
 }
-
 
 function GetSubCat() {
     var url = "/Product/GetSubCatList?CatID=" + $('#acategory').val();
@@ -501,7 +518,6 @@ function DeleteOrderItem(items, OrderId) {
         placeholderElement.find('.modal').modal('show');
     });
 }
-
 
 $(function () {
     var placeholderElement = $('#placeholder');

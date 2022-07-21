@@ -24,6 +24,7 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account.Manage
         }
 
         public string Username { get; set; }
+        public string EmailAddress { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -41,9 +42,11 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account.Manage
         private async Task LoadAsync(AppUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
+            var emailAddress = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            EmailAddress = emailAddress;
 
             Input = new InputModel
             {
