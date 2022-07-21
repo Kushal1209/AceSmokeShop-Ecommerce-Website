@@ -30,7 +30,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label>CVC</label>
-                                <input asp-for="@Model.CVC" id="CVC" class="form-control" />
+                                <input type="number" asp-for="@Model.CVC" id="CVC" class="form-control" />
                                 <span id="errCVC" class="text-danger"></span>
                             </div>
                         </div>
@@ -38,12 +38,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label>Month</label>
-                                <input asp-for="@Model.Month" id="Month" class="form-control" />
+                                <input type="number" asp-for="@Model.Month" id="Month" class="form-control" />
                                 <span id="errMonth" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
-                                 <label>Year</label>
-                                <input asp-for="@Model.Year" id="Year" class="form-control" />
+                                <label>Year</label>
+                                <input type="number" asp-for="@Model.Year" id="Year" class="form-control" />
                                 <span id="errYear" class="text-danger"></span>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-block" data-save="modal">Save</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
             </div>
         </div>
     </div>
