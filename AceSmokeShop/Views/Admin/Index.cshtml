@@ -19,7 +19,7 @@
                                     Current Balance
                                 </div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    $12520.42
+                                    $@(Math.Floor(Model.currentBalance * 100) / 100)
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -47,7 +47,7 @@
                                     Total Revenue
                                 </div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    $@Model.TotalRevenue
+                                    $@(Math.Floor(Model.TotalRevenue * 100) / 100)
                                 </div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                                 </div>
                                 <input type="hidden" id="vendorRevenue" value="429.07">
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    $@Model.VendorRevenue
+                                    $@(Math.Floor(Model.VendorRevenue * 100) / 100)
                                 </div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                 </div>
                                  <input type="hidden" id="userRevenue" value="1744.38">
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    $@Model.UserRevenue
+                                    $@(Math.Floor(Model.UserRevenue * 100) / 100)
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                                     Tax Collected
                                 </div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    $@Model.TaxCollected
+                                    $@(Math.Floor(Model.TaxCollected * 100) / 100)
                                 </div>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                                     Card Payment
                                 </div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    $@Model.CardPayment
+                                    $@(Math.Floor(Model.CardPayment * 100) / 100)
                                 </div>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                                     In-Store Payment
                                 </div>
                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                    $@Model.InStorePayment
+                                    $@(Math.Floor(Model.InStorePayment * 100) / 100)
                                 </div>
                             </div>
                         </div>
