@@ -47,7 +47,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="Input.State.StateName" class="control-label"></label>
-                                <select asp-for="Input.State.StateID" class="form-control"
+                                <select asp-for="Input.State.StateID" class="form-select"
                                         asp-items="@(new SelectList(@Model.States, "StateID", "StateName"))">
                                 </select>
                                 <span asp-validation-for="Input.State.StateName" class="text-danger"></span>
