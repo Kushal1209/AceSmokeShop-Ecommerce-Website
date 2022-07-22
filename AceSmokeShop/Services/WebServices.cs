@@ -98,7 +98,7 @@ namespace AceSmokeShop.Services
 
         public int GetShipping(AppUser user)
         {
-            var shipping = _subcategoryRepository._dbSet.Where(x => x.ShippingCost == x.SubCategoryName).FirstOrDefault();
+            var shipping = 25;
 
             return shipping;
         }
