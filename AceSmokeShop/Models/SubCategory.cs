@@ -16,6 +16,10 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "nvarchar(256)")]
         public string SubCategoryName { get; set; }
 
+        [Display(Name = "Shipping Cost")]
+        [Column(TypeName = "nvarchar(256)")]
+        public string ShippingCost { get; set; }
+
         public virtual Category Category { get; set; }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AceSmokeShop.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220627124732_Add-1")]
-    partial class Add1
+    [Migration("20220722100923_Add-Column-To-SubCat")]
+    partial class AddColumnToSubCat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -379,6 +379,9 @@ namespace AceSmokeShop.Migrations
 
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShippingCost")
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("SubCategoryName")
                         .HasColumnType("nvarchar(256)");

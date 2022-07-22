@@ -378,6 +378,9 @@ namespace AceSmokeShop.Migrations
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
+                    b.Property<string>("ShippingCost")
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("SubCategoryName")
                         .HasColumnType("nvarchar(256)");
 

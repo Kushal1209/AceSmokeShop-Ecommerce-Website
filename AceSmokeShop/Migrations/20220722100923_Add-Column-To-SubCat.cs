@@ -2,23 +2,22 @@
 
 namespace AceSmokeShop.Migrations
 {
-    public partial class Add1 : Migration
+    public partial class AddColumnToSubCat : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Stores",
-                table: "AspNetUsers",
+                name: "ShippingCost",
+                table: "tbl_subcategory",
                 type: "nvarchar(256)",
-                defaultValue: "None",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Stores",
-                table: "AspNetUsers");
+                name: "ShippingCost",
+                table: "tbl_subcategory");
         }
     }
 }
