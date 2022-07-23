@@ -49,6 +49,7 @@ namespace AceSmokeShop.Controllers
             {
                 return RedirectToAction("Index", "Admin");
             }
+
             _uHomeViewModel = _webServices.GetHomeViewModel(user);
 
             return View("Index",_uHomeViewModel);
@@ -87,7 +88,7 @@ namespace AceSmokeShop.Controllers
             return StatusCode(500, result);
         }
 
-        public async Task<int> GetShipping()
+        public async Task<double> GetShipping()
         {
             var user = await _userManager.GetUserAsync(User);
             var shipping = _webServices.GetShipping(user);

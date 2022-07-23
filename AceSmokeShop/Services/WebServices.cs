@@ -4,6 +4,7 @@ using AceSmokeShop.Models;
 using AceSmokeShop.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace AceSmokeShop.Services
 {
     public class WebServices
     {
+        public IConfiguration Configuration { get; }
         private readonly UserManager<AppUser> _userManager;
         private readonly ProductRepository _productRepository;
         private readonly CategoryRepository _categoryRepository;
@@ -24,7 +26,7 @@ namespace AceSmokeShop.Services
         private readonly TransactionRepository _transactionRepository;
         private PaymentServices _paymentServices;
 
-        public WebServices(ProductRepository productRepository,
+        public WebServices(ProductRepository productRepository, IConfiguration configuration,
             CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
             StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, AddressRepository addressRepository,
             PaymentServices paymentServices, UserOrdersRepository userOrdersRepository, OrderItemRepository orderItemRepository, TransactionRepository transactionRepository)
@@ -40,6 +42,7 @@ namespace AceSmokeShop.Services
             _userOrdersRepository = userOrdersRepository;
             _orderItemRepository = orderItemRepository;
             _transactionRepository = transactionRepository;
+            Configuration = configuration;
         }
 
         public string GenerateOrderID()
@@ -96,11 +99,45 @@ namespace AceSmokeShop.Services
             return model;
         }
 
-        public int GetShipping(AppUser user)
+        public double GetShipping(AppUser user)
         {
-            var shipping = 25;
+            //var cartitems = _cartRepository._dbSet.Where(x => x.User.Id == x.UserId).FirstOrDefault();
+            //var shippingCost = _cartRepository._dbSet.Include(x => x.Product).Include(x => x.Product.SubCategory).Where(x => user.Id == x.UserId && !x.IsRemoved && !x.Product.IsRemoved && x.Product.Stock > x.Quantity).ToList().Sum(x => x.Product.SubCategory.ShippingCost);
+            //var product = _productRepository._dbSet.Where(x => x.Barcode == x.ProductID.ToString()).FirstOrDefault();
 
-            return shipping;
+            //double subtotal = 0;
+            //if (user.UserRole.ToLower().Contains("vendor"))
+            //{
+            //    subtotal = (product.VendorPrice * cartitems.Quantity);
+            //}
+            //else
+            //{
+            //    subtotal = (product.SalePrice * cartitems.Quantity);
+            //}
+
+            // Case 1: IF TOTAL EXCEED $200 THEN SHIPPING IS FREE (MIN VALUE IN APPSETTINGS.JSON)
+            double minSubTotal = Double.Parse(Configuration["ShippingParams:FreeShippingAfterCharge"]);
+            double subTotal = 0;
+            if (user.UserRole.Equals("VENDOR"))
+            {
+                subTotal = _cartRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false && x.Product.Stock > 0 && x.Product.Stock >= x.Quantity).Sum(x => x.Quantity * x.Product.VendorPrice);
+            }
+            else
+            {
+                subTotal = _cartRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false && x.Product.Stock > 0 && x.Product.Stock >= x.Quantity).Sum(x => x.Quantity * x.Product.SalePrice);
+            }
+
+            if (subTotal >= minSubTotal)
+            {
+                return 0;
+            }
+
+
+            // Case 2: IF TOTAL NOT EXCEED $200 THEN
+            var shipcost = _cartRepository._dbSet.Include(x => x.Product).Include(x => x.Product.SubCategory).Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false && x.Product.Stock > 0 && x.Product.Stock >= x.Quantity).Sum(x => x.Product.SubCategory.ShippingCost);
+          
+            return shipcost;
+            
         }
 
         public UProductViewModel GetUserProductsViewModel(AppUser user, int CategoryID = 0, int SubCategoryID = 0, int pageFrom = 1, int ItemsPerPage = 10,
