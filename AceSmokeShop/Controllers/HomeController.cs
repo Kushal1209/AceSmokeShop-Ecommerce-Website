@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Stripe;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace AceSmokeShop.Controllers
 {
@@ -25,7 +26,7 @@ namespace AceSmokeShop.Controllers
         private readonly UserManager<AppUser> _userManager;
         public CartInputModel Input { get; set; }
         public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager,
-            DBContext context)
+            DBContext context, IConfiguration configuration)
         {
             _userManager = userManager;
             _uHomeViewModel = new UHomeViewModel();
@@ -36,7 +37,7 @@ namespace AceSmokeShop.Controllers
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), 
                 new AddressRepository(context, logger), new TransactionRepository(context, logger));
-            _webServices = new WebServices(new ProductRepository(context, logger),
+            _webServices = new WebServices(new ProductRepository(context, logger), configuration,
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,
                 new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger), new TransactionRepository(context, logger));

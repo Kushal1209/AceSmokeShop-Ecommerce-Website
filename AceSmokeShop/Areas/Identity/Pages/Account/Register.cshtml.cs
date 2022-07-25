@@ -22,9 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.Razor;
-using System.IO;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using AuthorizeNet;
 
 namespace AceSmokeShop.Areas.Identity.Pages.Account
 {
@@ -159,6 +157,7 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
                         thisUser.LockoutEnabled = false;
                         await _userManager.UpdateAsync(thisUser);
                     }
+
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

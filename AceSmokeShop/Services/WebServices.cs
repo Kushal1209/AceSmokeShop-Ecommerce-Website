@@ -101,22 +101,9 @@ namespace AceSmokeShop.Services
 
         public double GetShipping(AppUser user)
         {
-            //var cartitems = _cartRepository._dbSet.Where(x => x.User.Id == x.UserId).FirstOrDefault();
-            //var shippingCost = _cartRepository._dbSet.Include(x => x.Product).Include(x => x.Product.SubCategory).Where(x => user.Id == x.UserId && !x.IsRemoved && !x.Product.IsRemoved && x.Product.Stock > x.Quantity).ToList().Sum(x => x.Product.SubCategory.ShippingCost);
-            //var product = _productRepository._dbSet.Where(x => x.Barcode == x.ProductID.ToString()).FirstOrDefault();
-
-            //double subtotal = 0;
-            //if (user.UserRole.ToLower().Contains("vendor"))
-            //{
-            //    subtotal = (product.VendorPrice * cartitems.Quantity);
-            //}
-            //else
-            //{
-            //    subtotal = (product.SalePrice * cartitems.Quantity);
-            //}
-
             // Case 1: IF TOTAL EXCEED $200 THEN SHIPPING IS FREE (MIN VALUE IN APPSETTINGS.JSON)
-            double minSubTotal = Double.Parse(Configuration["ShippingParams:FreeShippingAfterCharge"]);
+            var minSubTotal = Double.Parse(Configuration["ShippingParams:FreeShippingAfterCharge"]);
+
             double subTotal = 0;
             if (user.UserRole.Equals("VENDOR"))
             {
