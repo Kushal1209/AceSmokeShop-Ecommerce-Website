@@ -19,10 +19,12 @@ using AceSmokeShop.Data;
 using Stripe;
 using AceSmokeShop.Services;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.Razor;
 using AuthorizeNet;
+using AuthorizeNet.Api.Controllers.Bases;
+using AuthorizeNet.Api.Contracts.V1;
+using AuthorizeNet.Api.Controllers;
 
 namespace AceSmokeShop.Areas.Identity.Pages.Account
 {
@@ -63,6 +65,8 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        public string ApiLoginID { get; private set; }
+        public object ApiTransactionKey { get; private set; }
 
         public class InputModel
         {
@@ -124,40 +128,99 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     // Create a user in Stripe
-                    var parameters = new CustomerListOptions
+                    //var parameters = new CustomerListOptions
+                    //{
+                    //    Email = Input.Email
+                    //};
+                    //var Listservice = new CustomerService();
+                    //StripeList<Customer> customers = Listservice.List(parameters);
+                    //if (customers.Count() == 0)
+                    //{
+                    //    var metaData = new Dictionary<string, string>();
+                    //    metaData.Add("UserRole", "User");
+                    //    var options = new CustomerCreateOptions
+                    //    {
+                    //        Email = Input.Email,
+                    //        Name = Input.Fullname,
+                    //        Phone = Input.Contact,
+                    //        Metadata = metaData
+                    //    };
+                    //    var service = new CustomerService();
+                    //    var stripecustomer = service.Create(options);
+
+                    //    var thisUser = await _userManager.FindByIdAsync(user.Id);
+                    //    thisUser.CustomerId = stripecustomer.Id;
+                    //    thisUser.LockoutEnabled = false;
+                    //    await _userManager.UpdateAsync(thisUser);
+
+                    //}
+                    //else
+                    //{
+                    //    var thisUser = await _userManager.FindByIdAsync(user.Id);
+                    //    thisUser.CustomerId = customers.FirstOrDefault().Id;
+                    //    thisUser.LockoutEnabled = false;
+                    //    await _userManager.UpdateAsync(thisUser);
+                    //}
+
+                    // Create a user in Authorized.Net
+                    // set whether to use the sandbox environment, or production enviornment
+                    ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
+
+                    // define the merchant information (authentication / transaction id)
+                    ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType()
                     {
-                        Email = Input.Email
+                        name = "7Bsw4L4f",
+                        ItemElementName = ItemChoiceType.transactionKey,
+                        Item = "38Hy4de53j8D7BuD",
                     };
-                    var Listservice = new CustomerService();
-                    StripeList<Customer> customers = Listservice.List(parameters);
-                    if (customers.Count() == 0)
+
+                    customerProfileType customerProfile = new customerProfileType();
+                    customerProfile.email = Input.Email;
+
+                    var request = new createCustomerProfileRequest { profile = customerProfile, validationMode = validationModeEnum.none };
+
+                    // instantiate the controller that will call the service
+                    var controller = new createCustomerProfileController(request);
+                    controller.Execute();
+
+                    // get the response from the service (errors contained if any)
+                    createCustomerProfileResponse response = controller.GetApiResponse();
+
+                    // validate response 
+                    if (response != null)
                     {
-                        var metaData = new Dictionary<string, string>();
-                        metaData.Add("UserRole", "User");
-                        var options = new CustomerCreateOptions
+                        if (response.messages.resultCode == messageTypeEnum.Ok)
                         {
-                            Email = Input.Email,
-                            Name = Input.Fullname,
-                            Phone = Input.Contact,
-                            Metadata = metaData
-                        };
-                        var service = new CustomerService();
-                        var stripecustomer = service.Create(options);
-
-                        var thisUser = await _userManager.FindByIdAsync(user.Id);
-                        thisUser.CustomerId = stripecustomer.Id;
-                        thisUser.LockoutEnabled = false;
-                        await _userManager.UpdateAsync(thisUser);
-
+                            if (response.messages.message != null)
+                            {
+                                var thisUser = await _userManager.FindByIdAsync(user.Id);
+                                thisUser.CustomerId = response.customerProfileId;
+                                thisUser.LockoutEnabled = false;
+                                await _userManager.UpdateAsync(thisUser);
+                                Console.WriteLine("Success!");
+                                Console.WriteLine("Customer Profile ID: " + response.customerProfileId);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Customer Profile Creation Failed.");
+                            Console.WriteLine("Error Code: " + response.messages.message[0].code);
+                            Console.WriteLine("Error message: " + response.messages.message[0].text);
+                        }
                     }
                     else
                     {
-                        var thisUser = await _userManager.FindByIdAsync(user.Id);
-                        thisUser.CustomerId = customers.FirstOrDefault().Id;
-                        thisUser.LockoutEnabled = false;
-                        await _userManager.UpdateAsync(thisUser);
+                        if (controller.GetErrorResponse().messages.message.Length > 0)
+                        {
+                            Console.WriteLine("Customer Profile Creation Failed.");
+                            Console.WriteLine("Error Code: " + response.messages.message[0].code);
+                            Console.WriteLine("Error message: " + response.messages.message[0].text);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Null Response.");
+                        }
                     }
-
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

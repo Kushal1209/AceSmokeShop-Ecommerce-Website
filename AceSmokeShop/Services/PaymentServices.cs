@@ -69,7 +69,8 @@ namespace AceSmokeShop.Services
                     };
                     var attachservice = new PaymentMethodService();
                     var result = attachservice.Attach(paymentMethod.Id, attachOption);
-                }catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                    return ex.Message;
                 }

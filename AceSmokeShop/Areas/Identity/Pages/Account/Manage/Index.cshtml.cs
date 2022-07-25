@@ -23,7 +23,10 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
+        [Display(Name = "Username")]
         public string Username { get; set; }
+
+        [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
 
         [TempData]
@@ -35,22 +38,22 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Display(Name = "Contact number")]
+            public string ContactNo { get; set; }
         }
 
         private async Task LoadAsync(AppUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var emailAddress = await _userManager.GetEmailAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var contact = user.Contact;
 
             Username = userName;
             EmailAddress = emailAddress;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                ContactNo = contact
             };
         }
 
@@ -80,10 +83,10 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            var phoneNumber = user.Contact;
+            if (Input.ContactNo != phoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.ContactNo);
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
