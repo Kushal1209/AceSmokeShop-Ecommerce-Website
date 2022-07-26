@@ -333,9 +333,6 @@ namespace AceSmokeShop.Migrations
                     b.Property<string>("SecondaryImage2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SubCategoryID")
                         .IsRequired()
                         .HasColumnType("int");

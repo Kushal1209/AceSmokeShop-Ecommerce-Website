@@ -687,21 +687,8 @@ $(function () {
         else {
             sort = 1;
         }
-        window.location.href = CreateURL(url, { "sortby": 3, "sortbyorder": sort });
+        window.location.href = CreateURL(url, { "sortby": 2, "sortbyorder": sort });
     });
-
-    $("#QtyPriceClick").click(function (event) {
-        var url = window.location.href;
-        var sort = $('#sortbyQtyOrder').val();
-        if (sort == 1) {
-            sort = 0;
-        }
-        else {
-            sort = 1;
-        }
-        window.location.href = CreateURL(url, { "sortby": 1, "sortbyorder": sort });
-    });
-
 
     $("#BasePriceClick").click(function (event) {
         var url = window.location.href;
@@ -712,7 +699,7 @@ $(function () {
         else {
             sort = 1;
         }
-        window.location.href = CreateURL(url, { "sortby": 2, "sortbyorder": sort });
+        window.location.href = CreateURL(url, { "sortby": 1, "sortbyorder": sort });
     });
 
     placeholderElement.on('click', '[data-save="modal"]', function (event) {

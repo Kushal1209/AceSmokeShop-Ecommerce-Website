@@ -34,37 +34,13 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th class="col-5">
+                    <th class="col-6">
                         <a class="h6 text-uppercase font-weight-bold" style="color: #145DA0; font-size: 14px">
                             <b>Products</b>
                         </a>
                     </th>
-                    <th class="col-1">
-                        @if(Model.SortByID == 1)
-                        {
-                            <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
-                            <a class="h6 text-uppercase font-weight-bold" id="QtyPriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
-                                <b>Quantity</b> 
-                            </a>
-                            if (@Model.SortByOrder == 1)
-                            {
-                                <i class="bi bi-arrow-up" style="color: #145DA0;  cursor: pointer;"></i>
-                            }
-                            else
-                            {
-                                <i class="bi bi-arrow-down" style="color: #145DA0;  cursor: pointer;"></i>
-                            }
-                        }
-                        else
-                        {
-                            <input type="hidden" id="sortbyQtyOrder" value="@Model.SortByOrder" />
-                            <a id="QtyPriceClick" class="h6 text-uppercase font-weight-bold" style="color: #145DA0; cursor: pointer; font-size: 14px">
-                                 <b>Quantity</b><i class="bi bi-arrow-down-up"></i>
-                            </a>
-                        }
-                    </th>
                     <th class="col-2">
-                    @if(Model.SortByID == 2)
+                    @if(Model.SortByID == 1)
                         {
                             <input type="hidden" id="sortbyBaseOrder" value="@Model.SortByOrder" />
                             <a class="h6 text-uppercase font-weight-bold" id="BasePriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
@@ -89,7 +65,7 @@
                     </th>
                     <th  class="col-2">
                    
-                        @if(Model.SortByID == 3)
+                        @if(Model.SortByID == 2)
                         {
                             <input type="hidden" id="sortbySaleOrder" value="@Model.SortByOrder" />
                             <a class="h6 text-uppercase font-weight-bold" id="salePriceClick" style="color: #145DA0;  cursor: pointer; font-size: 14px">
@@ -123,7 +99,7 @@
                @foreach (var item in Model.ProductList)
                {
                    <tr>
-                       <td class="col-5">
+                       <td class="col-6">
                            <div class="row d-flex justify-content-center">
                                 <div class="col">
                                     <div class="row p-2 bg-white">
@@ -186,13 +162,6 @@
                                            </div>
                                        </div>
                                    </div>
-                               </div>
-                           </div>
-                       </td>
-                       <td class="col-1">
-                           <div class="row p-2 d-flex justify-content-center">
-                               <div class="h6 text-uppercase font-weight-light">
-                                   @item.Stock
                                </div>
                            </div>
                        </td>
