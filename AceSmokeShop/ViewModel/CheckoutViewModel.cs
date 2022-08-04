@@ -1,5 +1,6 @@
 ﻿
 using AceSmokeShop.Models;
+using AuthorizeNet.Api.Contracts.V1;
 using System.Collections.Generic;
 
 namespace AceSmokeShop.ViewModel
@@ -9,7 +10,6 @@ namespace AceSmokeShop.ViewModel
         public CheckoutViewModel()
         {
             Address = new AddressViewModel();
-            PaymentMethods = new Stripe.StripeList<Stripe.PaymentMethod>();
             Subtotal = 0;
             Qty = 1;
             Tax = 0;
@@ -18,10 +18,15 @@ namespace AceSmokeShop.ViewModel
             productId = "";
             BuyNowProduct = new Product();
 
+            CardList = new List<CardInfo>();
+
             CartList = new List<Cart>();
         }
         public AddressViewModel Address { get; set; }
-        public Stripe.StripeList<Stripe.PaymentMethod> PaymentMethods { get; set; }
+        //public Stripe.StripeList<Stripe.PaymentMethod> 
+
+        public List<CardInfo> CardList { get; set; }
+
         public double Subtotal { get; set; }
         public double Tax { get; set; }
         public double Shipping { get; set; }
@@ -31,5 +36,13 @@ namespace AceSmokeShop.ViewModel
         public int Qty { get; set; }
 
         public List<Cart> CartList { get; set; }
+    }
+
+    public class CardInfo{
+
+        public string cardNumber { get; set; }
+        public string paymentProfileId { get; set; }
+        public string cardType { get; set; }
+
     }
 }

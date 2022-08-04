@@ -1,53 +1,55 @@
 ﻿@using AceSmokeShop.ViewModel
 @model PaymentCardViewModel
-
 @{
     ViewData["Title"] = "Add Card";
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="modal fade" tabindex="-1" role="dialog" id="addcardget">
+<div class="modal fade" id="addcardget" role="dialog" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addcardgetlbl">Add Card</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true" style="border:none; outline:none">
+                <button type="button" class="close" onclick="CloseAddCard()" data-bs-dismiss="modal" aria-hidden="true" style="border:none; outline:none">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="AddCard" method="post">
+                <form asp-action="AddCard" method="post" id="payment-form" class="datpayment-form">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Card Number</label>
-                                <input asp-for="@Model.CardNumber" type="number" maxlength="16" id="cardInput" class="form-control" />
-                                <span id="errCardNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>CVC</label>
-                                <input type="number" asp-for="@Model.CVC" id="CVC" class="form-control" />
-                                <span id="errCVC" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Month</label>
-                                <input type="number" asp-for="@Model.Month" id="Month" class="form-control" />
-                                <span id="errMonth" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Year</label>
-                                <input type="number" asp-for="@Model.Year" id="Year" class="form-control" />
-                                <span id="errYear" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="dpf-title">
+						<div class="accepted-cards-logo"></div>
+					</div>
+					<div class="dpf-card-placeholder"></div>
+					<div class="dpf-input-container">
+						<div class="dpf-input-row">
+							<label class="dpf-input-label">CARD NUMBER</label>
+							<div class="dpf-input-container with-icon">
+								<span class="dpf-input-icon"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
+								<input type="text" asp-for=CardNumber class="dpf-input" data-type="number">
+							</div>
+						</div>
+						<div class="dpf-input-row">
+							<div class="dpf-input-column">
+								<label class="dpf-input-label">Exp Date</label>
+								<div class="dpf-input-container">
+									<input type="text" asp-for=ExpMonthYear class="dpf-input" data-type="expiry">
+								</div>
+							</div>
+							<div class="dpf-input-column">
+								<label class="dpf-input-label">CVV/CVC</label>
+								<div class="dpf-input-container">
+									<input type="text" asp-for=CVC class="dpf-input" size="4" data-type="cvc">
+								</div>
+							</div>
+						</div>
+						<div class="dpf-input-row" hidden>
+							<label class="dpf-input-label">ACESMOKE USER</label>
+							<div class="dpf-input-container">
+								<input type="text" size="4" class="dpf-input" data-type="name">
+							</div>
+						</div>
+					</div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -60,5 +62,61 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
+
+		var payment_form = new DatPayment({
+            form_selector: '#payment-form',
+            card_container_selector: '.dpf-card-placeholder',
+
+            number_selector: '.dpf-input[data-type="number"]',
+            date_selector: '.dpf-input[data-type="expiry"]',
+            cvc_selector: '.dpf-input[data-type="cvc"]',
+            name_selector: '.dpf-input[data-type="name"]',
+
+
+            placeholders: {
+                number: '•••• •••• •••• ••••',
+                expiry: '••••',
+                cvc: '•••',
+                name: 'Ace User'
+            },
+
+            validators: {
+                number: function(number){
+                    return Stripe.card.validateCardNumber(number);
+                },
+                expiry: function(expiry){
+                    var expiry = expiry;
+                    return Stripe.card.validateExpiry(expiry[0]||0,expiry[1]||0);
+                },
+                cvc: function(cvc){
+                    return Stripe.card.validateCVC(cvc);
+                },
+                name: function(value){
+                    return value.length > 0;
+                }
+            }
+        });
+
+        var demo_log_div = document.getElementById("demo-log");
+
+        payment_form.form.addEventListener('payment_form:submit',function(e){
+            var form_data = e.detail;
+            payment_form.unlockForm();
+            demo_log_div.innerHTML += "<br>"+JSON.stringify(form_data);
+        });
+
+        payment_form.form.addEventListener('payment_form:field_validation_success',function(e){
+            var input = e.detail;
+
+            demo_log_div.innerHTML += "<br>field_validation_success:"+input.getAttribute("data-type");
+
+        });
+
+        payment_form.form.addEventListener('payment_form:field_validation_failed',function(e){
+            var input = e.detail;
+
+            demo_log_div.innerHTML += "<br>field_validation_failed:"+input.getAttribute("data-type");
+        });
+
     </script>
 }

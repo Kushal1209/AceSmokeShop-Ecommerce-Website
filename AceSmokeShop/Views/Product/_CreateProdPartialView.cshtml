@@ -171,15 +171,15 @@
                                                <span>@item.Description</span>
                                            </div>
                                            <div class="mt-1 mb-1">
-                                               <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#editProduct"
+                                               <button type="button" class="d-inline" data-bs-toggle="ajax-modal" data-bs-target="#editProduct"
                                                     data-url="@Url.Action("EditProductGet","Product", @item)" style="border:none; outline:none; background:none;">
                                                     <i class="bi bi-pencil"></i>
                                                </button>
-                                               <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituploadimgs"
+                                               <button type="button" class="d-inline" data-bs-toggle="ajax-modal" data-bs-target="#edituploadimgs"
                                                     data-url="@Url.Action("EditUploadImageGet","Product", @item)" style="border:none; outline:none; background:none;">
                                                     <i class="fa-solid fa-images"></i>
                                                </button>
-                                               <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#deleteProduct"
+                                               <button type="button" class="d-inline" data-bs-toggle="ajax-modal" data-bs-target="#deleteProduct"
                                                     data-url="@Url.Action("DeleteProductGet", "Product", @item)" style="border:none; outline:none; background:none;">
                                                     <i class="bi bi-trash3"></i>
                                                </button>

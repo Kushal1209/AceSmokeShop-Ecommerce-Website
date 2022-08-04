@@ -36,7 +36,8 @@ namespace AceSmokeShop.Controllers
             _paymentServices = new PaymentServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), 
-                new AddressRepository(context, logger), new TransactionRepository(context, logger));
+                new AddressRepository(context, logger), new TransactionRepository(context, logger), 
+                new UserOrdersRepository(context, logger));
             _webServices = new WebServices(new ProductRepository(context, logger), configuration,
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,
@@ -232,7 +233,7 @@ namespace AceSmokeShop.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                var model = _webServices.GetCheckoutViewModel(user, ProductId, Quantity);
+                var model = await _webServices.GetCheckoutViewModel(user, ProductId, Quantity);
 
                 if(model.Subtotal == 0)
                 {

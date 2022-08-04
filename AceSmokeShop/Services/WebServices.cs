@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AceSmokeShop.Services
 {
@@ -77,8 +78,8 @@ namespace AceSmokeShop.Services
         {
             var model = new UHomeViewModel();
 
-            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured && !x.IsRemoved && x.Stock > 0).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
-            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted && !x.IsRemoved && x.Stock > 0).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
+            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured && !x.IsRemoved && x.Stock > 0).Include(x => x.Category).Include(x => x.SubCategory).Take(4).ToList();
+            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted && !x.IsRemoved && x.Stock > 0).Include(x => x.Category).Include(x => x.SubCategory).Take(4).ToList();
             model.CategoryList = _categoryRepository._dbSet.ToList();
             foreach(var item in model.FeaturedList)
             {
@@ -281,7 +282,7 @@ namespace AceSmokeShop.Services
                 if (Order == null)
                 {
                     //Refund
-                    var refund = _paymentServices.CreateRefund(paymentResult, "duplicate");
+                    var refund = _paymentServices.CancelTransaction(paymentResult, "", "", "duplicate");
 
                     return "Payment Processed but Something Went Wrong! Refund is in Process";
                 }
@@ -450,7 +451,7 @@ namespace AceSmokeShop.Services
                 if (Order == null)
                 {
                     //Refund
-                    var refund = _paymentServices.CreateRefund(paymentResult, "duplicate");
+                    var refund = _paymentServices.CancelTransaction(paymentResult, "", "", "duplicate");
 
                     return "Payment Processed but Something Went Wrong! Refund is in Process";
                 }
@@ -555,7 +556,7 @@ namespace AceSmokeShop.Services
 
             var model = new PayNowViewModel();
             model.userOrder = order;
-            model.PaymentMethods = _paymentServices.GetMyCards(user.CustomerId);
+            //model.PaymentMethods = _paymentServices.GetMyCards(user.CustomerId);
 
             return model;
         }
@@ -564,8 +565,8 @@ namespace AceSmokeShop.Services
         {
             var userorder = _userOrdersRepository._dbSet.Where(x => x.CustOrderId.Equals(orderId)).FirstOrDefault();
 
-            var paymentCancelResult = _paymentServices.CreateRefund(userorder.PaymentId, "duplicate");
-            if (!paymentCancelResult.ToLower().Contains("fail"))
+            var paymentCancelResult = _paymentServices.CancelTransaction(userorder.PaymentId, "duplicate", userorder.RefundId, userorder.VoidId);
+            if (!paymentCancelResult.ToLower().Contains("err"))
             {
                 try
                 {
@@ -669,7 +670,7 @@ namespace AceSmokeShop.Services
             return list;
         }
 
-        public CheckoutViewModel GetCheckoutViewModel(AppUser user, string productId, int qty)
+        public async Task<CheckoutViewModel> GetCheckoutViewModel(AppUser user, string productId, int qty)
         {
             var model = new CheckoutViewModel();
             model.Tax = 6.625;
@@ -720,7 +721,17 @@ namespace AceSmokeShop.Services
             model.Address.AddressList = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false).ToList();
             model.Address.newAddress = new Addresses();
             model.Address.StateList = GetStateList();
-            model.PaymentMethods = _paymentServices.GetMyCards(user.CustomerId);
+
+            if (user.CustomerId == null || user.CustomerId.Length <= 1 || user.CustomerId.Contains("cus"))
+            {
+                var profileID = await _paymentServices.GetCustomerProfileID(user);
+                model.CardList = _paymentServices.GetMyCards(profileID);
+            }
+            else{
+
+                model.CardList = _paymentServices.GetMyCards(user.CustomerId);
+            }
+                
 
             return model;
         }

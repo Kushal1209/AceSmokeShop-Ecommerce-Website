@@ -1,4 +1,5 @@
 ﻿using AceSmokeShop.Models;
+using System.Collections.Generic;
 
 namespace AceSmokeShop.ViewModel
 {
@@ -8,12 +9,12 @@ namespace AceSmokeShop.ViewModel
         {
             userOrder = new UserOrders();
             PaymentCards = new PaymentCardViewModel();
-            PaymentMethods = new Stripe.StripeList<Stripe.PaymentMethod>();
+            CardList = new List<CardInfo>();
         }
 
         public UserOrders userOrder { get; set; }
 
         public PaymentCardViewModel PaymentCards { get; set; }
-        public Stripe.StripeList<Stripe.PaymentMethod> PaymentMethods { get; set; }
+        public List<CardInfo> CardList { get; set; }
     }
 }

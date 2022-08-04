@@ -152,7 +152,7 @@
 
             <div class="col addaddrresscol" id="addaddresses">
                 <div class="product-card addaddress">
-                    <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#cdb36c; height: inherit;" data-toggle="ajax-modal" data-target="#addAddress"
+                    <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#cdb36c; height: inherit;" data-bs-toggle="ajax-modal" data-bs-target="#addAddress"
                     data-url="@Url.Action("AddAddressGet")" >Add New Address</button>
 	            </div>
             </div>
@@ -168,45 +168,44 @@
         </div>
         <div class="row mt-3 row-cols row-cols-lg gy-5 g-lg-4">
             <input type="hidden" asp-for=@SelectedCard value=@SelectedCard id="inputSelectCardNum"/>
-            @foreach(var item in Model.PaymentMethods)
+            @foreach(var item in Model.CardList)
             {
                 {
                     cardNumber = cardNumber + 1;
                 }
                 <div class="col paymentcardcol">
-                    <div class="product-card paymentcard" onclick="SelectCard(@cardNumber, @Model.PaymentMethods.Count())" id="@("cardSelect" + cardNumber)">
+                    <div class="product-card paymentcard" onclick="SelectCard(@cardNumber, @Model.CardList.Count(), @item.paymentProfileId)" id="@("cardSelect" + cardNumber)">
                         <div class="product-details" style="padding:1rem 2rem; height:100%;">
                             <div style="text-align: right;">
-                                <button type="button" onclick="RemoveCard(@cardNumber)" style="cursor:pointer; border:none; background: none;"><i class="bi bi-x-circle-fill" style="font-size: 20px; color:#96672d;" ></i></button>
+                                <button type="button" onclick="RemoveCard(@item.paymentProfileId)" style="cursor:pointer; border:none; background: none;"><i class="bi bi-x-circle-fill" style="font-size: 20px; color:#96672d;" ></i></button>
                             </div>
                             <div class="payment-details">
                                 <h6 style="letter-spacing: 5px;">
-                                    xxxx-xxxx-xxxx-@item.Card.Last4
+                                    @item.cardNumber
                                 </h6>
                                 <h6>
-                                    @item.Card.Brand
-                                </h6>
-                                <h6>
-                                    Exp: @item.Card.ExpMonth/@item.Card.ExpYear
+                                    Exp: XXXX
                                 </h6>
                             </div>
                             <div style="float: right;">
-                                @if(item.Card.Brand.ToLower().Contains("visa")){
+                                @if(item.cardType == null)
+                                {
+                                }
+                                else if(item.cardType.ToLower().Contains("visa")){
                                     <img style="width:70px;" src="~/Images/VisaLogo.png" />
                                 }
-                                else if(item.Card.Brand.ToLower().Contains("master")){
+                                else if(item.cardType.ToLower().Contains("master")){
                                     <img style="width:70px;" src="~/Images/MasterCardLogo.png" />
                                 }
-                                else if(item.Card.Brand.ToLower().Contains("discover")){
+                                else if(item.cardType.ToLower().Contains("discover")){
                                     <img style="width:70px;" src="~/Images/DiscoverCardLogo.png" />
                                 }
-                                else if(item.Card.Brand.ToLower().Contains("amex")){
+                                else if(item.cardType.ToLower().Contains("americanexpress")){
                                     <img style="width: 130px; margin-top: -10px; margin-right: -20px;" src="~/Images/AmexCardLogo.png" />
                                 }
-                                else if(item.Card.Brand.ToLower().Contains("diner")){
+                                else if(item.cardType.ToLower().Contains("diner")){
                                     <img style="width: 80px; margin-top: -10px; margin-right: -10px;" src="~/Images/DinersCardLogo.png" />
                                 }
-                                
                             </div>
                         </div>
                     </div>
@@ -215,14 +214,14 @@
             @if (user != null && user.UserRole.ToLower().Contains("vendor"))
             {
                 <div class="col paymentcardcol">
-                    <div class="product-card paymentcard" onclick="SelectCard(-1, @Model.PaymentMethods.Count())" id="@("cardSelect" + -1)">
+                    <div class="product-card paymentcard" onclick="SelectCard(-1, @Model.CardList.Count())" id="@("cardSelect" + -1)">
                         <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#000000; height: inherit;">Pay Later</button>
 	                </div>
                 </div>
             }
             <div class="col paymentcardcol">
                 <div class="product-card paymentcard">
-                    <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#000000; height: inherit;" data-toggle="ajax-modal" data-target="#addcardget"
+                    <button class="btn" type="button" style="border-radius: 0px;font-weight: 600; color:#000000; height: inherit;" data-bs-toggle="ajax-modal" data-bs-target="#addcardget"
                         data-url="@Url.Action("AddCardGet")">Add New Card</button>
 	            </div>
             </div>

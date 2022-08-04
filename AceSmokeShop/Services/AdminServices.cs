@@ -239,7 +239,7 @@ namespace AceSmokeShop.Services
                     }
                     if (userorder.OrderStatus.ToLower().Contains("cancelled"))
                     {
-                        var refund = _paymentServices.CreateRefund(userorder.PaymentId, "duplicate");
+                        var refund = _paymentServices.CancelTransaction(userorder.PaymentId, userorder.RefundId, userorder.VoidId, "duplicate");
                         userorder.OrderItems = _orderItemRepository._dbSet.Where(x => x.CustOrderId == orderid).Include(x => x.Product).ToList();
                         var productlist = new List<Product>();
                         foreach(var item in userorder.OrderItems)

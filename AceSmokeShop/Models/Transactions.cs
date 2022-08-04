@@ -41,6 +41,12 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "nvarchar(256)")]
         public string PaymentIntentId { get; set; }
 
+        [Column(TypeName = "nvarchar(256)")]
+        public string RefundId { get; set; }
+
+        [Column(TypeName = "nvarchar(256)")]
+        public string VoidId { get; set; }
+
         [Required]
         [Column(TypeName = "decimal(35, 2)")]
         public double Amount { get; set; }

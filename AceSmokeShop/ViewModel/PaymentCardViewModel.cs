@@ -2,12 +2,10 @@
 {
     public class PaymentCardViewModel
     {
-        public double CardNumber { get; set; }
+        public string CardNumber { get; set; }
 
         public int CVC { get; set; }
 
-        public int Month { get; set; }
-
-        public int Year { get; set; }
+        public string ExpMonthYear { get; set; }
     }
 }

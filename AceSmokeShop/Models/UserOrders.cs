@@ -45,6 +45,12 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "nvarchar(256)")]
         public string PaymentId { get; set; }
 
+        [Column(TypeName = "nvarchar(256)")]
+        public string RefundId { get; set; }
+
+        [Column(TypeName = "nvarchar(256)")]
+        public string VoidId { get; set; }
+
         [Required]
         [Column(TypeName = "nvarchar(256)")]
         public DateTime CreateDate { get; set; }

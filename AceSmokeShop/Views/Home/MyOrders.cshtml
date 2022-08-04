@@ -140,7 +140,7 @@
                                                                 <div class="col-2">
                                                                     @if(item.OrderStatus.Equals("Order Placed"))
                                                                     {
-                                                                        <button type="button" class="d-inline"  data-toggle="ajax-modal" data-target="#cancelorder"
+                                                                        <button type="button" class="d-inline"  data-bs-toggle="ajax-modal" data-bs-target="#cancelorder"
                                                                             data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" 
                                                                             style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
                                                                             <b>Cancel Order</b>
@@ -361,9 +361,10 @@
                                                                 </div>
                                                                 <div class="col-2">
                                                                     @if(item.OrderStatus.Equals("Order Placed")){
-                                                                        <button type="button" class="d-inline"  data-toggle="ajax-modal" data-target="#cancelorder"
-                                                                        data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" 
-                                                                        style="color:#cdb36c;font-size: 13px;font-weight: 500; border:none; outline:none; background:none;"><b>Cancel Order</b></button>
+                                                                        <button type="button" class="d-inline"  data-bs-toggle="ajax-modal" data-bs-target="#cancelorder"
+                                                                            data-url="@Url.Action("CancelOrderGet","Home", new {orderid = @item.CustOrderId})" 
+                                                                            style="color:#cdb36c;font-size: 13px;font-weight: 500; border:none; outline:none; background:none;"><b>Cancel Order</b>
+                                                                        </button>
                                                                     }
                                                                 </div> 
                                                                 @if(item.DeliveryDate.Year <= 2000)

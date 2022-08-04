@@ -252,7 +252,7 @@
                                                             }
                                                             else
                                                             {
-                                                                <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituserorderstatus"
+                                                                <button type="button" class="d-inline" data-bs-toggle="ajax-modal" data-bs-target="#edituserorderstatus"
                                                                     data-url="@Url.Action("EditUserOrderStatusGet", "Admin", new{orderid = @item.CustOrderId})" style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
                                                                     <b>@item.OrderStatus.ToUpper()</b>
                                                                 </button>
@@ -289,7 +289,7 @@
                                                                 <div class="row">
                                                                     <div class=col-9></div>
                                                                     <div class=col->
-                                                                        <button type="button" class="btn btn-block" data-toggle="ajax-modal" data-target="#markaspaid"
+                                                                        <button type="button" class="btn btn-block" data-bs-toggle="ajax-modal" data-bs-target="#markaspaid"
                                                                             data-url="@Url.Action("MarkAsPaidGet", "Admin", new{CustOrderId = @item.CustOrderId})">Paid at Store</button>
                                                                     </div>
                                                                 </div>
@@ -345,7 +345,7 @@
                                                             }
                                                             else
                                                             {
-                                                                <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#edituserorderstatus"
+                                                                <button type="button" class="d-inline" data-bs-toggle="ajax-modal" data-bs-target="#edituserorderstatus"
                                                                     data-url="@Url.Action("EditUserOrderStatusGet", "Admin", new{orderid = @item.CustOrderId})" style="font-size: 13px; font-weight: 500; color:#cdb36c; border:none; outline:none; background:none;">
                                                                     <b>@item.OrderStatus.ToUpper()</b>
                                                                 </button>

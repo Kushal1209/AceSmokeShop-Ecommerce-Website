@@ -30,7 +30,8 @@ namespace AceSmokeShop.Controllers
             _paymentServices = new PaymentServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), 
-                new AddressRepository(context, logger), new TransactionRepository(context, logger));
+                new AddressRepository(context, logger), new TransactionRepository(context, logger),
+                new UserOrdersRepository(context, logger));
             _adminServices = new AdminServices(new ProductRepository(context, logger),
                 new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
                 new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,

@@ -16,15 +16,11 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using AceSmokeShop.Models;
 using AceSmokeShop.Data;
-using Stripe;
 using AceSmokeShop.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.Razor;
-using AuthorizeNet;
-using AuthorizeNet.Api.Controllers.Bases;
-using AuthorizeNet.Api.Contracts.V1;
-using AuthorizeNet.Api.Controllers;
+using AceSmokeShop.Core.Repositories;
 
 namespace AceSmokeShop.Areas.Identity.Pages.Account
 {
@@ -36,6 +32,7 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly MyEmailSender _emailSender;
         private readonly DBContext _context;
+        public PaymentServices _paymentServices;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
@@ -55,6 +52,11 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
             States = (from addre in _context.tbl_state
                       select addre).ToList();
             States.Insert(0, new State { StateID = 0, StateName = "Select State" });
+            _paymentServices = new PaymentServices(new ProductRepository(context, logger),
+               new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
+               new StateRepository(context, logger), userManager, new CartRepository(context, logger),
+               new AddressRepository(context, logger), new TransactionRepository(context, logger), 
+               new UserOrdersRepository(context, logger));
         }
 
         [BindProperty]
@@ -126,101 +128,8 @@ namespace AceSmokeShop.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
-                    // Create a user in Stripe
-                    //var parameters = new CustomerListOptions
-                    //{
-                    //    Email = Input.Email
-                    //};
-                    //var Listservice = new CustomerService();
-                    //StripeList<Customer> customers = Listservice.List(parameters);
-                    //if (customers.Count() == 0)
-                    //{
-                    //    var metaData = new Dictionary<string, string>();
-                    //    metaData.Add("UserRole", "User");
-                    //    var options = new CustomerCreateOptions
-                    //    {
-                    //        Email = Input.Email,
-                    //        Name = Input.Fullname,
-                    //        Phone = Input.Contact,
-                    //        Metadata = metaData
-                    //    };
-                    //    var service = new CustomerService();
-                    //    var stripecustomer = service.Create(options);
-
-                    //    var thisUser = await _userManager.FindByIdAsync(user.Id);
-                    //    thisUser.CustomerId = stripecustomer.Id;
-                    //    thisUser.LockoutEnabled = false;
-                    //    await _userManager.UpdateAsync(thisUser);
-
-                    //}
-                    //else
-                    //{
-                    //    var thisUser = await _userManager.FindByIdAsync(user.Id);
-                    //    thisUser.CustomerId = customers.FirstOrDefault().Id;
-                    //    thisUser.LockoutEnabled = false;
-                    //    await _userManager.UpdateAsync(thisUser);
-                    //}
-
-                    // Create a user in Authorized.Net
-                    // set whether to use the sandbox environment, or production enviornment
-                    ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
-
-                    // define the merchant information (authentication / transaction id)
-                    ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType()
-                    {
-                        name = "7Bsw4L4f",
-                        ItemElementName = ItemChoiceType.transactionKey,
-                        Item = "38Hy4de53j8D7BuD",
-                    };
-
-                    customerProfileType customerProfile = new customerProfileType();
-                    customerProfile.email = Input.Email;
-
-                    var request = new createCustomerProfileRequest { profile = customerProfile, validationMode = validationModeEnum.none };
-
-                    // instantiate the controller that will call the service
-                    var controller = new createCustomerProfileController(request);
-                    controller.Execute();
-
-                    // get the response from the service (errors contained if any)
-                    createCustomerProfileResponse response = controller.GetApiResponse();
-
-                    // validate response 
-                    if (response != null)
-                    {
-                        if (response.messages.resultCode == messageTypeEnum.Ok)
-                        {
-                            if (response.messages.message != null)
-                            {
-                                var thisUser = await _userManager.FindByIdAsync(user.Id);
-                                thisUser.CustomerId = response.customerProfileId;
-                                thisUser.LockoutEnabled = false;
-                                await _userManager.UpdateAsync(thisUser);
-                                Console.WriteLine("Success!");
-                                Console.WriteLine("Customer Profile ID: " + response.customerProfileId);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Customer Profile Creation Failed.");
-                            Console.WriteLine("Error Code: " + response.messages.message[0].code);
-                            Console.WriteLine("Error message: " + response.messages.message[0].text);
-                        }
-                    }
-                    else
-                    {
-                        if (controller.GetErrorResponse().messages.message.Length > 0)
-                        {
-                            Console.WriteLine("Customer Profile Creation Failed.");
-                            Console.WriteLine("Error Code: " + response.messages.message[0].code);
-                            Console.WriteLine("Error message: " + response.messages.message[0].text);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Null Response.");
-                        }
-                    }
+                    var thisUser = await _userManager.FindByIdAsync(user.Id);
+                    await _paymentServices.GetCustomerProfileID(thisUser);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

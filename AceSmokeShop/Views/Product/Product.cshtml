@@ -16,7 +16,7 @@
                     <select asp-for=@Model.CategorySelect.CategoryID id="category" class="form-select adminproducts"
                             asp-items="@(new SelectList(@Model.CategoryList, "CategoryID", "CategoryName"))">
                     </select>
-                    <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#addcategory"
+                    <button type="button" class="d-inline" data-bs-toggle="ajax-modal" data-bs-target="#addcategory"
                         data-url="@Url.Action("CreateCategory")" style="border:none; outline:none; background:none;">
                         <i class="bi bi-plus-circle"></i>
                     </button>
@@ -25,7 +25,7 @@
                     <select asp-for=@Model.SubCategorySelect.SubCategoryID id="subcategory" class="form-select adminproducts"
                             asp-items="@(new SelectList(@Model.SubCategoryList, "SubCategoryID", "SubCategoryName"))">
                     </select>
-                    <button type="button" class="d-inline" data-toggle="ajax-modal" data-target="#addsubcategory"
+                    <button type="button" class="d-inline" data-bs-toggle="ajax-modal" data-bs-target="#addsubcategory"
                         data-url="@Url.Action("CreateSubCategory")" style="border:none; outline:none; background:none;">
                         <i class="bi bi-plus-circle"></i>
                     </button>
@@ -132,7 +132,7 @@
     <div class="mt-3">
         <div class="row row-cols row-cols-lg g-5 g-lg-3">
             <div class="col createprodbtn">
-                <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#addProduct"
+                <button type="button" class="btn btn-primary" data-bs-toggle="ajax-modal" data-bs-target="#addProduct"
                 data-url="@Url.Action("CreateProduct")">Create Product</button>
             </div>
             <div class="col createprodbtn">

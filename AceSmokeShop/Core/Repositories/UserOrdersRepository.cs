@@ -7,7 +7,8 @@ namespace AceSmokeShop.Core.Repositories
 {
     public class UserOrdersRepository : GenericRepository<UserOrders>, IUserOrdersRepository
     {
-        public UserOrdersRepository(DBContext context, ILogger logger) : base(context, logger)
+        public UserOrdersRepository(DBContext context, 
+            ILogger logger) : base(context, logger)
         {
         }
     }
