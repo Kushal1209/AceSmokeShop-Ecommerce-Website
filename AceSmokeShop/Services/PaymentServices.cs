@@ -29,7 +29,7 @@ namespace AceSmokeShop.Services
 
         public PaymentServices(ProductRepository productRepository,
             CategoryRepository categoryRepository, SubCategoryRepository subcategoryRepository,
-            StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository, 
+            StateRepository stateRepository, UserManager<AppUser> userManager, CartRepository cartRepository,
             AddressRepository addressRepository, TransactionRepository transactionRepository, 
             UserOrdersRepository userOrdersRepository)
         {

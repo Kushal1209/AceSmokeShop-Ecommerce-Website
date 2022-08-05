@@ -135,7 +135,7 @@ namespace AceSmokeShop.Services
 
             model.CategoryList = _categoryRepository._dbSet.ToList();
             model.CategoryList.Insert(0, new Category { CategoryID = 0, CategoryName = "Select Category" });
-            model.SubCategoryList.Insert(0, new SubCategory { SubCategoryID = 0, SubCategoryName = "Select SubCategory" });
+           
             var ProdctList = _productRepository._dbSet.Where(x => x.IsRemoved == false).Include(x => x.Category).Include(x => x.SubCategory).ToList();
             pageFrom--;
             if(CategoryID > 0)
@@ -183,7 +183,7 @@ namespace AceSmokeShop.Services
             }
             model.CurrentPage = ++pageFrom;
             model.Type = type;
-           
+            model.SubCategoryList.Insert(0, new SubCategory { SubCategoryID = 0, SubCategoryName = "Select SubCategory" });
             return model;
         }
 
@@ -215,7 +215,7 @@ namespace AceSmokeShop.Services
                SubTotal = product.SalePrice * qty;
             }
 
-            var ShippingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsShipping == false).FirstOrDefault();
+            var ShippingAddress = _addressRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.IsShipping == true).FirstOrDefault();
 
             if (user.UserRole.ToLower() != "vendor")
             {
@@ -522,7 +522,6 @@ namespace AceSmokeShop.Services
                 return "Error: Something Went Wrong";
             }
 
-            //Stripe Payment
             var paymentDetails = _paymentServices.PlaceOrder(user, cardId, order.TotalAmount, custOrderId);
             if (paymentDetails.ToLower().Contains("err"))
             {
@@ -556,7 +555,7 @@ namespace AceSmokeShop.Services
 
             var model = new PayNowViewModel();
             model.userOrder = order;
-            //model.PaymentMethods = _paymentServices.GetMyCards(user.CustomerId);
+            model.CardList = _paymentServices.GetMyCards(user.CustomerId);
 
             return model;
         }
@@ -732,7 +731,6 @@ namespace AceSmokeShop.Services
                 model.CardList = _paymentServices.GetMyCards(user.CustomerId);
             }
                 
-
             return model;
         }
 

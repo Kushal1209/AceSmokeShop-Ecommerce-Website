@@ -1341,10 +1341,6 @@ for details on configuring this project to bundle and minify static web assets. 
         padding: 0px;
     }
 
-    li.nav-item {
-        margin: 0rem 1.2rem;
-    }
-
     .IndexText {
         font-size: 3rem;
         font-weight: 700;
@@ -1651,6 +1647,9 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 }
 
+li.nav-item {
+    margin: 0rem 1rem;
+}
 nav, footer {
     background-color: #000;
 }
@@ -1681,9 +1680,9 @@ img {
     transition: all 0.5s ease;
 }
 
-    .img-showcase img {
-        min-width: 100%;
-    }
+.img-showcase img {
+    min-width: 100%;
+}
 
 .img-select {
     display: flex;
@@ -1693,16 +1692,16 @@ img {
     margin: 0.3rem;
 }
 
-    .img-item:nth-child(1),
-    .img-item:nth-child(2),
-    .img-item:nth-child(3) {
-        margin: 5px;
-        border: 1px solid darkgrey;
-    }
+.img-item:nth-child(1),
+.img-item:nth-child(2),
+.img-item:nth-child(3) {
+    margin: 5px;
+    border: 1px solid darkgrey;
+}
 
-    .img-item:hover {
-        opacity: 0.8;
-    }
+.img-item:hover {
+    opacity: 0.8;
+}
 
 span {
     cursor: pointer;
@@ -1779,10 +1778,10 @@ product-details p {
     padding-top: 10px;
 }
 
-    .product-bottom-details div {
-        float: left;
-        width: 50%;
-    }
+.product-bottom-details div {
+    float: left;
+    width: 50%;
+}
 
 .product-price {
     font-size: 20px;

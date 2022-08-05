@@ -217,7 +217,6 @@ namespace AceSmokeShop.Controllers
                     }
                     return StatusCode(500, str);
                 }
-               
             }
             else
             {

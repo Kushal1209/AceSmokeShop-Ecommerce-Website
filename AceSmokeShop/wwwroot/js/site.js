@@ -276,8 +276,14 @@ function PickupAtStore() {
 }
 
 function SelectCard(cardId, count, ppId) {
-    $('#inputSelectCardNum').val(ppId);
-    $('#inputSelectCardNum').change();
+	if (cardId < 0) {
+		$('#inputSelectCardNum').val(-1);
+		$('#inputSelectCardNum').change();
+	}
+	else {
+		$('#inputSelectCardNum').val(ppId);
+		$('#inputSelectCardNum').change();
+    }
 
     var idstr = "cardSelect" + cardId;
 
@@ -291,11 +297,11 @@ function SelectCard(cardId, count, ppId) {
         }
     }
     try {
-        if (-1 != cardId) {
-            idstr = "cardSelect" + -1;
-            document.getElementById(idstr).style.border = 'none';
-            document.getElementById(idstr).style.borderColor = '';
-        }
+		if (-1 != cardId) {
+			idstr = "cardSelect" + -1;
+			document.getElementById(idstr).style.border = 'none';
+			document.getElementById(idstr).style.borderColor = '';
+		}
        
     } catch (Exception) {
 
@@ -303,6 +309,10 @@ function SelectCard(cardId, count, ppId) {
 }
 
 function PlaceOrder(productId, qty) {
+	if ($('#inputSelectCardNum').val() == -2) {
+		$.notify("Please Select a Card First!!", { globalPosition: 'bottom left', className: 'danger' });
+		return
+    }
     document.getElementById('placeorderbtn').hidden = true;
     document.getElementById('processorderbtn').hidden = false;
     var isPickUp = 0;
@@ -336,6 +346,10 @@ function PlaceOrder(productId, qty) {
 }
 
 function PayNow() {
+	if ($('#inputSelectCardNum').val() == -2) {
+		$.notify("Please Select a Card First!!", { globalPosition: 'bottom left', className: 'danger' });
+		return
+	}
     document.getElementById('placeorderbtn').hidden = true;
     document.getElementById('processorderbtn').hidden = false;
 
