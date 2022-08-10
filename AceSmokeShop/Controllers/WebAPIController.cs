@@ -1,6 +1,10 @@
 ﻿using AceSmokeShop.Areas.Identity.Data;
+using AceSmokeShop.Core.Repositories;
+using AceSmokeShop.Data;
+using AceSmokeShop.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -14,20 +18,29 @@ namespace AceSmokeShop.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-
-
-        public WebAPIController(SignInManager<AppUser> signInManager,
-            UserManager<AppUser> userManager)
+        private readonly AdminServices _adminServices;
+        public PaymentServices _paymentServices;
+        public WebAPIController(ILogger<WebAPIController> logger, SignInManager<AppUser> signInManager,
+            UserManager<AppUser> userManager, DBContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-        } 
-
-
-        public IActionResult Index()
-        {
-            return View();
+            _paymentServices = new PaymentServices(new ProductRepository(context, logger),
+                new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger),
+                new AddressRepository(context, logger), new TransactionRepository(context, logger),
+                new UserOrdersRepository(context, logger));
+            _adminServices = new AdminServices(new ProductRepository(context, logger),
+                new CategoryRepository(context, logger), new SubCategoryRepository(context, logger),
+                new StateRepository(context, logger), userManager, new CartRepository(context, logger), new AddressRepository(context, logger), _paymentServices,
+                new UserOrdersRepository(context, logger), new OrderItemRepository(context, logger), new TransactionRepository(context, logger));
         }
+
+
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
         [HttpGet]
         [BasicAuthorization]
@@ -100,6 +113,35 @@ namespace AceSmokeShop.Controllers
         public bool VerifyToken()
         {
             return true;
+        }
+
+        [HttpGet]
+        [BasicAuthorization]
+        public async Task<JsonResult> GetAdminDashboard(int pageFrom = 1, int pageTotal = 10, int period = 0,
+                        string datefrom = "", string dateto = "")
+        {
+            var user = await GetUserAsync();
+            if (user.UserRole.Equals("ADMIN")){
+                DateTime DateFrom = datefrom == null || datefrom == "" ? DateTime.MinValue : DateTime.Parse(datefrom);
+                DateTime DateTo;
+                if (dateto == null || dateto == "")
+                {
+                    DateTo = DateTime.MaxValue;
+                }
+                else
+                {
+                    DateTo = DateTime.Parse(dateto);
+                    DateTo = new DateTime(DateTo.Year, DateTo.Month, DateTo.Day, 23, 59, 59);
+
+                }
+                var model = _adminServices.GetAdminFinancialViewModel(user, pageFrom, pageTotal, period, DateFrom, DateTo);
+
+                return Json(model);
+            }
+            else
+            {
+                return Json("");
+            }
         }
     }
 }
