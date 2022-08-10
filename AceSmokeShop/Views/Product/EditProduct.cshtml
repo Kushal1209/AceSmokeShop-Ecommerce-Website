@@ -22,10 +22,6 @@
                     <div class="form-group">
                         <div class="row row-cols row-cols-lg g-3 g-lg-3">
                             <div class="col-md-6">
-                                <label asp-for="Stock"></label>
-                                <input type="number" value=@Model.Stock asp-for="Stock" class="form-control" />
-                            </div>
-                            <div class="col-md-6">
                                 <label asp-for="BasePrice"></label>
                                 <input type="number" value=@Model.BasePrice asp-for="BasePrice" class="form-control" />
                             </div>
@@ -33,7 +29,7 @@
                                 <label asp-for="SalePrice"></label>
                                 <input type="number" value=@Model.SalePrice asp-for="SalePrice" class="form-control" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label asp-for="Description"></label>
                                 <input type="text" value=@Model.Description asp-for="Description" class="form-control" />
                             </div>

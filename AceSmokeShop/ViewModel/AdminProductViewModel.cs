@@ -26,9 +26,6 @@ namespace AceSmokeShop.ViewModel
             MinPrice = 0;
             MaxPrice = 100000;
             TotalProducts = 0;
-            OutOfStock = 0;
-            RunningOutOfStock = 0;
-            TotalUnits = 0;
 
             RowPerPage = new List<int> { 10, 20, 50, 100 };
             CurrentPage = 1;
@@ -50,11 +47,8 @@ namespace AceSmokeShop.ViewModel
         public List<SubCategory> SubCategoryList  { get; set; }
 
         public int TotalProducts;
-        public int OutOfStock;
-        public int RunningOutOfStock;
         public int MinPrice;
         public int MaxPrice;
-        public int TotalUnits;
         
         //Page Data
         public int CurrentPage;

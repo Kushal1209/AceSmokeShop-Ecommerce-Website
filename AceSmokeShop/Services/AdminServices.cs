@@ -166,9 +166,6 @@ namespace AceSmokeShop.Services
                 model.ProductList = await GetFilteredProductList(user, CategoryId, SubCategoryId, Min, Max, search, sortBy, sortByOrder, pageFrom, pageTotal);
                 model.CategoryList = await GetCategoryListAsync(user);
                 model.TotalProducts = ProductCount;
-                model.OutOfStock = _productRepository._dbSet.Where(x => x.Stock == 0).Count();
-                model.RunningOutOfStock = _productRepository._dbSet.Where(x => x.Stock < 5).Count();
-                model.TotalUnits = _productRepository._dbSet.Sum(x => x.Stock);
 
                 model.CurrentPage = pageFrom;
                 model.ItemsPerPage = pageTotal;
@@ -244,7 +241,6 @@ namespace AceSmokeShop.Services
                         var productlist = new List<Product>();
                         foreach(var item in userorder.OrderItems)
                         {
-                            item.Product.Stock += item.Quantity;
                             productlist.Add(item.Product);
                         }
 
@@ -706,15 +702,7 @@ namespace AceSmokeShop.Services
                                     newProduct.SubCategoryID = subcat.SubCategoryID;
                                 }
                             }
-                           
-                            var stock = worksheet.Cells[row, 6].Value.ToString().Trim();
-                            if(stock == null || stock.Length < 1 || stock.Contains('-') || stock.Contains(".")){
-                                continue;
-                            }
-                            else
-                            {
-                                newProduct.Stock = int.Parse(stock);
-                            }
+
                             var baseprice = worksheet.Cells[row, 8].Value.ToString().Trim();
                             if(baseprice == null || baseprice.Length < 1)
                             {
@@ -902,17 +890,6 @@ namespace AceSmokeShop.Services
                         }
                         else if (sortBy == 1)
                         {
-                            if (sortByOrder == 1)
-                            {
-                                productlist = await _productRepository._dbSet.Where(x => (x.SubCategoryID == SubCategoryId && x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).OrderBy(x => x.Stock).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
-                            }
-                            else
-                            {
-                                productlist = await _productRepository._dbSet.Where(x => (x.SubCategoryID == SubCategoryId && x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).OrderByDescending(x => x.Stock).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
-                            }
-                        }
-                        else if (sortBy == 2)
-                        {
                             if (sortByOrder  == 1)
                             {
                                 productlist = await _productRepository._dbSet.Where(x => (x.SubCategoryID == SubCategoryId && x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).OrderBy(x => x.BasePrice).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
@@ -945,17 +922,6 @@ namespace AceSmokeShop.Services
                         {
                             if (sortByOrder == 1)
                             {
-                                productlist = await _productRepository._dbSet.Where(x => (x.CategoryID == CategoryId && x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).OrderBy(x => x.Stock).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
-                            }
-                            else
-                            {
-                                productlist = await _productRepository._dbSet.Where(x => (x.CategoryID == CategoryId && x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).OrderByDescending(x => x.Stock).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
-                            }
-                        }
-                        else if (sortBy == 2)
-                        {
-                            if (sortByOrder == 1)
-                            {
                                 productlist = await _productRepository._dbSet.Where(x => (x.CategoryID == CategoryId && x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).OrderBy(x => x.BasePrice).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
                             }
                             else
@@ -984,17 +950,6 @@ namespace AceSmokeShop.Services
                             productlist = await _productRepository._dbSet.Where(x => (x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
                         }
                         else if (sortBy == 1)
-                        {
-                            if (sortByOrder == 1)
-                            {
-                                productlist = await _productRepository._dbSet.Where(x => (x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).OrderBy(x => x.Stock).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
-                            }
-                            else
-                            {
-                                productlist = await _productRepository._dbSet.Where(x => (x.SalePrice >= Min && x.SalePrice <= Max) && x.IsRemoved == false).OrderByDescending(x => x.Stock).Skip(pageTotal * pageFrom).Take(pageTotal).Include(x => x.Category).Include(x => x.SubCategory).ToListAsync();
-                            }
-                        }
-                        else if (sortBy == 2)
                         {
                             if (sortByOrder == 1)
                             {
@@ -1155,14 +1110,6 @@ namespace AceSmokeShop.Services
 
                     if (thisProduct != null && thisProduct.ProductID == editproduct.ProductID)
                     {
-                        if (editproduct.Stock >= 0 && editproduct.Stock < 1000000)
-                        {
-                            thisProduct.Stock = editproduct.Stock;
-                        }
-                        else
-                        {
-                            return "Please enter appropriate Stock Price";
-                        }
                         if (editproduct.BasePrice > 0 && editproduct.SalePrice > editproduct.BasePrice)
                         {
                             thisProduct.SalePrice = editproduct.SalePrice;

@@ -32,11 +32,6 @@ namespace AceSmokeShop.Models
         [Column(TypeName = "int")]
         public int? SubCategoryID { get; set; }
 
-        [Required]
-        [Display(Name = "Stock")]
-        [Column(TypeName = "int")]
-        public int Stock { get; set; }
-
         [Display(Name = "Unit of Measure")]
         [Column(TypeName = "nvarchar(256)")]
         public string UnitOfMeasure { get; set; }

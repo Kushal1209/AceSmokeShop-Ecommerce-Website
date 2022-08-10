@@ -78,8 +78,8 @@ namespace AceSmokeShop.Services
         {
             var model = new UHomeViewModel();
 
-            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured && !x.IsRemoved && x.Stock > 0).Include(x => x.Category).Include(x => x.SubCategory).Take(4).ToList();
-            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted && !x.IsRemoved && x.Stock > 0).Include(x => x.Category).Include(x => x.SubCategory).Take(4).ToList();
+            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured && !x.IsRemoved).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
+            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted && !x.IsRemoved).Include(x => x.Category).Include(x => x.SubCategory).Take(3).ToList();
             model.CategoryList = _categoryRepository._dbSet.ToList();
             foreach(var item in model.FeaturedList)
             {
@@ -108,11 +108,11 @@ namespace AceSmokeShop.Services
             double subTotal = 0;
             if (user.UserRole.Equals("VENDOR"))
             {
-                subTotal = _cartRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false && x.Product.Stock > 0 && x.Product.Stock >= x.Quantity).Sum(x => x.Quantity * x.Product.VendorPrice);
+                subTotal = _cartRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false).Sum(x => x.Quantity * x.Product.VendorPrice);
             }
             else
             {
-                subTotal = _cartRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false && x.Product.Stock > 0 && x.Product.Stock >= x.Quantity).Sum(x => x.Quantity * x.Product.SalePrice);
+                subTotal = _cartRepository._dbSet.Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false).Sum(x => x.Quantity * x.Product.SalePrice);
             }
 
             if (subTotal >= minSubTotal)
@@ -122,7 +122,7 @@ namespace AceSmokeShop.Services
 
 
             // Case 2: IF TOTAL NOT EXCEED $200 THEN
-            var shipcost = _cartRepository._dbSet.Include(x => x.Product).Include(x => x.Product.SubCategory).Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false && x.Product.Stock > 0 && x.Product.Stock >= x.Quantity).Sum(x => x.Product.SubCategory.ShippingCost);
+            var shipcost = _cartRepository._dbSet.Include(x => x.Product).Include(x => x.Product.SubCategory).Where(x => x.UserId == user.Id && x.IsRemoved == false && x.Product.IsRemoved == false).Sum(x => x.Product.SubCategory.ShippingCost);
           
             return shipcost;
             
@@ -189,7 +189,7 @@ namespace AceSmokeShop.Services
 
         public int GetCartCount(AppUser user)
         {
-            var cartcount = _cartRepository._dbSet.Include(x => x.Product).Where(x => x.UserId == user.Id && !x.IsRemoved && !x.Product.IsRemoved && x.Product.Stock > 0 && x.Quantity <= x.Product.Stock).Count();
+            var cartcount = _cartRepository._dbSet.Include(x => x.Product).Where(x => x.UserId == user.Id && !x.IsRemoved && !x.Product.IsRemoved).Count();
 
             return cartcount;
         }
@@ -200,10 +200,6 @@ namespace AceSmokeShop.Services
             if(product == null || product.IsRemoved)
             {
                 return "Fail: Product is not available";
-            }
-            if(product.Stock < qty)
-            {
-                return "Only " + product.Stock + " of " + product.ProductName + " remain in stock, Please reduce Quantity";
             }
             double SubTotal = 0.00;
             if (user.UserRole.ToLower().Contains("vendor"))
@@ -322,7 +318,6 @@ namespace AceSmokeShop.Services
 
             if (user.UserRole.ToLower() != "vendor" || cardId >= 0)
             {
-                product.Stock = product.Stock - qty;
                 _productRepository._dbSet.Update(product);
                 _productRepository._context.SaveChanges();
             }
@@ -399,13 +394,9 @@ namespace AceSmokeShop.Services
             double SubTotal = 0.0;
             foreach(var item in cartItems)
             {
-                if(item.Quantity > item.Product.Stock)
-                {
-                    return "Only " + item.Product.Stock + " of " + item.Product.ProductName + " remain in stock, Please reduce Quantity";
-                }
                 if (item.Product.IsRemoved)
                 {
-                    return item.Product.ProductName + " is Out Of Stock, Please try again";
+                    return item.Product.ProductName + " is Not available at the moment!!";
                 }
                 if (user.UserRole.ToLower().Contains("vendor"))
                 {
@@ -493,7 +484,6 @@ namespace AceSmokeShop.Services
                 OrderItems.Add(orderItem);
 
                 var product = item.Product;
-                product.Stock = product.Stock - item.Quantity;
                 productList.Add(product);
             }
 
@@ -675,7 +665,7 @@ namespace AceSmokeShop.Services
             model.Tax = 6.625;
             if (productId != null && productId.Length > 3)
             {
-                var product = _productRepository._dbSet.Where(x => x.Barcode.Equals(productId) && x.IsRemoved == false && x.Stock >= qty).FirstOrDefault();
+                var product = _productRepository._dbSet.Where(x => x.Barcode.Equals(productId) && x.IsRemoved == false).FirstOrDefault();
                 if(product != null)
                 {
                     if (user.UserRole.ToLower().Contains("vendor"))
@@ -865,10 +855,6 @@ namespace AceSmokeShop.Services
             {
                 return "Invalid Quantity";
             }
-            if(quantity > cartitem.Product.Stock)
-            {
-                return "Only " + cartitem.Product.Stock + " left in stock.";
-            }
             cartitem.Quantity = quantity;
             try
             {
@@ -884,16 +870,8 @@ namespace AceSmokeShop.Services
 
         public List<Cart> GetMyCart(AppUser user)
         {
-            var cartItems = _cartRepository._dbSet.Include(x => x.Product).Where(x => x.IsRemoved == false && x.UserId == user.Id && x.Product.IsRemoved == false && x.Product.Stock > 0).ToList();
+            var cartItems = _cartRepository._dbSet.Include(x => x.Product).Where(x => x.IsRemoved == false && x.UserId == user.Id && x.Product.IsRemoved == false).ToList();
             var updatedCartList = new List<Cart>();
-            foreach (var item in cartItems)
-            {
-                if (item.Quantity > item.Product.Stock)
-                {
-                    item.Quantity = item.Product.Stock;
-                    updatedCartList.Add(item);          
-                }
-            }
             if (updatedCartList.Count() > 0)
             {
                 _cartRepository._dbSet.UpdateRange(updatedCartList);
@@ -913,10 +891,6 @@ namespace AceSmokeShop.Services
             if (product == null || product.Barcode.Length < 1)
             {
                 return "Fail: Product Doesn't exists";
-            }
-            else if(product.Stock < qty)
-            {
-                return "Fail: Only " + product.Stock + " left in inventory";
             }
             if(qty <= 0)
             {
