@@ -68,8 +68,8 @@ for details on configuring this project to bundle and minify static web assets. 
         display: flex !important;
         flex-direction: column;
         width: 165px;
-        position: relative;
-        box-shadow: 0 20px 20px #dfdfdf;
+        position: inherit;
+        box-shadow: 0 0px 0px #dfdfdf;
         background: #fafafa;
         transition: all .1s linear;
     }
@@ -391,8 +391,8 @@ for details on configuring this project to bundle and minify static web assets. 
         display: flex !important;
         flex-direction: column;
         width: 200px;
-        position: relative;
-        box-shadow: 0 20px 20px #dfdfdf;
+        position: inherit;
+        box-shadow: 0 0px 0px #dfdfdf;
         background: #fafafa;
         transition: all .1s linear;
     }
@@ -715,8 +715,8 @@ for details on configuring this project to bundle and minify static web assets. 
         display: flex !important;
         flex-direction: column;
         width: 210px;
-        position: relative;
-        box-shadow: 0 20px 20px #dfdfdf;
+        position: inherit;
+        box-shadow: 0 0px 0px #dfdfdf;
         background: #fafafa;
         transition: all .1s linear;
     }
@@ -1048,8 +1048,8 @@ for details on configuring this project to bundle and minify static web assets. 
         display: flex !important;
         flex-direction: column;
         width: 210px;
-        position: relative;
-        box-shadow: 0 20px 20px #dfdfdf;
+        position: inherit;
+        box-shadow: 0 0px 0px #dfdfdf;
         background: #fafafa;
         transition: all .1s linear;
     }
@@ -1366,7 +1366,7 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .productCol {
-        max-width: 370px;
+        max-width: 250px;
     }
 
     .CategoryCol {
@@ -1394,8 +1394,8 @@ for details on configuring this project to bundle and minify static web assets. 
         display: flex !important;
         flex-direction: column;
         width: 210px;
-        position: relative;
-        box-shadow: 0 20px 20px #dfdfdf;
+        position: inherit;
+        box-shadow: 0 0px 0px #dfdfdf;
         background: #fafafa;
         transition: all .1s linear;
     }
@@ -1408,7 +1408,7 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .promises {
-        max-width: 350px;
+        max-width: 335px;
     }
 
     .HignPraise {
@@ -1426,7 +1426,7 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .AboutUs {
-        max-width: 330px
+        max-width: 300px
     }
 
     .AboutUsImg {
@@ -2399,16 +2399,161 @@ body {
         background: white;
     }
 
-        .dpf-submit.loading .btn-active-state {
-            display: none;
-        }
+    .dpf-submit.loading .btn-active-state {
+        display: none;
+    }
 
-        .dpf-submit.loading .btn-loading-state {
-            display: block;
-        }
+    .dpf-submit.loading .btn-loading-state {
+        display: block;
+    }
 
-        .dpf-submit.loading .fa-refresh {
-            font-size: 1.5em;
-            -webkit-animation: fa-spin 2s infinite linear;
-            animation: fa-spin 2s infinite linear;
-        }
+    .dpf-submit.loading .fa-refresh {
+        font-size: 1.5em;
+        -webkit-animation: fa-spin 2s infinite linear;
+        animation: fa-spin 2s infinite linear;
+    }
+
+/* Product Card Carousel CSS
+-------------------------------------------------- */
+
+#slider-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    padding: 0px;
+}
+
+#slider-container .btnarrow {
+    position: absolute;
+    top: calc(50% - 25px);
+    height: 30px;
+    width: 30px;
+    border-left: 8px solid black;
+    border-top: 8px solid grey;
+}
+
+#slider-container .btnarrow:hover {
+    transform: scale(1.2);
+}
+
+#slider-container .btnarrow.inactive {
+    border-color: grey;
+}
+
+#slider-container .btnarrow:first-of-type {
+    transform: rotate(-45deg);
+    left: 10px
+}
+
+#slider-container .btnarrow:last-of-type {
+    transform: rotate(135deg);
+    right: 10px;
+}
+
+#slider-container #slider {
+    display: flex;
+    width: 1000%;
+    height: 100%;
+    transition: all .6s;
+}
+
+#slider-container #slider .slide span {
+    color: white;
+    font-size: 150px;
+}
+
+@media only screen and (min-width: 1201px) {
+    #container {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        place-items: center
+    }
+    #slider-container #slider .slide {
+        width: calc(2.5% - 20px);
+        height: 100%;
+        margin: auto 0px;
+        display: flex;
+        place-items: center;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    #container {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        place-items: center
+    }
+    #slider-container #slider .slide {
+        width: calc(3.3333333% - 20px);
+        height: 100%;
+        margin: auto 0px;
+        display: flex;
+        place-items: center;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    #container {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        place-items: center
+    }
+    #slider-container #slider .slide {
+        width: calc(5% - 105px);
+        height: 100%;
+        margin: auto 0px;
+        display: flex;
+        place-items: center;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+
+    #container {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        place-items: center
+    }
+
+    #slider-container #slider .slide {
+        width: calc(4% - 0px);
+        height: 100%;
+        margin: auto 0px;
+        display: flex;
+        place-items: center;
+    }
+}
+
+
+@media only screen and (max-width: 576px) {
+
+    #container {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        place-items: center
+    }
+
+    #slider-container #slider .slide {
+        width: calc(4.333333% - 0px);
+        height: 100%;
+        margin: auto 0px;
+        display: flex;
+        place-items: center;
+    }
+}

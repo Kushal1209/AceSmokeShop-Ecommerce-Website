@@ -78,8 +78,8 @@ namespace AceSmokeShop.Services
         {
             var model = new UHomeViewModel();
 
-            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured && !x.IsRemoved).Include(x => x.Category).Include(x => x.SubCategory).Take(4).ToList();
-            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted && !x.IsRemoved).Include(x => x.Category).Include(x => x.SubCategory).Take(4).ToList();
+            model.FeaturedList = _productRepository._dbSet.Where(x => x.IsFeatured && !x.IsRemoved).Include(x => x.Category).Include(x => x.SubCategory).ToList();
+            model.PromotedList = _productRepository._dbSet.Where(x => x.IsPromoted && !x.IsRemoved).Include(x => x.Category).Include(x => x.SubCategory).ToList();
             model.CategoryList = _categoryRepository._dbSet.ToList();
             foreach(var item in model.FeaturedList)
             {

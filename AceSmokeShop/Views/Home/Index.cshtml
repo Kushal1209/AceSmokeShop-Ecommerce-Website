@@ -39,45 +39,59 @@
                 <div class="mt-2 mb-0">
                     <a href="@Url.Action("Products", "Home", new{type = "featured"})" class="font-weight-bold" style="color:#96672d;"><b>See All Featured Items</b></a>
                 </div>
-            </div>
-        </div>
-        @foreach(var item in Model.FeaturedList)
-        {
-            <div class="col productlistCol">
-                <div class="col products">
-                    <div class="product-card">
-		                <div class="product-tumb">
-                            <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
-                                <img  src="@item.PrimaryImage" alt="">
-                            </a>
-		                </div>
-		                <div class="product-details" style="padding:0px;">
-                            <div style="padding: 5px; min-height: 87px;">
-                                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
-                                {
-                                    <div class="product-price">$@item.VendorPrice</div>
-                                }
-                                else
-                                {
-                                    <div class="product-price">$@item.SalePrice</div>
-                                }
-			                    <h7>
-                                    <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
-                                </h7>
-                            </div>
-			                <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
-                                <div class="col d-grid gap-1" style="padding: 0px;">
-                                    <button class="btn" type="button" style="background-color: gray;border-radius: 0px;" 
-                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
-                                </div>
-			                </div>
-		                </div>
-	                </div>
+                <div class="mt-2 mb-0">
+                    <span><i class="fa-solid fa-arrow-left-long"></i> <i class="fa-solid fa-arrow-right-long"></i></span>
                 </div>
             </div>
-        }
+        </div>
+        <div class="col" id="container">
+            <div id="slider-container">
+                <span onclick="slideRight()" class="btnarrow"></span>
+                <div id="slider">
+                    @foreach (var item in Model.FeaturedList)
+                    {
+                        <div class="productlistCol slide">
+                            <div class="products">
+                                <div class="product-card">
+                                    <div class="product-tumb">
+                                        <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                            <img src="@item.PrimaryImage" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="product-details" style="padding:0px;">
+                                        <div style="padding: 5px; min-height: 87px;">
+                                            @if (user != null && user.UserRole.ToLower().Contains("vendor"))
+                                            {
+                                                <div class="product-price">$@item.VendorPrice</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="product-price">$@item.SalePrice</div>
+                                            }
+                                            <h7>
+                                                <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
+                                            </h7>
+                                        </div>
+                                        <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                            <div class="col d-grid gap-1" style="padding: 0px;">
+                                                <button class="btn" type="button" style="background-color: gray;border-radius: 0px;"
+                                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">
+                                                    Add to Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <span onclick="slideLeft()" class="btnarrow"></span>
+            </div>
+        </div>
     </div>
 </div>
+
 
 <div class="IndexDivPadding mt-4" style="background-color: #D3D3D3">
     <div class="row row-cols row-cols-lg g-5 g-lg-3 productlistRow">
@@ -93,43 +107,56 @@
                 <div class="mt-2 mb-0">
                     <a href="@Url.Action("Products", "Home", new{type = "popular"})" class="font-weight-bold" style="color:#96672d;"><b>See All Popular Products</b></a>
                 </div>
-            </div>
-        </div>
-        @foreach(var item in Model.FeaturedList)
-        {
-            <div class="col productlistCol">
-                <div class="col products">
-                    <div class="product-card">
-		                <div class="product-tumb">
-                            <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
-                                <img  src="@item.PrimaryImage" alt="">
-                            </a>
-		                </div>
-		                <div class="product-details" style="padding:0px;">
-                            <div style="padding: 5px; min-height: 87px;">
-                                @if(user != null && user.UserRole.ToLower().Contains("vendor"))
-                                {
-                                    <div class="product-price">$@item.VendorPrice</div>
-                                }
-                                else
-                                {
-                                    <div class="product-price">$@item.SalePrice</div>
-                                }
-			                    <h7>
-                                    <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
-                                </h7>
-                            </div>
-			                <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
-                                <div class="col d-grid gap-1" style="padding: 0px;">
-                                    <button class="btn" type="button" style="background-color: gray;border-radius: 0px;" 
-                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">Add to Cart</button>
-                                </div>
-			                </div>
-		                </div>
-	                </div>
+                <div class="mt-2 mb-0">
+                    <span><i class="fa-solid fa-arrow-left-long"></i> <i class="fa-solid fa-arrow-right-long"></i></span>
                 </div>
             </div>
-        }
+        </div>
+        @*<div class="col" id="container">
+            <div id="slider-container">
+                <span onclick="slideRight()" class="btnarrow"></span>
+                <div id="slider">
+                    @foreach (var item in Model.PromotedList)
+                    {
+                        <div class="productlistCol slide">
+                            <div class="products">
+                                <div class="product-card">
+                                    <div class="product-tumb">
+                                        <a href="@Url.Action("ProductDetails", "Home", new{productid = @item.Barcode})">
+                                            <img src="@item.PrimaryImage" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="product-details" style="padding:0px;">
+                                        <div style="padding: 5px; min-height: 87px;">
+                                            @if (user != null && user.UserRole.ToLower().Contains("vendor"))
+                                            {
+                                                <div class="product-price">$@item.VendorPrice</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="product-price">$@item.SalePrice</div>
+                                            }
+                                            <h7>
+                                                <span onclick="RedirectToProdDetails('@item.Barcode')" style="font-size: 0.8rem;font-weight: 600;letter-spacing: -0.5px; color: #CDB36C; border-bottom: none;">@item.Category.CategoryName - @item.ProductName</span>
+                                            </h7>
+                                        </div>
+                                        <div class="row product-bottom-details" style="padding:0px; margin: 0px;margin-top: 10px;height: 45px;">
+                                            <div class="col d-grid gap-1" style="padding: 0px;">
+                                                <button class="btn" type="button" style="background-color: gray;border-radius: 0px;"
+                                                    onclick="AddtoCart('@item.Barcode', 1, 'Home/Products')">
+                                                    Add to Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <span onclick="slideLeft()" class="btnarrow"></span>
+            </div>
+        </div>*@
     </div>
 </div>
 
@@ -169,7 +196,7 @@
 </div>
 <div class="IndexDivPaddingYellow mt-4">
     <div class="row row-cols row-cols-lg g-5 g-lg-3">
-        <div class="col">
+        <div class="col productCol">
             <div class="ProductCols">
                 <div>
                     <h1 class="IndexTextWhite font-weight-bolder"><span>Our Promise</span></h1>
@@ -206,7 +233,7 @@
 
 <div class="IndexDivPadding mt-5">
     <div class="row row-cols row-cols-lg g-5 g-lg-3">
-        <div class="col">
+        <div class="col productCol">
             <div class="ProductCols">
                 <div>
                     <h1 class="IndexText font-weight-bolder"><span>'High' Praise</span></h1>
