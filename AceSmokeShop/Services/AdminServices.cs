@@ -197,7 +197,7 @@ namespace AceSmokeShop.Services
             {
                 model.ShippingAddress = null;
             }
-            
+            userOrder.OrderItems = null;
             model.userOrder = userOrder;
             model.States = _stateRepository._dbSet.ToList();
             return model;
@@ -573,7 +573,7 @@ namespace AceSmokeShop.Services
             }
         }
 
-        public async Task<AdminUserViewModel> GetAdminUserAccountAsync(AppUser user, int stateID = 0, string search = "", string UserRole = "", int pageFrom = 1, int pageTotal = 20)
+        public async Task<AdminUserViewModel> GetAdminUserAccount(AppUser user, int stateID = 0, string search = "", string UserRole = "", int pageFrom = 1, int pageTotal = 10)
         {
             var usermodel = new AdminUserViewModel();
             if (user.UserRole != "ADMIN" || user.LockoutEnabled)

@@ -46,14 +46,14 @@ namespace AceSmokeShop.ViewModel
         public List<Category> CategoryList  { get; set; }
         public List<SubCategory> SubCategoryList  { get; set; }
 
-        public int TotalProducts;
-        public int MinPrice;
-        public int MaxPrice;
-        
+        public int TotalProducts { get; set; }
+        public int MinPrice { get; set; }
+        public int MaxPrice { get; set; }
+
         //Page Data
-        public int CurrentPage;
-        public int TotalPages;
-        public int ItemsPerPage;
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public int ItemsPerPage { get; set; }
 
         public int CategoryID { get; set; }
         public Category CategorySelect { get; set; }
@@ -68,6 +68,5 @@ namespace AceSmokeShop.ViewModel
         public string Search { get; set; }
         public int SortByOrder { get; set; }
         public int SortByID { get; set; }
-
     }
 }

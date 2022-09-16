@@ -16,7 +16,6 @@ namespace AceSmokeShop.ViewModel
         public UserOrders userOrder { get; set; }
         public Addresses ShippingAddress { get; set; }
         public List<OrderItem> ListOfOrderItem { get; set; }
-
         public List<State> States { get; set; }
     }
 }

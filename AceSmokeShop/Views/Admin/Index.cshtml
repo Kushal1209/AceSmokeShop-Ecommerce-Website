@@ -224,7 +224,7 @@
             <div class="row">
                 <div class="col-md" style="padding: 5px 25px;">
                     <div class="form-group">
-                        <label style="color: #000;">Rows</label>
+                       <label style="color: #000;">Rows</label>
                        <select asp-for=@Model.ItemsPerPage id="rowselectId" class="RowSelect"
                             asp-items="@(new SelectList(@Model.RowPerPage))">
                        </select>
@@ -314,7 +314,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+    <script type="text/javascript">
 
         var ctx = document.getElementById("myPieChart");
         var xV = ["Vendor", "User"];

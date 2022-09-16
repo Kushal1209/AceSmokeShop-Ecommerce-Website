@@ -42,14 +42,13 @@ namespace AceSmokeShop.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserAccount(int StateID = 0, string search = "", string UserRole = "", int pageFrom = 1, int pageTotal = 5)
+        public async Task<IActionResult> UserAccount(int StateID = 0, string search = "", string UserRole = "", int pageFrom = 1, int pageTotal = 10)
         {
             var user = await _userManager.GetUserAsync(User);
 
             if (user.UserRole != null && user.UserRole == "ADMIN")
             {
-
-                _adminUserViewModel = await _adminServices.GetAdminUserAccountAsync(user, StateID, search, UserRole, pageFrom, pageTotal);
+                _adminUserViewModel = await _adminServices.GetAdminUserAccount(user, StateID, search, UserRole, pageFrom, pageTotal);
                 _adminUserViewModel.StateList.Insert(0, new State { StateID = 0, StateName = "Select State" });
                 _adminUserViewModel.StateID = StateID;
                 _adminUserViewModel.UserRole = UserRole;

@@ -165,7 +165,6 @@ namespace AceSmokeShop.Controllers
             }
 
             return View(_productViewModel);
-
         }
 
         [HttpGet]
@@ -218,7 +217,6 @@ namespace AceSmokeShop.Controllers
         public async Task<IActionResult> CreateProduct(AdminProductViewModel adminProductViewModel)
         {
             var user = await _userManager.GetUserAsync(User);
-            // adminProductViewModel.newProduct.PrimaryImage = "https://thecigaretteboxes.com/public/assets/images/products/custom-paper-cigarette-boxes-frnt.png";
             var result = await _adminServices.addProductAsync(user, adminProductViewModel.newProduct);
             if (result.ToLower().Contains("success"))
             {

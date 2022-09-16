@@ -58,7 +58,6 @@ namespace AceSmokeShop.Controllers
                 }
                 var model = _adminServices.GetAdminFinancialViewModel(user, pageFrom, pageTotal, period, DateFrom, DateTo);
 
-
                 return View(model);
             }
             else

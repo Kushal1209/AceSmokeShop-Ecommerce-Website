@@ -651,6 +651,18 @@ $(function () {
         }
     });
 
+	$("#nextbtnClick").click(function (event) {
+		var url = window.location.href;
+		var currentpage = parseInt($("#cuttentpageid").val());
+		var totalpage = parseInt($("#totalpageid").val());
+
+		if (currentpage < totalpage) {
+			currentpage++;
+			url = CreateURL(url, { "pagefrom": currentpage });
+			window.location.href = url;
+		}
+	});
+
     $("#featurebtn").click(function (event) {
         var url = window.location.href;
         var type = $("#type").val();
@@ -675,18 +687,6 @@ $(function () {
         }
         window.location.href = CreateURL(url, { "type": type });
 
-    });
-
-    $("#nextbtnClick").click(function (event) {
-        var url = window.location.href;
-        var currentpage = parseInt($("#cuttentpageid").val());
-        var totalpage = parseInt($("#totalpageid").val());
-
-        if (currentpage < totalpage) {
-            currentpage++;
-            url = CreateURL(url, { "pagefrom": currentpage });
-            window.location.href = url;
-        }
     });
 
     $("#rowselectId").change(function (event) {

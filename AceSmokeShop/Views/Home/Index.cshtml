@@ -39,9 +39,9 @@
                 <div class="mt-2 mb-0">
                     <a href="@Url.Action("Products", "Home", new{type = "featured"})" class="font-weight-bold" style="color:#96672d;"><b>See All Featured Items</b></a>
                 </div>
-                <div class="mt-2 mb-0">
+                @*<div class="mt-2 mb-0">
                     <span><i class="fa-solid fa-arrow-left-long"></i> <i class="fa-solid fa-arrow-right-long"></i></span>
-                </div>
+                </div>*@
             </div>
         </div>
         <div class="col" id="container">
@@ -107,12 +107,9 @@
                 <div class="mt-2 mb-0">
                     <a href="@Url.Action("Products", "Home", new{type = "popular"})" class="font-weight-bold" style="color:#96672d;"><b>See All Popular Products</b></a>
                 </div>
-                <div class="mt-2 mb-0">
-                    <span><i class="fa-solid fa-arrow-left-long"></i> <i class="fa-solid fa-arrow-right-long"></i></span>
-                </div>
             </div>
         </div>
-        @*<div class="col" id="container">
+        <div class="col" id="container">
             <div id="slider-container">
                 <span onclick="slideRight()" class="btnarrow"></span>
                 <div id="slider">
@@ -156,7 +153,7 @@
                 </div>
                 <span onclick="slideLeft()" class="btnarrow"></span>
             </div>
-        </div>*@
+        </div>
     </div>
 </div>
 
@@ -206,7 +203,7 @@
         </div>
         <div class="col promises">
             <div class="col-3">
-                <i style="font-size:2.5rem; color: #FFF;" class="fa-solid fa-truck"></i>
+                <img src="~/Icons/Truck.png" style="width:2.5rem; color: #FFF;" />
             </div>
             <div class="col-9">
                 <a style="color: #FFF; font-size: 1rem; font-weight: 400;">Free shipping within $50 within the US</a>
@@ -242,9 +239,9 @@
                 <div class="mt-2 mb-0" style="letter-spacing: -1px;">
                     <span class="font-weight-normal">Hear words from our high customers.</span>
                 </div>
-                <div class="mt-2 mb-0">
+                @*<div class="mt-2 mb-0">
                     <span><i class="fa-solid fa-arrow-left-long"></i> <i class="fa-solid fa-arrow-right-long"></i></span>
-                </div>
+                </div>*@
             </div>
         </div>
         <div class="col HignPraise">

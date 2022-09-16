@@ -22,7 +22,7 @@ namespace AceSmokeShop.ViewModel
             ActiveUsers = 0;
             BlockedUsers = 0;
 
-            RowPerPage = new List<int> { 5, 10, 20, 50, 100 };
+            RowPerPage = new List<int> { 10, 20, 50, 100 };
 
             UserRole = "Select-Role";
             UserRoleList = new List<string> { "Select-Role", "USER", "VENDOR", "ADMIN"};
@@ -33,12 +33,8 @@ namespace AceSmokeShop.ViewModel
 
             CurrentPage = 1;
             TotalPages = 0;
-            ItemsPerPage = 5;
-
-
+            ItemsPerPage = 10;
         }
-
-
 
         public List<AppUser> UserList { get; set; }
 
@@ -57,16 +53,14 @@ namespace AceSmokeShop.ViewModel
         public int SortByOrder { get; set; }
         public int SortByID { get; set; }
 
+        public int TotalUsers { get; set; }
+        public int AdminUsers { get; set; }
+        public int VendorUsers { get; set; }
+        public int ActiveUsers { get; set; }
+        public int BlockedUsers { get; set; }
 
-        public int TotalUsers;
-        public int AdminUsers;
-        public int VendorUsers;
-        public int ActiveUsers;
-        public int BlockedUsers;
-
-        public int CurrentPage;
-        public int TotalPages;
-        public int ItemsPerPage;
-
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public int ItemsPerPage { get; set; }
     }
 }
