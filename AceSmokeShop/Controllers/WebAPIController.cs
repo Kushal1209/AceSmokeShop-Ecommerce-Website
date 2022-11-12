@@ -340,21 +340,8 @@ namespace AceSmokeShop.Controllers
             var user = await GetUserAsync();
 
             var httpRequest = HttpContext.Request;
-            //if (httpRequest.Files.Count > 0)
-            //{
-            //    long imgId = 0;
-            //    int counter = 1;
-            //    foreach (string file in httpRequest.Files)
-            //    {
-            //        imgId = DateTime.Now.Ticks + counter;
-            //        HttpPostedFileBase postedFile = new HttpPostedFileWrapper(httpRequest.Files[file]);
-            //    }
-            //}
-            //  var result = _adminServices.UploadProductImages(user);
-
 
             return Json("");
-           
         }
 
         [HttpGet]
