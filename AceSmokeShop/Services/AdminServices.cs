@@ -1221,12 +1221,14 @@ namespace AceSmokeShop.Services
                         var metaData = new Dictionary<string, string>();
                         metaData.Add("UserRole", editUser.UserRole);
 
-                        var options = new Stripe.CustomerUpdateOptions
-                        {
-                            Metadata = metaData
-                        };
-                        var service = new Stripe.CustomerService();
-                        service.Update(thisuser.CustomerId, options);
+                        // In payment gateway change user role.
+
+                        //var options = new Stripe.CustomerUpdateOptions
+                        //{
+                        //    Metadata = metaData
+                        //};
+                        //var service = new Stripe.CustomerService();
+                        //service.Update(thisuser.CustomerId, options);
 
 
                         await _userManager.UpdateAsync(thisuser);

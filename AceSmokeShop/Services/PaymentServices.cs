@@ -236,7 +236,7 @@ namespace AceSmokeShop.Services
                 
                 return cardList;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return cardList;
             } 

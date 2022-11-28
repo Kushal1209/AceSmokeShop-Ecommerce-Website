@@ -140,6 +140,7 @@ namespace AceSmokeShop.Controllers
                 }
                 catch(Exception ex)
                 {
+                    return Json(ex);
                 }
                 var model = _adminServices.GetAdminFinancialViewModel(user, pageFrom, pageTotal, period, DateFrom, DateTo);
 
