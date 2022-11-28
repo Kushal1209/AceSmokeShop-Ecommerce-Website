@@ -252,7 +252,7 @@ function PickupAtStore() {
 
         document.getElementById("HideShippingAdd").hidden = true;
         document.getElementById('PickupAddCard').style.border = 'dashed';
-        document.getElementById('PickupAddCard').style.borderColor = '#96672d';
+		document.getElementById('PickupAddCard').style.borderColor = '#cdb36c';
         var x = document.getElementsByClassName('col addresses');
         for (var i = 0; i < x.length; i++) {
             x[i].hidden = true;
@@ -262,8 +262,8 @@ function PickupAtStore() {
     }
     else {
         document.getElementById("HideShippingAdd").hidden = false;
-        document.getElementById('PickupAddCard').style.border = 'none';
-        document.getElementById('PickupAddCard').style.borderColor = '';
+		document.getElementById('PickupAddCard').style.border = 'dashed';
+		document.getElementById('PickupAddCard').style.borderColor = '#cdb36c';
         var x = document.getElementsByClassName('col addresses');
         for (var i = 0; i < x.length; i++) {
             x[i].hidden = false;

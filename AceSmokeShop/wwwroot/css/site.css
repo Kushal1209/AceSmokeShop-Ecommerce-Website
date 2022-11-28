@@ -70,7 +70,7 @@ for details on configuring this project to bundle and minify static web assets. 
         width: 165px;
         position: inherit;
         box-shadow: 0 0px 0px #dfdfdf;
-        background: #fafafa;
+        background: rgba(0, 0, 0, 0.075);
         transition: all .1s linear;
     }
 
@@ -234,10 +234,8 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .shippAddress-card {
         width: 245px;
-        border: 2px solid #96672d;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .shipping-details {
@@ -263,10 +261,10 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .addaddress {
         width: 175px;
-        border: 2px solid #96672d;
+        border: dashed;
+        border-color: #cdb36c;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .paymentcardcol {
@@ -393,7 +391,7 @@ for details on configuring this project to bundle and minify static web assets. 
         width: 200px;
         position: inherit;
         box-shadow: 0 0px 0px #dfdfdf;
-        background: #fafafa;
+        background: rgba(0, 0, 0, 0.075);
         transition: all .1s linear;
     }
 
@@ -554,10 +552,8 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .shippAddress-card {
         width: 245px;
-        border: 2px solid #96672d;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .shipping-details {
@@ -583,10 +579,10 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .addaddress {
         width: 200px;
-        border: 2px solid #96672d;
+        border: dashed;
+        border-color: #cdb36c;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .paymentcardcol {
@@ -717,7 +713,7 @@ for details on configuring this project to bundle and minify static web assets. 
         width: 210px;
         position: inherit;
         box-shadow: 0 0px 0px #dfdfdf;
-        background: #fafafa;
+        background: rgba(0, 0, 0, 0.075);
         transition: all .1s linear;
     }
 
@@ -885,11 +881,9 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .shippAddress-card {
-        width: 250px;
-        border: 2px solid #96672d;
+        width: 245px;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .shipping-details {
@@ -917,10 +911,10 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .addaddress {
         width: 220px;
-        border: 2px solid #96672d;
+        border: dashed;
+        border-color: #cdb36c;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .paymentcardcol {
@@ -1050,7 +1044,7 @@ for details on configuring this project to bundle and minify static web assets. 
         width: 210px;
         position: inherit;
         box-shadow: 0 0px 0px #dfdfdf;
-        background: #fafafa;
+        background: rgba(0, 0, 0, 0.075);
         transition: all .1s linear;
     }
 
@@ -1138,10 +1132,10 @@ for details on configuring this project to bundle and minify static web assets. 
         background: #888;
     }
 
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
 
     .table {
         width: 850px
@@ -1213,11 +1207,9 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .shippAddress-card {
-        width: 300px;
-        border: 2px solid #96672d;
+        width: 350px;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .shipping-details {
@@ -1245,10 +1237,10 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .addaddress {
         width: 240px;
-        border: 2px solid #96672d;
+        border: dashed;
+        border-color: #cdb36c;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .paymentcardcol {
@@ -1396,7 +1388,7 @@ for details on configuring this project to bundle and minify static web assets. 
         width: 210px;
         position: inherit;
         box-shadow: 0 0px 0px #dfdfdf;
-        background: #fafafa;
+        background: rgba(0, 0, 0, 0.075);
         transition: all .1s linear;
     }
 
@@ -1528,11 +1520,9 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .shippAddress-card {
-        width: 300px;
-        border: 2px solid #96672d;
+        width: 350px;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .shipping-details {
@@ -1561,10 +1551,10 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .addaddress {
         width: 240px;
-        border: 2px solid #96672d;
+        border: dashed;
+        border-color: #cdb36c;
         height: 100%;
-        box-shadow: -10px 10px 20px #96672d;
-        border-radius: 25px;
+        border-radius: 0px;
     }
 
     .paymentcardcol {
@@ -1650,6 +1640,7 @@ for details on configuring this project to bundle and minify static web assets. 
 li.nav-item {
     margin: 0rem 1rem;
 }
+
 nav, footer {
     background-color: #000;
 }
@@ -1680,9 +1671,9 @@ img {
     transition: all 0.5s ease;
 }
 
-.img-showcase img {
-    min-width: 100%;
-}
+    .img-showcase img {
+        min-width: 100%;
+    }
 
 .img-select {
     display: flex;
@@ -1692,16 +1683,16 @@ img {
     margin: 0.3rem;
 }
 
-.img-item:nth-child(1),
-.img-item:nth-child(2),
-.img-item:nth-child(3) {
-    margin: 5px;
-    border: 1px solid darkgrey;
-}
+    .img-item:nth-child(1),
+    .img-item:nth-child(2),
+    .img-item:nth-child(3) {
+        margin: 5px;
+        border: 1px solid darkgrey;
+    }
 
-.img-item:hover {
-    opacity: 0.8;
-}
+    .img-item:hover {
+        opacity: 0.8;
+    }
 
 span {
     cursor: pointer;
@@ -1776,10 +1767,10 @@ product-details p {
     padding-top: 10px;
 }
 
-.product-bottom-details div {
-    float: left;
-    width: 50%;
-}
+    .product-bottom-details div {
+        float: left;
+        width: 50%;
+    }
 
 .product-price {
     font-size: 20px;
@@ -1841,64 +1832,64 @@ a {
     position: absolute;
 }
 
-.toggleWrapper input.mobileToggle + label {
-    position: relative;
-    display: inline-block;
-    user-select: none;
-    -moz-transition: .4s ease;
-    -o-transition: .4s ease;
-    -webkit-transition: .4s ease;
-    transition: .4s ease;
-    -webkit-tap-highlight-color: transparent;
-    height: 30px;
-    width: 50px;
-    border: 1px solid #e4e4e4;
-    border-radius: 60px;
-}
+    .toggleWrapper input.mobileToggle + label {
+        position: relative;
+        display: inline-block;
+        user-select: none;
+        -moz-transition: .4s ease;
+        -o-transition: .4s ease;
+        -webkit-transition: .4s ease;
+        transition: .4s ease;
+        -webkit-tap-highlight-color: transparent;
+        height: 30px;
+        width: 50px;
+        border: 1px solid #e4e4e4;
+        border-radius: 60px;
+    }
 
-.toggleWrapper input.mobileToggle + label:before {
-    content: "";
-    position: absolute;
-    display: block;
-    -moz-transition: .2s cubic-bezier(.24,0,.5,1);
-    -o-transition: .2s cubic-bezier(.24,0,.5,1);
-    -webkit-transition: .2s cubic-bezier(.24,0,.5,1);
-    transition: .2s cubic-bezier(.24,0,.5,1);
-    height: 30px;
-    width: 51px;
-    top: 0;
-    left: 0;
-    border-radius: 30px;
-}
+        .toggleWrapper input.mobileToggle + label:before {
+            content: "";
+            position: absolute;
+            display: block;
+            -moz-transition: .2s cubic-bezier(.24,0,.5,1);
+            -o-transition: .2s cubic-bezier(.24,0,.5,1);
+            -webkit-transition: .2s cubic-bezier(.24,0,.5,1);
+            transition: .2s cubic-bezier(.24,0,.5,1);
+            height: 30px;
+            width: 51px;
+            top: 0;
+            left: 0;
+            border-radius: 30px;
+        }
 
-.toggleWrapper input.mobileToggle + label:after {
-    content: "";
-    position: absolute;
-    display: block;
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 4px 0px 0 rgba(0,0,0,0.04), 0 4px 9px rgba(0,0,0,0.13), 0 3px 3px rgba(0,0,0,0.05);
-    -moz-transition: .35s cubic-bezier(.54,1.60,.5,1);
-    -o-transition: .35s cubic-bezier(.54,1.60,.5,1);
-    -webkit-transition: .35s cubic-bezier(.54,1.60,.5,1);
-    transition: .35s cubic-bezier(.54,1.60,.5,1);
-    background: whitesmoke;
-    height: 28px;
-    width: 28px;
-    top: 1px;
-    left: 0px;
-    border-radius: 60px;
-}
+        .toggleWrapper input.mobileToggle + label:after {
+            content: "";
+            position: absolute;
+            display: block;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 4px 0px 0 rgba(0,0,0,0.04), 0 4px 9px rgba(0,0,0,0.13), 0 3px 3px rgba(0,0,0,0.05);
+            -moz-transition: .35s cubic-bezier(.54,1.60,.5,1);
+            -o-transition: .35s cubic-bezier(.54,1.60,.5,1);
+            -webkit-transition: .35s cubic-bezier(.54,1.60,.5,1);
+            transition: .35s cubic-bezier(.54,1.60,.5,1);
+            background: whitesmoke;
+            height: 28px;
+            width: 28px;
+            top: 1px;
+            left: 0px;
+            border-radius: 60px;
+        }
 
-.toggleWrapper input.mobileToggle:checked + label:before {
-    background: #2ecc71;
-    -moz-transition: width .2s cubic-bezier(0,0,0,.1);
-    -o-transition: width .2s cubic-bezier(0,0,0,.1);
-    -webkit-transition: width .2s cubic-bezier(0,0,0,.1);
-    transition: width .2s cubic-bezier(0,0,0,.1);
-}
+    .toggleWrapper input.mobileToggle:checked + label:before {
+        background: #2ecc71;
+        -moz-transition: width .2s cubic-bezier(0,0,0,.1);
+        -o-transition: width .2s cubic-bezier(0,0,0,.1);
+        -webkit-transition: width .2s cubic-bezier(0,0,0,.1);
+        transition: width .2s cubic-bezier(0,0,0,.1);
+    }
 
-.toggleWrapper input.mobileToggle:checked + label:after {
-    left: 24px;
-}
+    .toggleWrapper input.mobileToggle:checked + label:after {
+        left: 24px;
+    }
 
 .Paginationblock {
     color: #000000;
@@ -1916,10 +1907,10 @@ a {
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
 }
 
-.nav-link:focus, .nav-link:hover {
-    background-color: #282828;
-    color: #fff;
-}
+    .nav-link:focus, .nav-link:hover {
+        background-color: #282828;
+        color: #fff;
+    }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
@@ -1966,44 +1957,44 @@ a {
     transition-property: opacity background;
 }
 
-.switch-label:before, .switch-label:after {
-    position: absolute;
-    top: 50%;
-    margin-top: -.5em;
-    line-height: 1;
-    -webkit-transition: inherit;
-    -moz-transition: inherit;
-    -o-transition: inherit;
-    transition: inherit;
-}
+    .switch-label:before, .switch-label:after {
+        position: absolute;
+        top: 50%;
+        margin-top: -.5em;
+        line-height: 1;
+        -webkit-transition: inherit;
+        -moz-transition: inherit;
+        -o-transition: inherit;
+        transition: inherit;
+    }
 
-.switch-label:before {
-    content: attr(data-off);
-    right: 9px;
-    color: #aaa;
-    text-shadow: 0 1px rgba(255, 255, 255, 0.5);
-}
+    .switch-label:before {
+        content: attr(data-off);
+        right: 9px;
+        color: #aaa;
+        text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    }
 
-.switch-label:after {
-    content: attr(data-on);
-    left: 11px;
-    color: white;
-    text-shadow: 0 1px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-}
+    .switch-label:after {
+        content: attr(data-on);
+        left: 11px;
+        color: white;
+        text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+    }
 
 .switch-input:checked ~ .switch-label {
     background: #4fb845;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
-.switch-input:checked ~ .switch-label:before {
-    opacity: 0;
-}
+    .switch-input:checked ~ .switch-label:before {
+        opacity: 0;
+    }
 
-.switch-input:checked ~ .switch-label:after {
-    opacity: 1;
-}
+    .switch-input:checked ~ .switch-label:after {
+        opacity: 1;
+    }
 
 .switch-handle {
     position: absolute;
@@ -2024,22 +2015,22 @@ a {
     transition: left 0.15s ease-out;
 }
 
-.switch-handle:before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -6px 0 0 -6px;
-    width: 12px;
-    height: 12px;
-    background: #f9f9f9;
-    border-radius: 6px;
-    box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
-    background-image: -webkit-linear-gradient(top, #eeeeee, white);
-    background-image: -moz-linear-gradient(top, #eeeeee, white);
-    background-image: -o-linear-gradient(top, #eeeeee, white);
-    background-image: linear-gradient(to bottom, #eeeeee, white);
-}
+    .switch-handle:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -6px 0 0 -6px;
+        width: 12px;
+        height: 12px;
+        background: #f9f9f9;
+        border-radius: 6px;
+        box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+        background-image: -webkit-linear-gradient(top, #eeeeee, white);
+        background-image: -moz-linear-gradient(top, #eeeeee, white);
+        background-image: -o-linear-gradient(top, #eeeeee, white);
+        background-image: linear-gradient(to bottom, #eeeeee, white);
+    }
 
 .switch-input:checked ~ .switch-handle {
     left: 70px;
@@ -2059,12 +2050,12 @@ a {
     margin: 0px 0 5px;
 }
 
-.price-input .field {
-    display: flex;
-    width: 100%;
-    height: 35px;
-    align-items: center;
-}
+    .price-input .field {
+        display: flex;
+        width: 100%;
+        height: 35px;
+        align-items: center;
+    }
 
 .field input {
     width: 100%;
@@ -2099,30 +2090,30 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: 5px;
 }
 
-.slider .progress {
-    height: 100%;
-    left: 0%;
-    right: 0%;
-    position: absolute;
-    border-radius: 5px;
-    background-color: #96672d;
-    background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
-}
+    .slider .progress {
+        height: 100%;
+        left: 0%;
+        right: 0%;
+        position: absolute;
+        border-radius: 5px;
+        background-color: #96672d;
+        background-image: linear-gradient(270deg, #96672d 0%, #f7ef9d 50%, #96672d 100%);
+    }
 
 .range-input {
     position: relative;
 }
 
-.range-input input {
-    position: absolute;
-    width: 100%;
-    height: 5px;
-    top: 3px;
-    background: none;
-    pointer-events: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
+    .range-input input {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        top: 3px;
+        background: none;
+        pointer-events: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
 
 input[type="range"]::-webkit-slider-thumb {
     height: 17px;
@@ -2397,16 +2388,16 @@ body {
         background: white;
     }
 
-    .dpf-submit.loading .btn-active-state {
-        display: none;
-    }
+        .dpf-submit.loading .btn-active-state {
+            display: none;
+        }
 
-    .dpf-submit.loading .btn-loading-state {
-        display: block;
-    }
+        .dpf-submit.loading .btn-loading-state {
+            display: block;
+        }
 
-    .dpf-submit.loading .fa-refresh {
-        font-size: 1.5em;
-        -webkit-animation: fa-spin 2s infinite linear;
-        animation: fa-spin 2s infinite linear;
-    }
+        .dpf-submit.loading .fa-refresh {
+            font-size: 1.5em;
+            -webkit-animation: fa-spin 2s infinite linear;
+            animation: fa-spin 2s infinite linear;
+        }

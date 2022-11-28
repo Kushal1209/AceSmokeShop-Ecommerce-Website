@@ -4,7 +4,6 @@ using AceSmokeShop.Data;
 using AceSmokeShop.Models;
 using AceSmokeShop.Services;
 using AceSmokeShop.ViewModel;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +12,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace AceSmokeShop.Controllers
@@ -56,7 +53,7 @@ namespace AceSmokeShop.Controllers
         public async Task<string> SayHii()
         {
             var user = await GetUserAsync();
-            return "Hiiiiiiiiiiiiiiiiiiiiiiiiiiii";
+            return "Hii User!!";
         }
 
         private async Task<AppUser> GetUserAsync()
@@ -161,7 +158,7 @@ namespace AceSmokeShop.Controllers
                 DateTime dt = DateTime.Parse(finalDate);
                 return dt;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return ismin ? DateTime.MinValue : DateTime.MaxValue;
             }
@@ -364,6 +361,7 @@ namespace AceSmokeShop.Controllers
                 }
                 catch (Exception ex)
                 {
+                    return Json(ex);
                 }
                 orderstatus = orderstatus == null ? "" : (orderstatus == ("select status").ToLower() ? "" : orderstatus);
                 searchuser = searchuser == null ? "" : (searchuser == ("select user").ToLower() ? "" : searchuser);
