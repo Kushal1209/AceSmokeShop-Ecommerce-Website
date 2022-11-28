@@ -15,7 +15,7 @@
       "destination": "wwwroot/jquery-validation-unobtrusive/"
     },
     {
-      "library": "bootstrap@5.1.3",
+      "library": "bootstrap@5.2.3",
       "destination": "wwwroot/bootstrap/"
     }
   ]
