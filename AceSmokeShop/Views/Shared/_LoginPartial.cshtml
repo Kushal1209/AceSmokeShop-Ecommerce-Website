@@ -13,7 +13,7 @@
         {
             user = await UserManager.GetUserAsync(User);  
         }
-        @if (user.UserRole != "ADMIN")
+        @if (user.UserRole == "USER")
         {
             <li class="nav-item">
                 <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="MyCart" title="Cart">
@@ -24,15 +24,26 @@
                     </span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Profile">Hello @user.Fullname.ToUpper()!</a>
+            </li>
+            <li class="nav-item" style="align-self:center;">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" class="nav-link btn btn-link text-white" title="Logout">Logout</button>
+                </form>
+            </li>
         }
-        <li class="nav-item">
-            <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Profile">Hello @user.Fullname.ToUpper()!</a>
-        </li>
-        <li class="nav-item" style="align-self:center;">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" class="nav-link btn btn-link text-white" title="Logout">Logout</button>
-            </form>
-        </li>
+        else
+        {
+            <li class="nav-item">
+                <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Profile">Hello @user.Fullname.ToUpper()!</a>
+            </li>
+            <li class="nav-item" style="align-self:center;">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" class="nav-link btn btn-link text-white" title="Logout">Logout</button>
+                </form>
+            </li>
+        }
     }
     else
     {

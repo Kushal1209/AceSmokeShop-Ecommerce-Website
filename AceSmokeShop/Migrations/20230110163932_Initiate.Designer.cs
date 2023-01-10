@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AceSmokeShop.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20221126133440_initialCreate")]
-    partial class initialCreate
+    [Migration("20230110163932_Initiate")]
+    partial class Initiate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

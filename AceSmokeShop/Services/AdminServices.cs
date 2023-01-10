@@ -726,7 +726,10 @@ namespace AceSmokeShop.Services
                             newProduct.IsFeatured = false;
                             newProduct.IsPromoted = false;
                             newProduct.IsRemoved = false;
-                            if(newProduct.ProductID != 0)
+                            newProduct.PrimaryImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl20Tuf0ZhpbNa24X1Kaw3NgZ1Rhy2bdbkGw&usqp=CAU";
+                            newProduct.SecondaryImage1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl20Tuf0ZhpbNa24X1Kaw3NgZ1Rhy2bdbkGw&usqp=CAU";
+                            newProduct.SecondaryImage2 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl20Tuf0ZhpbNa24X1Kaw3NgZ1Rhy2bdbkGw&usqp=CAU";
+                            if (newProduct.ProductID != 0)
                             {
                                 oldList.Add(newProduct);
                             }
