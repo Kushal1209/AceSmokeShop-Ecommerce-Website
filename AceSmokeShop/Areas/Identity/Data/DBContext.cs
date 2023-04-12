@@ -21,15 +21,10 @@ namespace AceSmokeShop.Data
         }
 
         public DbSet<AceSmokeShop.Models.State> tbl_state { get; set; }
-
         public DbSet<AceSmokeShop.Models.Product> tbl_product { get; set; }
-
         public DbSet<AceSmokeShop.Models.Brand> tbl_brand { get; set; }
-
         public DbSet<AceSmokeShop.Models.Category> tbl_category { get; set; }
-
         public DbSet<AceSmokeShop.Models.SubCategory> tbl_subcategory { get; set; }
-
         public DbSet<AceSmokeShop.Models.Cart> tbl_cart { get; set; }
         public DbSet<AceSmokeShop.Models.Addresses> tbl_addresses { get; set; }
         public DbSet<AceSmokeShop.Models.UserOrders> tbl_userorders { get; set; }

@@ -166,10 +166,9 @@ namespace AceSmokeShop.Services
                 model.ProductList = await GetFilteredProductList(user, CategoryId, SubCategoryId, Min, Max, search, sortBy, sortByOrder, pageFrom, pageTotal);
                 model.CategoryList = await GetCategoryListAsync(user);
                 model.TotalProducts = ProductCount;
-
                 model.CurrentPage = pageFrom;
                 model.ItemsPerPage = pageTotal;
-                model.TotalPages = (int)Math.Ceiling((double)((double)model.TotalProducts / (double)pageTotal));
+                model.TotalPages = (int)Math.Ceiling((double)(model.TotalProducts / pageTotal));
 
                 return model;
             }

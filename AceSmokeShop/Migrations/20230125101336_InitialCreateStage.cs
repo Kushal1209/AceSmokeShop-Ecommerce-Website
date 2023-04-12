@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AceSmokeShop.Migrations
 {
-    public partial class Initiate : Migration
+    public partial class InitialCreateStage : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

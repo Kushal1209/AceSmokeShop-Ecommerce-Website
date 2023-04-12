@@ -21,7 +21,7 @@ namespace AceSmokeShop.Controllers
         public PaymentServices _paymentServices;
         private readonly AdminServices _adminServices;
 
-        public AdminController(ILogger<ProductController> logger, UserManager<AppUser> userManager, 
+        public AdminController(ILogger<ProductController> logger, UserManager<AppUser> userManager,
             DBContext context)
         {
             _userManager = userManager;
@@ -262,6 +262,5 @@ namespace AceSmokeShop.Controllers
             
             return StatusCode(401);
         }
-
     }
 }
